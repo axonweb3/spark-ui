@@ -10,14 +10,16 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@joyid/core": "^0.1.0",
+    "jotai": "^2.0.4",
     "next": "^13.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "@types/node": "18.15.10",
     "@types/react": "^18.0.35",
     "@types/react-dom": "^18.0.11",
-    "@types/node": "18.15.10",
     "autoprefixer": "^10.4.14",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
