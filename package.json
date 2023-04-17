@@ -1,0 +1,28 @@
+{
+  "name": "spark-ui",
+  "version": "1.0.0",
+  "repository": "git@github.com:axonweb3/spark-ui.git",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "^13.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.35",
+    "@types/react-dom": "^18.0.11",
+    "@types/node": "18.15.10",
+    "autoprefixer": "^10.4.14",
+    "eslint": "8.36.0",
+    "eslint-config-next": "13.2.4",
+    "postcss": "^8.4.21",
+    "tailwindcss": "^3.2.7",
+    "typescript": "5.0.2"
+  }
+}
