@@ -10,6 +10,7 @@ const joyIdAtom = atomWithStorage<AuthResponseData | undefined>(
 
 export function useJoyId() {
   const [joyId, setJoyId] = useAtom(joyIdAtom);
+  const address = React.useMemo(() => joyId?.address, [joyId]);
   const connected = React.useMemo(() => !!joyId, [joyId]);
 
   React.useEffect(() => {
@@ -39,6 +40,7 @@ export function useJoyId() {
 
   return {
     joyId,
+    address,
     connect,
     connected,
   };
