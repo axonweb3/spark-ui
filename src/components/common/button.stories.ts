@@ -13,7 +13,7 @@ const meta: Meta<typeof Button> = {
 export default meta;
 type Story = StoryObj<typeof Button>;
 
-export const Contained: Story = {
+export const Default: Story = {
   args: {
     variant: 'contained',
     size: 'medium',
@@ -58,6 +58,6 @@ export const Disabled: Story = {
     variant: 'contained',
     size: 'medium',
     label: 'Disabled',
-    disable: true
+    disabled: true
   },
 };

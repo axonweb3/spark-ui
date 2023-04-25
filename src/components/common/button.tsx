@@ -6,7 +6,7 @@ export interface IButtonProps {
   onClick(): void;
   variant?: 'text' | 'contained' | 'outlined';
   size?: 'small' | 'medium' | 'large';
-  disable?: boolean;
+  disabled?: boolean;
 }
 
 export function Button(props: IButtonProps) {
@@ -15,10 +15,10 @@ export function Button(props: IButtonProps) {
     onClick,
     variant = 'contained',
     size = 'medium',
-    disable = false,
+    disabled = false,
   } = props;
   const classNames = classnames(
-    'rounded-[30px] border border-[#1f1f1f] cursor-pointer',
+    'rounded-[30px] border border-grey-700 cursor-pointer',
     {
       /* variant */
       'bg-yellow-300': variant === 'contained',
@@ -28,12 +28,12 @@ export function Button(props: IButtonProps) {
       'h-[30px] px-5 font-montserrat font-extrabold': size === 'small',
       'h-[40px] px-8 font-montserrat font-extrabold': size === 'medium',
       'h-[48px] px-9 font-alfarn-2 font-bold text-lg': size === 'large',
-      /* disable */
-      'text-grey-400 cursor-not-allowed': disable,
-      'bg-grey-100 border-none': disable && variant === 'contained',
-      'border-grey-400': disable && variant === 'outlined',
-      'hover:bg-yellow-400': !disable && variant === 'contained',
-      'hover:bg-yellow-200': !disable && (variant === 'outlined' || variant === 'text')
+      /* disabled */
+      'text-grey-400 cursor-not-allowed': disabled,
+      'bg-grey-100 border-none': disabled && variant === 'contained',
+      'border-grey-400': disabled && variant === 'outlined',
+      'hover:bg-yellow-400': !disabled && variant === 'contained',
+      'hover:bg-yellow-200': !disabled && (variant === 'outlined' || variant === 'text')
     },
   );
 
