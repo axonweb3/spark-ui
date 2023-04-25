@@ -71,6 +71,12 @@ module.exports = {
         900: '#224D24',
       },
     },
+    extend: {
+      fontFamily: {
+        'alfarn-2': ['alfarn-2', 'serif'],
+        montserrat: ['Montserrat', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 };
