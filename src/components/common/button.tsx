@@ -3,7 +3,7 @@ import React from 'react';
 
 export interface IButtonProps {
   label: string;
-  onClick(): void;
+  onClick?(): void;
   variant?: 'text' | 'contained' | 'outlined';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
@@ -18,28 +18,29 @@ export function Button(props: IButtonProps) {
     disabled = false,
   } = props;
   const classNames = classnames(
-    'rounded-[30px] border border-grey-700 cursor-pointer',
+    'min-w-[100px] rounded-[30px] border cursor-pointer',
     {
-      /* variant */
-      'bg-yellow-300': variant === 'contained',
-      'bg-white':  variant === 'text' || variant === 'outlined',
-      'border-none': variant === 'text',
-      /* size */
+      // contained
+      'bg-yellow-300 hover:bg-yellow-400 text-black border-grey-700': !disabled && variant === 'contained',
+      'bg-grey-100 border-none': disabled && variant === 'contained',
+      // outlined
+      'bg-transparent hover:bg-yellow-200 text-yellow-800 border-[0.5px] border-grey-700': !disabled && variant === 'outlined',
+      'bg-transparent border-grey-400': disabled && variant === 'outlined',
+      // text
+      'bg-transparent hover:bg-yellow-200 text-yellow-800 border-none': !disabled && variant === 'text',
+      'bg-transparent': disabled && variant === 'text',
+      // size
       'h-[30px] px-5 font-montserrat font-extrabold': size === 'small',
       'h-[40px] px-8 font-montserrat font-extrabold': size === 'medium',
       'h-[48px] px-9 font-alfarn-2 font-bold text-lg': size === 'large',
-      /* disabled */
+      // disabled
       'text-grey-400 cursor-not-allowed': disabled,
-      'bg-grey-100 border-none': disabled && variant === 'contained',
-      'border-grey-400': disabled && variant === 'outlined',
-      'hover:bg-yellow-400': !disabled && variant === 'contained',
-      'hover:bg-yellow-200': !disabled && (variant === 'outlined' || variant === 'text')
     },
   );
 
   return (
     <button type="button" className={classNames} onClick={onClick}>
-      <div className="flex flex-row items-center">{label}</div>
+      <div className="flex flex-row justify-center items-center">{label}</div>
     </button>
   );
 }

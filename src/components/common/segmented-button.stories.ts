@@ -6,7 +6,6 @@ import { SegmentedButton } from './segmented-button';
 const meta: Meta<typeof SegmentedButton> = {
   title: 'SparkUI/SegmentedButton',
   component: SegmentedButton,
-  tags: ['autodocs'],
   args: {
     options: ['One', 'Two', 'There'],
     defaultValue: 'One',

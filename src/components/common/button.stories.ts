@@ -6,7 +6,6 @@ import { Button } from './button';
 const meta: Meta<typeof Button> = {
   title: 'SparkUI/Button',
   component: Button,
-  tags: ['autodocs'],
   argTypes: {},
 };
 
