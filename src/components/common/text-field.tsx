@@ -13,6 +13,8 @@ export interface ITextFieldProps {
   label?: string;
   message?: string;
   state?: 'normal' | 'warning' | 'error';
+  left?: React.ReactNode;
+  right?: React.ReactNode;
   disabled?: boolean;
 }
 
@@ -98,18 +100,21 @@ export function TextField(props: ITextFieldProps) {
     <Root>
       <Field name={name} className={`inline-block ${sizeClassNames}`}>
         {label && <Label>{label}</Label>}
-        <Control
-          className={`w-full h-full border rounded-[6px] ${borderClassName}`}
-          asChild
+        <div
+          className={`flex flex-row items-center w-full h-full border rounded-[6px] ${borderClassName}`}
         >
-          <input
-            value={text}
-            onChange={handleChange}
-            placeholder={placeholder}
-            className={`${paddingClassNames} ${placeholderClassNames} ${backgroundClassNames}`}
-            type={type}
-          />
-        </Control>
+          {props.left}
+          <Control className="h-full focus:outline-none rounded-[6px]" asChild>
+            <input
+              value={text}
+              onChange={handleChange}
+              placeholder={placeholder}
+              className={`${paddingClassNames} ${placeholderClassNames} ${backgroundClassNames}`}
+              type={type}
+            />
+          </Control>
+          {props.right}
+        </div>
         {message && <Message className={messageClassNames}>{message}</Message>}
       </Field>
     </Root>
