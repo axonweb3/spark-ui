@@ -104,7 +104,7 @@ export function TextField(props: ITextFieldProps) {
           className={`flex flex-row items-center w-full h-full border rounded-[6px] ${borderClassName}`}
         >
           {props.left}
-          <Control className="h-full focus:outline-none rounded-[6px]" asChild>
+          <Control className="flex-1 h-full focus:outline-none rounded-[6px]" asChild>
             <input
               value={text}
               onChange={handleChange}
