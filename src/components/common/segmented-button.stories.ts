@@ -4,7 +4,7 @@ import { SegmentedButton } from './segmented-button';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof SegmentedButton> = {
-  title: 'SparkUI/SegmentedButton',
+  title: 'SparkUI/Common/SegmentedButton',
   component: SegmentedButton,
   args: {
     options: ['One', 'Two', 'There'],

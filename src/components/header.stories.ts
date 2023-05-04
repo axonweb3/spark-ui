@@ -1,19 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Snackbar } from './snackbar';
+import { Header } from './header';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof Snackbar> = {
-  title: 'SparkUI/Common/Snackbar',
-  component: Snackbar,
+const meta: Meta<typeof Header> = {
+  title: 'SparkUI/Header',
+  component: Header,
   argTypes: {},
-  args: {
-    message: 'Token Amount has been changed',
-  },
 };
 
 export default meta;
-type Story = StoryObj<typeof Snackbar>;
+type Story = StoryObj<typeof Header>;
 
 export const Default: Story = {
   args: {},

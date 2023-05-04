@@ -6,7 +6,7 @@ import { Button } from './button';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Dialog> = {
-  title: 'SparkUI/Dialog',
+  title: 'SparkUI/Common/Dialog',
   component: Dialog,
   args: {
     open: true,

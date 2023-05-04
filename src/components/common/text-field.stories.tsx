@@ -6,7 +6,7 @@ import { MdKeyboardArrowDown, MdOutlineSearch } from 'react-icons/md';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TextField> = {
-  title: 'SparkUI/TextField',
+  title: 'SparkUI/Common/TextField',
   component: TextField,
   argTypes: {},
   args: {
