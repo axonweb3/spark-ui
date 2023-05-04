@@ -14,4 +14,11 @@ type Story = StoryObj<typeof Header>;
 
 export const Default: Story = {
   args: {},
+  parameters: {
+    nextjs: {
+      router: {
+        pathname: '/stake',
+      },
+    },
+  },
 };
