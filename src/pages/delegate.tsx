@@ -1,12 +1,11 @@
-import { Header } from '@/components/header';
+import { Layout } from '@/components/layout';
 import React from 'react';
 
 function Delegate() {
   return (
-    <div>
-      <Header />
+    <Layout>
       Delegate
-    </div>
+    </Layout>
   );
 }
 

@@ -1,11 +1,10 @@
 import React from 'react';
 import { Button } from './common/button';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import classnames from 'classnames';
+import { Navigation } from './common/navigation';
 
-export const NAVIGATIONS = [
+export const NAVS = [
   {
     name: 'Stake',
     href: '/stake',
@@ -26,26 +25,17 @@ export const NAVIGATIONS = [
 
 export function Header() {
   const router = useRouter();
+  const active = React.useMemo(() => {
+    const nav = NAVS.find(({ href }) => href === router.pathname);
+    return nav?.name;
+  }, [router.pathname]);
 
   return (
     <header>
       <div className="h-[70px] bg-secondary">
         <div className="flex flex-row justify-between items-center container mx-auto">
           <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
-          <div className="flex flex-row items-center">
-            {NAVIGATIONS.map(({ name, href }) => (
-              <div
-                key={name}
-                className={classnames('px-[24px] py-[8px] mx-[6px]', {
-                  'bg-brand border border-grey-700 rounded-md': router.pathname === href,
-                })}
-              >
-                <Link href={href} className="font-alfarn-2 text-lg font-bold leading-5">
-                  {name}
-                </Link>
-              </div>
-            ))}
-          </div>
+          <Navigation navs={NAVS} active={active} />
           <Button label="Connect Wallet" />
         </div>
       </div>
