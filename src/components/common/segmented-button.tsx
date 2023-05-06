@@ -5,15 +5,15 @@ import { MdDone } from 'react-icons/md';
 
 export interface ISegmentedButtonProps {
   options: string[];
-  value: string;
-  onChange(value: string): void;
+  value?: string;
+  onChange?(value: string): void;
   defaultValue?: string;
   disabled?: boolean;
 }
 
 export function SegmentedButton(props: ISegmentedButtonProps) {
   const { options, value, onChange, defaultValue, disabled = false } = props;
-  const [active, setActive] = React.useState(defaultValue);
+  const [active, setActive] = React.useState(defaultValue ?? options[0]);
 
   React.useEffect(() => {
     if (value !== undefined) {
@@ -23,14 +23,14 @@ export function SegmentedButton(props: ISegmentedButtonProps) {
 
   React.useEffect(() => {
     if (active !== undefined) {
-      onChange(active);
+      onChange?.(active);
     }
   }, [active, onChange]);
 
   const getClassNames = React.useCallback(
     (val: string, index: number) => {
       const classNames = classnames(
-        'flex-1 max-w-[100px] flex flex-row items-center justify-center h-12 font-montserrat font-medium border',
+        'h-12 flex flex-row items-center justify-center font-montserrat font-medium border',
         {
           'bg-yellow-300 px-[7px]': val === active,
           'hover:bg-yellow-100 px-5': val !== active,
@@ -50,11 +50,11 @@ export function SegmentedButton(props: ISegmentedButtonProps) {
   return (
     <Root
       type="single"
-      className="inline"
       defaultValue={defaultValue}
+      className="w-full"
       value={value}
     >
-      <div className="flex flex-row">
+      <div className={`grid grid-cols-5`}>
         {options.map((option: string, index: number) => (
           <Item
             key={option}

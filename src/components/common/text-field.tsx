@@ -4,13 +4,11 @@ import classnames from 'classnames';
 import { ChangeEvent } from 'react';
 
 export interface ITextFieldProps {
-  name: string;
   value?: string;
   onChange?(value: string): void;
   placeholder?: string;
   size?: 'small' | 'medium' | 'large';
   type?: string;
-  label?: string;
   message?: string;
   state?: 'normal' | 'warning' | 'error';
   left?: React.ReactNode;
@@ -20,8 +18,6 @@ export interface ITextFieldProps {
 
 export function TextField(props: ITextFieldProps) {
   const {
-    name,
-    label,
     value,
     onChange,
     placeholder,
@@ -97,26 +93,23 @@ export function TextField(props: ITextFieldProps) {
   }, [disabled, state]);
 
   return (
-    <Root>
-      <Field name={name} className={`inline-block ${sizeClassNames}`}>
-        {label && <Label>{label}</Label>}
-        <div
-          className={`flex flex-row items-center w-full h-full border rounded-[6px] ${borderClassName}`}
-        >
-          {props.left}
-          <Control className="flex-1 h-full focus:outline-none rounded-[6px]" asChild>
-            <input
-              value={text}
-              onChange={handleChange}
-              placeholder={placeholder}
-              className={`${paddingClassNames} ${placeholderClassNames} ${backgroundClassNames}`}
-              type={type}
-            />
-          </Control>
-          {props.right}
-        </div>
-        {message && <Message className={messageClassNames}>{message}</Message>}
-      </Field>
-    </Root>
+    <>
+      <div
+        className={`flex flex-row items-center w-full h-full border rounded-[6px] ${borderClassName} ${sizeClassNames}`}
+      >
+        {props.left}
+        <Control className="flex-1 h-full focus:outline-none rounded-[6px]" asChild>
+          <input
+            value={text}
+            onChange={handleChange}
+            placeholder={placeholder}
+            className={`${paddingClassNames} ${placeholderClassNames} ${backgroundClassNames}`}
+            type={type}
+          />
+        </Control>
+        {props.right}
+      </div>
+      {message && <Message className={messageClassNames}>{message}</Message>}
+    </>
   );
 }

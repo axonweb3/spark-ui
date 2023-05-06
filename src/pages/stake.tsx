@@ -1,7 +1,9 @@
 import { Card } from '@/components/common/card';
 import { Navigation } from '@/components/common/navigation';
 import { Layout } from '@/components/layout';
+import { StakeForm } from '@/components/stake-form';
 import { useRouteQuery } from '@/hooks/useRouteQuery';
+import * as Tabs from '@radix-ui/react-tabs';
 import React from 'react';
 
 export enum StakeOpType {
@@ -12,23 +14,11 @@ export enum StakeOpType {
 }
 
 const NAVS = [
-  {
-    name: StakeOpType.Add,
-    href: '/stake?op=add',
-  },
-  {
-    name: StakeOpType.Reedem,
-    href: '/stake?op=reedem',
-  },
-  {
-    name: StakeOpType.Withdraw,
-    href: '/stake?op=withdraw',
-  },
-  {
-    name: StakeOpType.History,
-    href: '/stake?op=history',
-  },
-];
+  StakeOpType.Add,
+  StakeOpType.Reedem,
+  StakeOpType.Withdraw,
+  StakeOpType.History,
+].map((name) => ({ name, href: `/stake?op=${name}`}));
 
 function Stake() {
   const [op] = useRouteQuery('op', StakeOpType.Add);
@@ -36,7 +26,14 @@ function Stake() {
   return (
     <Layout>
       <Card title={<Navigation navs={NAVS} active={op as string} />}>
-        {op.toString()}
+        <Tabs.Root value={op as string}>
+          <Tabs.Content value={StakeOpType.Add}>
+            <StakeForm />
+          </Tabs.Content>
+          <Tabs.Content value={StakeOpType.Reedem}>
+            StakeOpType.Reedem
+          </Tabs.Content>
+        </Tabs.Root>
       </Card>
     </Layout>
   );
