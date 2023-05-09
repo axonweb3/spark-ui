@@ -105,6 +105,7 @@ export function TextField(props: ITextFieldProps) {
             placeholder={placeholder}
             className={`${paddingClassNames} ${placeholderClassNames} ${backgroundClassNames}`}
             type={type}
+            disabled={disabled}
           />
         </Control>
         {props.right}

@@ -7,15 +7,15 @@ import * as Tabs from '@radix-ui/react-tabs';
 import React from 'react';
 
 export enum StakeOpType {
-  Add = 'add',
-  Reedem = 'reedem',
-  Withdraw = 'withdraw',
-  History = 'history',
+  Add = 'Add',
+  Redeem = 'Redeem',
+  Withdraw = 'Withdraw',
+  History = 'History',
 }
 
 const NAVS = [
   StakeOpType.Add,
-  StakeOpType.Reedem,
+  StakeOpType.Redeem,
   StakeOpType.Withdraw,
   StakeOpType.History,
 ].map((name) => ({ name, href: `/stake?op=${name}`}));
@@ -30,8 +30,8 @@ function Stake() {
           <Tabs.Content value={StakeOpType.Add}>
             <StakeForm />
           </Tabs.Content>
-          <Tabs.Content value={StakeOpType.Reedem}>
-            StakeOpType.Reedem
+          <Tabs.Content value={StakeOpType.Redeem}>
+            StakeOpType.Redeem
           </Tabs.Content>
         </Tabs.Root>
       </Card>

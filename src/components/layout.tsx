@@ -6,9 +6,7 @@ export function Layout(props: React.PropsWithChildren<{}>) {
     <div className="bg-secondary min-h-screen">
       <Header />
       <main>
-        <div className="container mx-auto my-9">
-        {props.children}
-        </div>
+        <div className="container mx-auto my-9">{props.children}</div>
       </main>
     </div>
   );

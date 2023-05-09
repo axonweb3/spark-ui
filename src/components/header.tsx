@@ -3,6 +3,7 @@ import { Button } from './common/button';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Navigation } from './common/navigation';
+import { useJoyId } from '@/hooks/useJoyId';
 
 export const NAVS = [
   {
@@ -25,6 +26,8 @@ export const NAVS = [
 
 export function Header() {
   const router = useRouter();
+  const { address, connected, connect } = useJoyId();
+
   const active = React.useMemo(() => {
     const nav = NAVS.find(({ href }) => href === router.pathname);
     return nav?.name;
@@ -32,12 +35,17 @@ export function Header() {
 
   return (
     <header>
-      <div className="h-[70px] bg-secondary">
-        <div className="flex flex-row justify-between items-center container mx-auto">
-          <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
-          <Navigation navs={NAVS} active={active} />
-          <Button label="Connect Wallet" />
-        </div>
+      <div className="h-[84px] bg-secondary flex flex-row justify-between items-center container mx-auto">
+        <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
+        <Navigation navs={NAVS} active={active} />
+        {connected ? (
+          <Button
+            variant="outlined"
+            label={address?.substring(0, 10)!}
+          />
+        ) : (
+          <Button label="Connect Wallet" onClick={() => connect()} />
+        )}
       </div>
     </header>
   );

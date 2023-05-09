@@ -31,7 +31,7 @@ export function useJoyId() {
       redirectURL: location.origin + '/',
       name: 'Spark UI',
     });
-    if (error === null) {
+    if (!error) {
       setJoyId(data);
     } else {
       // TODO: show auth error message

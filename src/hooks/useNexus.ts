@@ -30,7 +30,10 @@ function getNexusProvider() {
   return ckb;
 }
 
-const nicknameAtom = atomWithStorage<string | undefined>('nexus#nickname', undefined);
+const nicknameAtom = atomWithStorage<string | undefined>(
+  'nexus#nickname',
+  undefined,
+);
 const addressAtom = atom<string | undefined>(undefined);
 
 export function useNexus() {
@@ -42,27 +45,52 @@ export function useNexus() {
   const connect = React.useCallback(async () => {
     if (!ckb) {
       // TODO: show nexus wallet not found error
+      return;
     }
 
     const { nickname } = await ckb?.request({ method: 'wallet_enable' });
     setNickname(nickname);
     const [lock] = await window.ckb.request({
       method: 'wallet_fullOwnership_getOffChainLocks',
-      params: { change: 'internal' }
+      params: { change: 'external' },
     });
     setAddress(encodeToAddress(lock));
   }, [ckb, setNickname, setAddress]);
 
   React.useEffect(() => {
-    if (nickname) {
+    if (connected) {
       connect();
     }
-  }, [nickname, connect]);
+  }, [connected, connect]);
+
+  const getAllLiveCells = React.useCallback(async () => {
+    if (!ckb) {
+      // TODO: show nexus wallet not found error
+      return;
+    }
+
+    const cells = [];
+    let response = await ckb.request({
+      method: 'wallet_fullOwnership_getLiveCells',
+      params: {},
+    });
+    cells.push(...(response.objects ?? []));
+
+    while (response.cursor) {
+      response = await ckb.request({
+        method: 'wallet_fullOwnership_getLiveCells',
+        params: { cursor: response.cursor },
+      });
+      cells.push(...(response.objects ?? []));
+    }
+  }, [ckb]);
 
   return {
     ckb,
     address,
+    nickname,
     connect,
     connected,
+    getAllLiveCells,
   };
 }
