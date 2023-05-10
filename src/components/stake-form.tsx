@@ -3,17 +3,11 @@ import * as Form from '@radix-ui/react-form';
 import { TextField } from './common/text-field';
 import { SegmentedButton } from './common/segmented-button';
 import { Button } from './common/button';
-import { useNexus } from '@/hooks/useNexus';
 
 const AMOUNT_OPTIONS = ['25%', '50%', '75%', '100%', 'Custom'];
 
 export function StakeForm() {
   const [option, setOption] = React.useState(AMOUNT_OPTIONS[0]);
-  const { getAllLiveCells } = useNexus();
-
-  React.useEffect(() => {
-    getAllLiveCells();
-  }, [getAllLiveCells]);
 
   return (
     <Form.Root className="w-[756px] mt-11 mx-auto">

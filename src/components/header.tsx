@@ -3,7 +3,7 @@ import { Button } from './common/button';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Navigation } from './common/navigation';
-import { useJoyId } from '@/hooks/useJoyId';
+import { useConnect, NexusConnentor } from '@spinal/react';
 
 export const NAVS = [
   {
@@ -26,7 +26,9 @@ export const NAVS = [
 
 export function Header() {
   const router = useRouter();
-  const { address, connected, connect } = useJoyId();
+  const { address, connected, connect } = useConnect({
+    connector: new NexusConnentor(),
+  });
 
   const active = React.useMemo(() => {
     const nav = NAVS.find(({ href }) => href === router.pathname);
@@ -40,7 +42,7 @@ export function Header() {
         <Navigation navs={NAVS} active={active} />
         {connected ? (
           <Button
-            variant="outlined"
+            variant="text"
             label={address?.substring(0, 10)!}
           />
         ) : (
