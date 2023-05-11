@@ -6,7 +6,6 @@ import {
   configureChains,
   publicProvider,
 } from '@spinal-ckb/react';
-import './style.css';
 
 const { rpcClient, indexer } = configureChains(
   [predefineChains.testnet],

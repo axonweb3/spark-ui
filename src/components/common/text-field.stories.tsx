@@ -1,24 +1,15 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { TextField } from './text-field';
+import TextField from './text-field';
 import { MdKeyboardArrowDown, MdOutlineSearch } from 'react-icons/md';
-import { Field, Form, Root } from '@radix-ui/react-form';
+import { Box } from '@chakra-ui/react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TextField> = {
   title: 'SparkUI/Common/TextField',
   component: TextField,
   argTypes: {},
-  decorators: [
-    Story => (
-      <Root>
-        <Field name="text-field" className="inline-block">
-          {Story()}
-        </Field>
-      </Root>
-    ),
-  ],
   args: {
     placeholder: 'Placeholder',
   },
@@ -34,27 +25,27 @@ export const Default: Story = {
 
 export const Small: Story = {
   args: {
-    size: 'small',
+    size: 'sm',
   },
 };
 
 export const Large: Story = {
   args: {
-    size: 'large',
+    size: 'lg',
   },
 };
 
 export const Warning: Story = {
   args: {
-    size: 'medium',
-    state: 'warning',
+    size: 'md',
+    status: 'warning',
   },
 };
 
 export const Error: Story = {
   args: {
-    size: 'medium',
-    state: 'error',
+    size: 'md',
+    status: 'error',
   },
 };
 
@@ -66,22 +57,22 @@ export const WithMessage: Story = {
 
 export const WithErrorMessage: Story = {
   args: {
-    state: 'error',
+    status: 'error',
     message: 'This is a message',
   },
 };
 
 export const WithIcon: Story = {
   args: {
-    left: (
-      <div className="pl-2">
-        <MdOutlineSearch className="w-4 h-4" />
-      </div>
+    leftAddon: (
+      <Box paddingRight={2} width={4} height={4}>
+        <MdOutlineSearch />
+      </Box>
     ),
-    right: (
-      <div className="pr-2">
-        <MdKeyboardArrowDown className="w-4 h-4" />
-      </div>
+    rightAddon: (
+      <Box paddingRight={2} width={4} height={4}>
+        <MdKeyboardArrowDown />
+      </Box>
     ),
   },
 };

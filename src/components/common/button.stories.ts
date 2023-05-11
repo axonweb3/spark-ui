@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { Button } from './button';
+import Button from './button';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Button> = {
@@ -15,48 +15,48 @@ type Story = StoryObj<typeof Button>;
 export const Default: Story = {
   args: {
     variant: 'contained',
-    size: 'medium',
-    label: 'Button',
+    size: 'md',
+    children: 'Button',
   },
 };
 
 export const Text: Story = {
   args: {
     variant: 'text',
-    size: 'medium',
-    label: 'Button',
+    size: 'md',
+    children: 'Button',
   },
 };
 
 export const Outlined: Story = {
   args: {
     variant: 'outlined',
-    size: 'medium',
-    label: 'Button',
+    size: 'md',
+    children: 'Button',
   },
 };
 
 export const Small: Story = {
   args: {
     variant: 'contained',
-    size: 'small',
-    label: 'Small',
+    size: 'sm',
+    children: 'Small',
   },
 };
 
 export const Large: Story = {
   args: {
     variant: 'contained',
-    size: 'large',
-    label: 'Large',
+    size: 'lg',
+    children: 'Large',
   },
 };
 
 export const Disabled: Story = {
   args: {
     variant: 'contained',
-    size: 'medium',
-    label: 'Disabled',
+    size: 'md',
+    children: 'Disabled',
     disabled: true
   },
 };

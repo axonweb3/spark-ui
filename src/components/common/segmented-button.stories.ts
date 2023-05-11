@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { SegmentedButton } from './segmented-button';
+import SegmentedButton from './segmented-button';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof SegmentedButton> = {
@@ -18,10 +18,4 @@ type Story = StoryObj<typeof SegmentedButton>;
 
 export const Default: Story = {
   args: {},
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-  },
 };

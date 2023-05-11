@@ -1,5 +1,6 @@
+import { Box, Flex } from '@chakra-ui/react';
 import classnames from 'classnames';
-import Link from 'next/link';
+import { Link } from '@chakra-ui/next-js';
 import React from 'react';
 
 export interface INavigationItem {
@@ -12,27 +13,43 @@ export interface INavigationProps {
   active?: string;
 }
 
-export function Navigation(props: INavigationProps) {
+export default function Navigation(props: INavigationProps) {
   const { navs, active } = props;
 
   return (
-    <div className="flex flex-row items-center">
-      {navs.map(({ name, href }, index) => (
-        <div
-          key={name}
-          className={classnames('px-[24px] py-[8px]', {
-            'bg-brand border border-grey-700 rounded-md': name === active,
-            'mr-[6px]': index !== navs.length - 1,
-          })}
-        >
-          <Link
-            href={href}
-            className="font-alfarn-2 text-lg font-bold leading-5"
+    <Flex
+      alignItems="center"
+      sx={{
+        '.active': {
+          backgroundColor: 'brand',
+          borderWidth: 1,
+          borderColor: 'grey.700',
+          borderRadius: 'md',
+        },
+      }}
+    >
+      {navs.map(({ name, href }, index) => {
+        return (
+          <Box
+            key={name}
+            paddingX="24px"
+            paddingY="8px"
+            marginRight={index !== navs.length - 1 ? '6px' : '0'}
+            className={name === active ? 'active' : undefined}
           >
-            {name}
-          </Link>
-        </div>
-      ))}
-    </div>
+            <Link
+              href={href}
+              fontFamily="alfarn-2"
+              fontSize="lg"
+              fontWeight="bold"
+              lineHeight="5"
+              _hover={{ textDecoration: 'none' }}
+            >
+              {name}
+            </Link>
+          </Box>
+        );
+      })}
+    </Flex>
   );
 }

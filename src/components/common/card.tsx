@@ -1,18 +1,30 @@
 import React from 'react';
+import { Box, Text } from '@chakra-ui/react';
 
 export interface ICardProps extends React.PropsWithChildren {
   title?: string | React.ReactNode;
 }
 
-export function Card(props: ICardProps) {
+export default function Card(props: ICardProps) {
   const { title, children } = props;
 
   return (
-    <div className="border border-grey-700 rounded-md bg-primary max-w-[1080px] mx-auto">
+    <Box
+      borderWidth={1}
+      borderColor="grey.700"
+      borderRadius="md"
+      backgroundColor="primary"
+      maxWidth="1080px"
+      mx="auto"
+    >
       {title && (
-        <div className="border-b border-grey-700 px-12 py-5">{title}</div>
+        <Text borderBottomWidth={1} borderColor="grey.700" px={12} py={5}>
+          {title}
+        </Text>
       )}
-      <div className="px-12 py-5">{children}</div>
-    </div>
+      <Box px={12} py={5}>
+        {children}
+      </Box>
+    </Box>
   );
 }

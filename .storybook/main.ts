@@ -5,6 +5,7 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    '@chakra-ui/storybook-addon',
     {
       name: '@storybook/addon-styling',
       options: {
@@ -12,6 +13,9 @@ const config: StorybookConfig = {
       },
     },
   ],
+  features: {
+    emotionAlias: false,
+  },
   staticDirs: ['../public'],
   framework: {
     name: '@storybook/nextjs',
@@ -20,6 +24,15 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
     defaultName: 'Overview',
+  },
+  webpackFinal: async (config) => {
+    config.module?.rules?.push({
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: 'javascript/auto',
+    });
+
+    return config;
   },
 };
 export default config;

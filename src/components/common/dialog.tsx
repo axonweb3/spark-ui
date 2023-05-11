@@ -1,17 +1,18 @@
-import React, { PropsWithChildren } from 'react';
-import { MdClose } from 'react-icons/md';
+import React, { PropsWithChildren, useEffect } from 'react';
+import Button from './button';
 import {
-  Close,
-  Content,
-  Description,
-  Overlay,
-  Portal,
-  Root,
-  Title,
-  Trigger,
-} from '@radix-ui/react-dialog';
-import classnames from 'classnames';
-import { Button } from './button';
+  Box,
+  Text,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+  ModalBody,
+  ModalFooter,
+  Flex,
+  ModalCloseButton,
+} from '@chakra-ui/react';
 
 export interface IDialogProps extends PropsWithChildren {
   title: string;
@@ -22,63 +23,77 @@ export interface IDialogProps extends PropsWithChildren {
   cancelLabel?: string;
   onConfirm?(): void;
   onCancel?(): void;
-  onOpenChange?(open: boolean): void;
-  onClose?(): void;
+  onChange?(open: boolean): void;
 }
 
-export function Dialog(props: IDialogProps) {
-  const { title, description, children, open, onOpenChange, onClose } = props;
+export default function Dialog(props: IDialogProps) {
+  const { title, description, children, open, onChange } = props;
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleOpenChange = React.useCallback((value: boolean) => {
-    onOpenChange?.(value);
-    if (!value) {
-      onClose?.();
-    }
-  }, [onOpenChange, onClose]);
+  useEffect(() => {
+    open ? onOpen() : onClose();
+  }, [open, onOpen, onClose]);
+
+  useEffect(() => {
+    onChange?.(isOpen);
+  }, [isOpen, onChange]);
 
   return (
-    <Root open={open} onOpenChange={handleOpenChange}>
-      {children && <Trigger>{children}</Trigger>}
-      <Portal>
-        <Overlay />
-        <Content className="w-[486px] fixed top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
-          <div className="p-6 bg-primary border border-black rounded-2xl">
-            <div className="flex flex-row items-center">
-              <Title className="flex-1 text-xl font-alfarn-2 font-bold">
-                {title}
-              </Title>
-              <Close className="fill-black outline-none">
-                <MdClose className="w-6 h-6" />
-              </Close>
-            </div>
-            <Description
-              className={classnames('my-4 font-montserrat text-grey-900', {
-                'leading-5': !title,
-                'text-sm leading-4': title,
-              })}
+    <>
+      {children && <Box onClick={onOpen}>{children}</Box>}
+
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent
+          backgroundColor="primary"
+          borderRadius="2xl"
+          borderWidth={1}
+          borderColor="black"
+          padding={6}
+          minWidth="486px"
+        >
+          <ModalHeader padding={0}>
+            <Text fontFamily="alfarn-2" fontWeight="bold" fontSize="xl">
+              {title}
+            </Text>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody marginY={4} padding={0}>
+            <Text
+              fontFamily="montserrat"
+              color="grey.900"
+              lineHeight={title ? 4 : 5}
+              fontSize={title ? 'sm' : 'md'}
             >
               {description}
-            </Description>
+            </Text>
+          </ModalBody>
+          <ModalFooter marginTop={6} padding={0}>
             {props.footer || (
-              <div className="flex flex-row-reverse mt-6">
-                <div className="flex flex-row">
-                  <Button
-                    variant="outlined"
-                    label={props.cancelLabel ?? 'Cancel'}
-                    size="small"
-                  />
-                  <div className="w-2" />
-                  <Button
-                    variant="contained"
-                    label={props.confrmLabel ?? 'Got it'}
-                    size="small"
-                  />
-                </div>
-              </div>
+              <Flex>
+                <Button
+                  variant="outlined"
+                  size="sm"
+                  onClick={() => {
+                    onClose();
+                    props.onCancel?.();
+                  }}
+                >
+                  {props.cancelLabel ?? 'Cancel'}
+                </Button>
+                <Box width={2} />
+                <Button
+                  variant="contained"
+                  size="sm"
+                  onClick={() => props.onConfirm?.()}
+                >
+                  {props.confrmLabel ?? 'Got it'}
+                </Button>
+              </Flex>
             )}
-          </div>
-        </Content>
-      </Portal>
-    </Root>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </>
   );
 }

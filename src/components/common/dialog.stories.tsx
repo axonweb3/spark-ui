@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 
-import { Dialog } from './dialog';
-import { Button } from './button';
+import Dialog from './dialog';
+import Button from './button';
+import { Text, Flex, Spacer, Box } from '@chakra-ui/react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Dialog> = {
@@ -34,21 +35,36 @@ export const NoTitle: Story = {
 export const CustomFooter: Story = {
   render: () => (
     <Dialog
-      open={true}
       title="Dialog Title"
+      open={true}
       description="A dialog is a type of modal window that appears in front of app content to provide critical information, or prompt for a decision to be made."
       footer={
-        <div className="flex flex-row justify-between mt-6">
-          <div className="flex flex-row items-center">
-            <MdOutlineCheckBoxOutlineBlank className="w-6 h-6 mr-1" />
-            <span className="text-sm text-blue-400">Do not show again</span>
-          </div>
-          <div className="flex flex-row">
-            <Button variant="outlined" label={'Cancel'} size="small" />
-            <div className="w-2" />
-            <Button variant="contained" label={'Got it'} size="small" />
-          </div>
-        </div>
+        <Flex width="full">
+          <Flex alignItems="center">
+            <Flex
+              width={6}
+              height={6}
+              marginRight={1}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <MdOutlineCheckBoxOutlineBlank />
+            </Flex>
+            <Text fontSize="sm" color="blue.400">
+              Do not show again
+            </Text>
+          </Flex>
+          <Spacer />
+          <Flex>
+            <Button variant="outlined" size="sm">
+              Cancel
+            </Button>
+            <Box width={2} />
+            <Button variant="contained" size="sm">
+              Ok
+            </Button>
+          </Flex>
+        </Flex>
       }
     />
   ),
