@@ -3,7 +3,7 @@ import React from 'react';
 
 export function useRouteQuery(key: string, defaultValue: string = '') {
   const router = useRouter();
-  const query = router.query[key] ?? defaultValue;
+  const query = (router.query[key] ?? defaultValue) as string;
 
   const setQuery = React.useCallback(
     (value: string) => {
@@ -15,5 +15,5 @@ export function useRouteQuery(key: string, defaultValue: string = '') {
     [router, key],
   );
 
-  return [query, setQuery];
+  return [query, setQuery] as const;
 }

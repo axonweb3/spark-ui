@@ -7,30 +7,30 @@ import * as Tabs from '@radix-ui/react-tabs';
 import React from 'react';
 
 export enum StakeOpType {
-  Add = 'Add',
-  Redeem = 'Redeem',
+  Stake = 'Stake',
+  Unstake = 'Unstake',
   Withdraw = 'Withdraw',
   History = 'History',
 }
 
 const NAVS = [
-  StakeOpType.Add,
-  StakeOpType.Redeem,
+  StakeOpType.Stake,
+  StakeOpType.Unstake,
   StakeOpType.Withdraw,
   StakeOpType.History,
-].map((name) => ({ name, href: `/stake?op=${name}`}));
+].map((name) => ({ name, href: `/stake?tab=${name}`}));
 
 function Stake() {
-  const [op] = useRouteQuery('op', StakeOpType.Add);
+  const [tab] = useRouteQuery('tab', StakeOpType.Stake);
 
   return (
     <Layout>
-      <Card title={<Navigation navs={NAVS} active={op as string} />}>
-        <Tabs.Root value={op as string}>
-          <Tabs.Content value={StakeOpType.Add}>
+      <Card title={<Navigation navs={NAVS} active={tab} />}>
+        <Tabs.Root value={tab}>
+          <Tabs.Content value={StakeOpType.Stake}>
             <StakeForm />
           </Tabs.Content>
-          <Tabs.Content value={StakeOpType.Redeem}>
+          <Tabs.Content value={StakeOpType.Unstake}>
             StakeOpType.Redeem
           </Tabs.Content>
         </Tabs.Root>

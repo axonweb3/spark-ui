@@ -11,16 +11,8 @@ export function StakeForm() {
 
   return (
     <Form.Root className="w-[756px] mt-11 mx-auto">
-      <Form.Field name="epoch">
-        <div className="flex flex-row justify-between items-center mb-14">
-          <Form.Label className="font-extrabold">Effective epoch</Form.Label>
-          <div className="w-[580px] h-12">
-            <TextField size="large" value={'2'} disabled />
-          </div>
-        </div>
-      </Form.Field>
       <Form.Field name="amount">
-        <div className="flex flex-row justify-between mb-20">
+        <div className="flex flex-row justify-between mb-14">
           <div className="h-12 flex flex-row items-center">
             <Form.Label className="font-extrabold">Token Amount</Form.Label>
           </div>
@@ -33,6 +25,14 @@ export function StakeForm() {
             <div className="h-12 mt-4">
               <TextField size="large" />
             </div>
+          </div>
+        </div>
+      </Form.Field>
+      <Form.Field name="epoch">
+        <div className="flex flex-row justify-between items-center mb-20">
+          <Form.Label className="font-extrabold">Effective epoch</Form.Label>
+          <div className="w-[580px] h-12">
+            <TextField size="large" value={'2'} disabled />
           </div>
         </div>
       </Form.Field>

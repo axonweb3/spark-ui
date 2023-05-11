@@ -5,7 +5,7 @@ import {
   chains as predefineChains,
   configureChains,
   publicProvider,
-} from '@spinal/react';
+} from '@spinal-ckb/react';
 import './style.css';
 
 const { rpcClient, indexer } = configureChains(

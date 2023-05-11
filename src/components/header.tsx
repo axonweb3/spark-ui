@@ -3,7 +3,7 @@ import { Button } from './common/button';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { Navigation } from './common/navigation';
-import { useConnect, NexusConnentor } from '@spinal/react';
+import { useDisconnect, useConnect, NexusConnentor } from '@spinal-ckb/react';
 
 export const NAVS = [
   {
@@ -29,6 +29,7 @@ export function Header() {
   const { address, connected, connect } = useConnect({
     connector: new NexusConnentor(),
   });
+  const { disconnect } = useDisconnect();
 
   const active = React.useMemo(() => {
     const nav = NAVS.find(({ href }) => href === router.pathname);
@@ -44,6 +45,7 @@ export function Header() {
           <Button
             variant="text"
             label={address?.substring(0, 10)!}
+            onClick={() => disconnect()}
           />
         ) : (
           <Button label="Connect Wallet" onClick={() => connect()} />
