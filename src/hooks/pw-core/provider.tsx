@@ -10,15 +10,22 @@ export const PWCoreProvider = ({
   config: IPWCoreConfig;
 }) => {
   const [pwCore, setPWCore] = useState<PWCore | null>(null);
+  const { nodeUrl } = config;
 
   useEffect(() => {
-    const { nodeUrl } = config;
     const init = async () => {
       const pwCore = new PWCore(nodeUrl);
       setPWCore(pwCore);
     };
     init();
-  }, [config]);
+  }, [nodeUrl]);
+
+  useEffect(() => {
+    const { autoConnect, provider, collector } = config;
+    if (autoConnect) {
+      pwCore?.init(provider, collector);
+    }
+  }, [config, pwCore]);
 
   return (
     <PWCoreConfigContext.Provider value={config}>

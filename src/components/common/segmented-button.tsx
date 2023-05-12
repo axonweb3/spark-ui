@@ -11,7 +11,7 @@ export interface ISegmentedButtonProps {
 
 export default function SegmentedButton(props: ISegmentedButtonProps) {
   const { options, value, onChange, defaultValue } = props;
-  const [active, setActive] = React.useState(defaultValue ?? options[0]);
+  const [active, setActive] = React.useState(value ?? defaultValue ?? options[0]);
 
   React.useEffect(() => {
     if (value !== undefined) {
@@ -35,7 +35,7 @@ export default function SegmentedButton(props: ISegmentedButtonProps) {
           borderLeftWidth={index === 0 ? 1 : 0}
           backgroundColor={option === active ? 'yellow.300' : 'transparent'}
           paddingX={option === active ? '7px' : '5'}
-          minWidth="100px"
+          minWidth="110px"
           _hover={{ backgroundColor: 'yellow.300' }}
           onClick={() => setActive(option)}
         >

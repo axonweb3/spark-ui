@@ -9,7 +9,8 @@ import useAccount from '@/hooks/pw-core/accounts/useAccount';
 
 export default function Header() {
   const router = useRouter();
-  const { connect, disconnect, address, connected } = useAccount();
+  const { connect, disconnect, ethAddress, connected } =
+    useAccount();
 
   const active = React.useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));
@@ -26,7 +27,7 @@ export default function Header() {
           <Spacer />
           {connected ? (
             <Button variant="text" onClick={() => disconnect()}>
-              {address?.addressString?.slice(0, 10)}
+              {ethAddress?.slice(0, 10)}
             </Button>
           ) : (
             <Button onClick={() => connect()}>Connect Wallet</Button>
