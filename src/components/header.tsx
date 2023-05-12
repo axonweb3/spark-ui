@@ -3,16 +3,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Button from '@/components/common/button';
 import Navigation from '@/components/common/navigation';
-import { useDisconnect, useConnect, NexusConnentor } from '@spinal-ckb/react';
 import navs from '@/navs';
 import { Container, Flex, Spacer } from '@chakra-ui/react';
+import useAccount from '@/hooks/pw-core/accounts/useAccount';
 
 export default function Header() {
   const router = useRouter();
-  const { address, connected, connect } = useConnect({
-    connector: new NexusConnentor(),
-  });
-  const { disconnect } = useDisconnect();
+  const { connect, disconnect, address, connected } = useAccount();
 
   const active = React.useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));
@@ -29,7 +26,7 @@ export default function Header() {
           <Spacer />
           {connected ? (
             <Button variant="text" onClick={() => disconnect()}>
-              {address?.substring(0, 10)!}
+              {address?.addressString?.slice(0, 10)}
             </Button>
           ) : (
             <Button onClick={() => connect()}>Connect Wallet</Button>
