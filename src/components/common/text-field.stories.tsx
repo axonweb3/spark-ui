@@ -80,6 +80,5 @@ export const WithIcon: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    message: 'This is a message',
   },
 };

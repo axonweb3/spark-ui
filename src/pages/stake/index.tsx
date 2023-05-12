@@ -8,6 +8,7 @@ export function getServerSideProps() {
   };
 }
 
-export default function IndexPage() {
+export default function StakePage() {
   return null;
 }
+

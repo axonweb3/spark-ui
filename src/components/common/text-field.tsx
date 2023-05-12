@@ -48,7 +48,7 @@ export default function TextField(props: ITextFieldProps) {
       case 'error':
         return 'orange.500';
       default:
-        return 'grey.500';
+        return 'grey.700';
     }
   }, [status]);
 
@@ -62,7 +62,7 @@ export default function TextField(props: ITextFieldProps) {
           onChange={handleChange}
           type={type}
           borderColor={statusColor}
-          borderWidth={status !== 'none' ? 2 : 1}
+          borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
           disabled={disabled}
         />
         {props.rightAddon && (

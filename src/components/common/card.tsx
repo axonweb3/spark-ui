@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 
 export interface ICardProps extends React.PropsWithChildren {
   title?: string | React.ReactNode;
@@ -18,9 +18,9 @@ export default function Card(props: ICardProps) {
       mx="auto"
     >
       {title && (
-        <Text borderBottomWidth={1} borderColor="grey.700" px={12} py={5}>
+        <Box borderBottomWidth={1} borderColor="grey.700" px={12} py={5}>
           {title}
-        </Text>
+        </Box>
       )}
       <Box px={12} py={5}>
         {children}

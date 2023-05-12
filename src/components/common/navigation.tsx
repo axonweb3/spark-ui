@@ -1,5 +1,4 @@
 import { Box, Flex } from '@chakra-ui/react';
-import classnames from 'classnames';
 import { Link } from '@chakra-ui/next-js';
 import React from 'react';
 

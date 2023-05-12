@@ -3,15 +3,6 @@ const webpack = require('webpack');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  async redirects() {
-    return [
-      {
-        source: '/',
-        destination: '/stake',
-        permanent: true,
-      },
-    ];
-  },
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,

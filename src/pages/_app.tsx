@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app';
+import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as JotaiProvider } from 'jotai';
 import {
   SpinalConfigProvider,
@@ -6,9 +7,10 @@ import {
   configureChains,
   publicProvider,
 } from '@spinal-ckb/react';
+import theme from '@/theme';
 
 const { rpcClient, indexer } = configureChains(
-  [predefineChains.testnet],
+  [predefineChains.testnet, predefineChains.mainnet],
   [publicProvider()],
 );
 
@@ -20,10 +22,12 @@ const config = {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <SpinalConfigProvider config={config}>
-      <JotaiProvider>
-        <Component {...pageProps} />
-      </JotaiProvider>
-    </SpinalConfigProvider>
+    <ChakraProvider theme={theme}>
+      <SpinalConfigProvider config={config}>
+        <JotaiProvider>
+          <Component {...pageProps} />
+        </JotaiProvider>
+      </SpinalConfigProvider>
+    </ChakraProvider>
   );
 }

@@ -26,7 +26,7 @@ export default function SegmentedButton(props: ISegmentedButtonProps) {
   }, [active, onChange]);
 
   return (
-    <ButtonGroup spacing={0}>
+    <ButtonGroup spacing={0} width="100%">
       {options.map((option: string, index: number) => (
         <Button
           key={option}
