@@ -1,12 +1,27 @@
-import { TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+  Text,
+  Box,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
 import StakePanel from '@/components/stake/stake-panel';
+import { Icon } from '@chakra-ui/react';
+import { MdSettings } from 'react-icons/md';
+import UnstakePanel from '@/components/stake/unstake-panel';
 
-export enum StakeOpType {
+export enum StakeTabType {
   Stake = 'stake',
   Unstake = 'unstake',
   Withdraw = 'withdraw',
@@ -14,16 +29,23 @@ export enum StakeOpType {
 }
 
 const navs = [
-  StakeOpType.Stake,
-  StakeOpType.Unstake,
-  StakeOpType.Withdraw,
-  StakeOpType.History,
+  StakeTabType.Stake,
+  StakeTabType.Unstake,
+  StakeTabType.Withdraw,
+  StakeTabType.History,
 ].map((name) => ({ name, href: `/stake/${name}` }));
+
+const panels = {
+  [StakeTabType.Stake]: StakePanel,
+  [StakeTabType.Unstake]: UnstakePanel,
+  [StakeTabType.Withdraw]: () => <Text>TODO</Text>,
+  [StakeTabType.History]: () => <Text>TODO</Text>,
+};
 
 export default function StakePage() {
   const router = useRouter();
   const tab = useMemo(
-    () => (router.query.tab as string) ?? StakeOpType.Stake,
+    () => (router.query.tab as string) ?? StakeTabType.Stake,
     [router.query.tab],
   );
 
@@ -33,21 +55,32 @@ export default function StakePage() {
 
   return (
     <Layout>
-      <Card title={<Navigation navs={navs} active={tab} />}>
+      <Card
+        title={
+          <Flex alignItems="center">
+            <Navigation navs={navs} active={tab} />
+            <Spacer />
+            <Menu placement="bottom-end">
+              <MenuButton as={Box} cursor="pointer">
+                <Icon as={MdSettings} width="20px" height="20px" />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Commission Rate</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
+        }
+      >
         <Tabs index={tabIndex}>
           <TabPanels>
-            <TabPanel>
-              <StakePanel />
-            </TabPanel>
-            <TabPanel>
-              <p>unstake</p>
-            </TabPanel>
-            <TabPanel>
-              <p>withdraw</p>
-            </TabPanel>
-            <TabPanel>
-              <p>history</p>
-            </TabPanel>
+            {navs.map(({ name }, index) => {
+              const Panel = panels[name];
+              return (
+                <TabPanel key={`stake_panel_${index}`}>
+                  <Panel />
+                </TabPanel>
+              );
+            })}
           </TabPanels>
         </Tabs>
       </Card>

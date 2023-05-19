@@ -3096,10 +3096,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
-"@spinal-ckb/core@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@spinal-ckb/core/-/core-0.1.9.tgz#4a5dfea6d45da26efeb999b670ec859262b5cb8c"
-  integrity sha512-VqXo5HWbyC03eZ/SJfE17sCIIjQh+BSnndcp/42KSQDykgwAnYcZonmcGfY6KyDbN+QWOQyPhSxmu8H9wd5Oiw==
+"@spinal-ckb/core@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@spinal-ckb/core/-/core-0.1.10.tgz#0a738d764be99209e38ab933fdf3b118d0225f55"
+  integrity sha512-hZs25gWqJht+Lb8XzTprZpoM215kTfYRU8VGvfn3YLtrBWblHvvj9Z5qSek8DTqRs4vnHPu3orAd0SaTHbrsLg==
   dependencies:
     "@ckb-lumos/base" "^0.19.0"
     "@ckb-lumos/codec" "^0.19.0"
@@ -3112,13 +3112,13 @@
     jsbi "^4.3.0"
     viem "^0.3.22"
 
-"@spinal-ckb/react@0.1.9":
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/@spinal-ckb/react/-/react-0.1.9.tgz#f3d3cad4a922e7a2edc1da452a30c386b29410ec"
-  integrity sha512-Tz67cKMesbL1pnQ6RYiehSKsKA1GmR35oibxgnOVl+AVu+HE3cLFlYgLelkNXqB1VHnkUhCEc5TPM9oc02RyJA==
+"@spinal-ckb/react@0.1.10":
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/@spinal-ckb/react/-/react-0.1.10.tgz#613b58a525d56278496842709a02a04a8e1b3c3c"
+  integrity sha512-vcLssh6OgJO+QRj9ey8i6zGBrFL5gmeASD/sgsn8/70genGD0MQqryIBaficfS3tp7AdbsbWvBAtIQd+/jsblw==
   dependencies:
     "@ckb-lumos/lumos" "^0.19.0"
-    "@spinal-ckb/core" "0.1.9"
+    "@spinal-ckb/core" "0.1.10"
     "@tanstack/query-core" "^4.29.5"
     jotai "^2.1.0"
     jotai-tanstack-query "^0.7.0"

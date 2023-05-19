@@ -5,25 +5,18 @@ import Button from '@/components/common/button';
 import Navigation from '@/components/common/navigation';
 import navs from '@/navs';
 import { Container, Flex, Spacer } from '@chakra-ui/react';
-import {
-  MetaMaskConnector,
-  useConnect,
-  useDisconnect,
-} from '@spinal-ckb/react';
+import { useConnect, useDisconnect } from '@spinal-ckb/react';
 
 export default function Header() {
   const router = useRouter();
-  const connector = useMemo(() => new MetaMaskConnector(), []);
-  const { connect, connected, address } = useConnect({
-    connector,
-  });
+  const { connect, connected, address } = useConnect({});
   const { disconnect } = useDisconnect();
 
   // FIXME
   useEffect(() => {
     setTimeout(() => {
       connect();
-    }, 300);
+    }, 100);
   }, [connect]);
 
   const active = React.useMemo(() => {
@@ -40,11 +33,11 @@ export default function Header() {
           <Navigation navs={navs} active={active} />
           <Spacer />
           {connected ? (
-            <Button variant="text" onClick={() => disconnect()}>
-              {address?.slice(0, 10) + '...' + address?.slice(-10)}
+            <Button width="50" variant="outlined" onClick={() => disconnect()}>
+              {address?.slice(0, 6) + '..' + address?.slice(-7)}
             </Button>
           ) : (
-            <Button onClick={() => connect()}>Connect Wallet</Button>
+            <Button width="50" onClick={() => connect()}>Connect Wallet</Button>
           )}
         </Flex>
       </Container>

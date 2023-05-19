@@ -7,8 +7,12 @@ import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 
-export default function StakePanel() {
-  const { capacities: total = BI.from(0), refresh, isSuccess } = useCapacities();
+export default function DelegatePanel() {
+  const {
+    capacities: total = BI.from(0),
+    refresh,
+    isSuccess,
+  } = useCapacities();
   const { connected } = useConnect({});
   const disabled = useMemo(
     () => !connected || !isSuccess,
@@ -59,6 +63,10 @@ export default function StakePanel() {
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
+      <InputField
+        label="Delegate To"
+        placeholder="Please add your address here"
+      />
       <AmountField
         label="Stake Amount"
         total={total}

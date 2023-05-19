@@ -1,32 +1,17 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
-import { useCapacities, useConnect } from '@spinal-ckb/react';
+import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 
-export default function StakePanel() {
-  const { capacities: total = BI.from(0), refresh, isSuccess } = useCapacities();
+export default function UnstakePanel() {
   const { connected } = useConnect({});
-  const disabled = useMemo(
-    () => !connected || !isSuccess,
-    [connected, isSuccess],
-  );
+  const disabled = useMemo(() => !connected, [connected]);
+  const total = useMemo(() => BI.from(0), []);
   const [amount, setAmount] = useState<BI>(total);
-
-  useEffect(() => {
-    if (connected) {
-      refresh();
-    }
-  }, [connected, refresh]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setAmount(total);
-    }
-  }, [isSuccess, total]);
 
   const handleOptionChange = useCallback(
     (option: string) => {
@@ -60,7 +45,7 @@ export default function StakePanel() {
   return (
     <Box width="756px" marginTop={10} marginX="auto">
       <AmountField
-        label="Stake Amount"
+        label="Unstake Amount"
         total={total}
         amount={amount}
         onOptionChange={handleOptionChange}
@@ -70,8 +55,8 @@ export default function StakePanel() {
       <InputField label="Effective Epoch" value="2" disabled />
       <Flex justifyContent="center" marginBottom={10}>
         <Dialog
-          title="Staking Submitted"
-          description="Your transaction is already submitted, please check out the stake history later."
+          title="Unstake Request Submitted"
+          description="Your request has been submitted, check out staking history for details."
         >
           <Button>Submit</Button>
         </Dialog>

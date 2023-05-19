@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Button as ChakraButton } from '@chakra-ui/react';
+import { ButtonProps as ChakraButtonProps, Button as ChakraButton } from '@chakra-ui/react';
 
 export interface IButtonProps extends React.PropsWithChildren {
   variant?: 'contained' | 'outlined' | 'text';
@@ -8,8 +8,8 @@ export interface IButtonProps extends React.PropsWithChildren {
   onClick?(): void;
 }
 
-export default function Button(props: IButtonProps) {
-  const { size, disabled, onClick, children } = props;
+export default function Button(props: IButtonProps & ChakraButtonProps) {
+  const { size, disabled, onClick, children, ...restProps } = props;
   const variant = useMemo(
     () => (disabled ? `${props.variant}_disabled` : props.variant),
     [props.variant, disabled],
@@ -17,6 +17,7 @@ export default function Button(props: IButtonProps) {
 
   return (
     <ChakraButton
+      {...restProps}
       variant={variant ?? 'contained'}
       size={size ?? 'md'}
       disabled={disabled}
