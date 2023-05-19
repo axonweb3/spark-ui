@@ -55,7 +55,17 @@ export default function TextField(props: ITextFieldProps) {
   return (
     <Box>
       <InputGroup size={size}>
-        {props.leftAddon && <InputLeftAddon>{props.leftAddon}</InputLeftAddon>}
+        {props.leftAddon && (
+          <InputLeftAddon
+            padding={0}
+            backgroundColor="transparent"
+            borderColor={statusColor}
+            borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
+            borderLeftRadius="6px"
+          >
+            {props.leftAddon}
+          </InputLeftAddon>
+        )}
         <Input
           placeholder={placeholder}
           value={value}
@@ -64,9 +74,23 @@ export default function TextField(props: ITextFieldProps) {
           borderColor={statusColor}
           borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
           disabled={disabled}
+          _focusVisible={{
+            boxShadow: 'none',
+          }}
+          _hover={{
+            boxShadow: 'none',
+          }}
         />
         {props.rightAddon && (
-          <InputRightAddon>{props.rightAddon}</InputRightAddon>
+          <InputRightAddon
+            padding={0}
+            backgroundColor="transparent"
+            borderColor={statusColor}
+            borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
+            borderRightRadius="6px"
+          >
+            {props.rightAddon}
+          </InputRightAddon>
         )}
       </InputGroup>
       <Text color={statusColor} fontFamily="montserrat" fontSize="xs">

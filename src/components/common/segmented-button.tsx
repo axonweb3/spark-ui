@@ -14,16 +14,15 @@ export default function SegmentedButton(props: ISegmentedButtonProps) {
   const [active, setActive] = React.useState(value ?? defaultValue ?? options[0]);
 
   React.useEffect(() => {
-    if (value !== undefined) {
+    if (value !== undefined && value !== active) {
       setActive(value);
     }
-  }, [value]);
+  }, [value, active]);
 
-  React.useEffect(() => {
-    if (active !== undefined) {
-      onChange?.(active);
-    }
-  }, [active, onChange]);
+  const handleClick = (option: string) => {
+    setActive(option);
+    onChange?.(option);
+  };
 
   return (
     <ButtonGroup spacing={0} width="100%">
@@ -37,7 +36,7 @@ export default function SegmentedButton(props: ISegmentedButtonProps) {
           paddingX={option === active ? '7px' : '5'}
           minWidth="110px"
           _hover={{ backgroundColor: 'yellow.300' }}
-          onClick={() => setActive(option)}
+          onClick={() => handleClick(option)}
         >
           {option === active && (
             <Box width="18px" height="18px" marginRight="1">

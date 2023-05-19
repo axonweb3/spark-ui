@@ -1,26 +1,23 @@
 import type { AppProps } from 'next/app';
-import { ChakraProvider } from '@chakra-ui/react';
-import { Provider as JotaiProvider } from 'jotai';
 import theme from '@/theme';
-import { IPWCoreConfig, PWCoreProvider } from '@/hooks/pw-core/provider';
-import { EthProvider, PwCollector } from '@lay2/pw-core';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Provider as JotaiProvider, createStore } from 'jotai';
+import { SpinalConfigProvider, chains } from '@spinal-ckb/react';
 
-const PW_CORE_CONFIG: IPWCoreConfig = {
-  // XXX: CKB mainnet: https://mainnet.ckb.dev
-  nodeUrl: 'https://testnet.ckb.dev',
-  provider: new EthProvider(),
-  // FIXME: consider using a project local collector
-  collector: new PwCollector('https://cellapitest.ckb.pw'),
-}
+const config = {
+  autoConnect: true,
+  chains: [chains.testnet],
+};
 
 export default function App({ Component, pageProps }: AppProps) {
+  const store = createStore();
   return (
-    <PWCoreProvider config={PW_CORE_CONFIG}>
-      <ChakraProvider theme={theme}>
-        <JotaiProvider>
+    <ChakraProvider theme={theme}>
+      <JotaiProvider store={store}>
+        <SpinalConfigProvider config={config}>
           <Component {...pageProps} />
-        </JotaiProvider>
-      </ChakraProvider>
-    </PWCoreProvider>
+        </SpinalConfigProvider>
+      </JotaiProvider>
+    </ChakraProvider>
   );
 }

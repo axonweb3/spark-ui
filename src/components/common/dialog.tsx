@@ -42,7 +42,7 @@ export default function Dialog(props: IDialogProps) {
     <>
       {children && <Box onClick={onOpen}>{children}</Box>}
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
         <ModalContent
           backgroundColor="primary"
@@ -81,7 +81,7 @@ export default function Dialog(props: IDialogProps) {
                 >
                   {props.cancelLabel ?? 'Cancel'}
                 </Button>
-                <Box width={2} />
+                <Box width={3} />
                 <Button
                   variant="contained"
                   size="sm"

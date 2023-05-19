@@ -25,6 +25,7 @@
     "@radix-ui/react-form": "^0.0.2",
     "@radix-ui/react-tabs": "^1.0.3",
     "@radix-ui/react-toggle-group": "^1.0.3",
+    "@spinal-ckb/react": "0.1.9",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "framer-motion": "^10.12.10",
