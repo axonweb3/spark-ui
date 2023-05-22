@@ -42,6 +42,7 @@ export default function Navigation(props: INavigationProps) {
               fontSize="lg"
               fontWeight="bold"
               lineHeight="5"
+              textTransform="capitalize"
               _hover={{ textDecoration: 'none' }}
             >
               {name}
