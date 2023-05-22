@@ -35,6 +35,7 @@ export default function SegmentedButton(props: ISegmentedButtonProps) {
           backgroundColor={option === active ? 'yellow.300' : 'transparent'}
           paddingX={option === active ? '7px' : '5'}
           minWidth="110px"
+          height="48px"
           _hover={{ backgroundColor: 'yellow.300' }}
           onClick={() => handleClick(option)}
         >

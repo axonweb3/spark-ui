@@ -15,7 +15,7 @@ export default function InputField(props: IInputFieldProps) {
       <Spacer />
       <Flex width="550px" justifyContent="start">
         <Box width="full">
-          <TextField {...restProps} />
+          <TextField {...restProps} size="lg" />
         </Box>
       </Flex>
     </Flex>

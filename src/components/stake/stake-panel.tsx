@@ -74,7 +74,7 @@ export default function StakePanel() {
           title="Staking Submitted"
           description="Your transaction is already submitted, please check out the stake history later."
         >
-          <Button>Submit</Button>
+          <Button size="lg">Submit</Button>
         </Dialog>
       </Flex>
     </Box>

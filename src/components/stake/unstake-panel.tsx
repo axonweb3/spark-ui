@@ -59,7 +59,7 @@ export default function UnstakePanel() {
           title="Unstake Request Submitted"
           description="Your request has been submitted, check out staking history for details."
         >
-          <Button>Submit</Button>
+          <Button size="lg">Submit</Button>
         </Dialog>
       </Flex>
     </Box>

@@ -111,7 +111,7 @@ export default function WithdrawPanel() {
           description="Your available withdrawal amount is 2000AT"
           confrmLabel="Withdraw"
         >
-          <Button variant="contained" size="lg">
+          <Button size="lg">
             Withdraw
           </Button>
         </Dialog>

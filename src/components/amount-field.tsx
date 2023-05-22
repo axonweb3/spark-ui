@@ -51,6 +51,7 @@ export default function AmountField(props: IAmountFieldProps) {
         <Box marginTop={4} width="full">
           <TextField
             type="number"
+            size="lg"
             value={(amount.toNumber() / 10 ** 8).toString()}
             onChange={handleAmountChange}
             disabled={disabled}
