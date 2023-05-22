@@ -6,6 +6,7 @@ import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
+import EpochField from '../epoch-field';
 
 export default function StakePanel() {
   const { capacities: total = BI.from(0), refresh, isSuccess } = useCapacities();
@@ -67,7 +68,7 @@ export default function StakePanel() {
         onAmountChange={handleAmountChange}
         disabled={disabled}
       />
-      <InputField label="Effective Epoch" value="2" disabled />
+      <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
         <Dialog
           title="Staking Submitted"

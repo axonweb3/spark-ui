@@ -6,6 +6,7 @@ import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
+import EpochField from '../epoch-field';
 
 export default function UnstakePanel() {
   const { connected } = useConnect({});
@@ -52,7 +53,7 @@ export default function UnstakePanel() {
         onAmountChange={handleAmountChange}
         disabled={disabled}
       />
-      <InputField label="Effective Epoch" value="2" disabled />
+      <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
         <Dialog
           title="Unstake Request Submitted"
