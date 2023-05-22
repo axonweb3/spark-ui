@@ -16,10 +16,12 @@ import React, { useMemo } from 'react';
 import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
-import StakePanel from '@/components/stake/stake-panel';
 import { Icon } from '@chakra-ui/react';
 import { MdSettings } from 'react-icons/md';
+import StakePanel from '@/components/stake/stake-panel';
 import UnstakePanel from '@/components/stake/unstake-panel';
+import WithdrawPanel from '@/components/stake/withdraw-panel';
+import HistoryPanel from '@/components/stake/history-panel';
 
 export enum StakeTabType {
   Stake = 'stake',
@@ -38,8 +40,8 @@ const navs = [
 const panels = {
   [StakeTabType.Stake]: StakePanel,
   [StakeTabType.Unstake]: UnstakePanel,
-  [StakeTabType.Withdraw]: () => <Text>TODO</Text>,
-  [StakeTabType.History]: () => <Text>TODO</Text>,
+  [StakeTabType.Withdraw]: WithdrawPanel,
+  [StakeTabType.History]: HistoryPanel,
 };
 
 export default function StakePage() {
@@ -74,7 +76,7 @@ export default function StakePage() {
         <Tabs index={tabIndex}>
           <TabPanels>
             {navs.map(({ name }, index) => {
-              const Panel = panels[name];
+              const Panel = panels[name] as () => React.ReactElement;
               return (
                 <TabPanel key={`stake_panel_${index}`}>
                   <Panel />

@@ -7,7 +7,7 @@ export default function Layout(props: React.PropsWithChildren<{}>) {
     <Box backgroundColor="secondary" minHeight="100vh">
       <Header />
       <main>
-        <Container maxW="1440px" marginTop={10}>
+        <Container maxW="1440px" paddingY={10}>
           {props.children}
         </Container>
       </main>

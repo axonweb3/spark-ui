@@ -5,6 +5,8 @@ import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
 import DelegatePanel from '@/components/delegate/delegate-panel';
+import UndelegatePanel from '@/components/delegate/undelegate-panel';
+import WithdrawPanel from '@/components/stake/withdraw-panel';
 
 export enum DelegateTabType {
   Delegate = 'delegate',
@@ -22,8 +24,8 @@ const navs = [
 
 const panels = {
   [DelegateTabType.Delegate]: DelegatePanel,
-  [DelegateTabType.Undelegate]: () => <Text>TODO</Text>,
-  [DelegateTabType.Withdraw]: () => <Text>TODO</Text>,
+  [DelegateTabType.Undelegate]: UndelegatePanel,
+  [DelegateTabType.Withdraw]: WithdrawPanel,
   [DelegateTabType.History]: () => <Text>TODO</Text>,
 };
 
