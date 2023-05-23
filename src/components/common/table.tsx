@@ -11,7 +11,7 @@ import {
   Box,
   Spacer,
 } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface ColumnType {
   title: string;
@@ -33,7 +33,9 @@ export interface ITableProps {
 }
 
 export default function Table(props: ITableProps) {
-  const { rowKey = 'key', columns, dataSources } = props;
+  const { rowKey = 'key', dataSources } = props;
+  const [columns] = useState(props.columns);
+
   return (
     <TableContainer
       borderWidth="1px"

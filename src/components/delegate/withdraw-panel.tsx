@@ -12,6 +12,58 @@ import { MdError } from 'react-icons/md';
 import Table from '../common/table';
 import Button from '../common/button';
 import Dialog from '../common/dialog';
+import Pagination from '../common/pagination';
+
+const MOCK_COLUMNS = [
+  {
+    title: 'ID',
+    dataIndex: 'id',
+    sorter: true,
+  },
+  {
+    title: 'Amount (AT)',
+    dataIndex: 'amount',
+    sorter: true,
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    sorter: true,
+  },
+];
+
+const MOCK_DATASOURCE = [
+  {
+    id: '82659894393984111',
+    amount: 1000,
+    status: 'Successed',
+  },
+  {
+    id: '82659894393984222',
+    amount: 1000,
+    status: 'Pending',
+  },
+  {
+    id: '82659894393984333',
+    amount: 1000,
+    status: 'Failed',
+  },
+  {
+    id: '82659894393984444',
+    amount: 1000,
+    status: 'Successed',
+  },
+  {
+    id: '82659894393984555',
+    amount: 1000,
+    status: 'Pending',
+  },
+  {
+    id: '82659894393984666',
+    amount: 1000,
+    status: 'Failed',
+  },
+];
 
 export default function WithdrawPanel() {
   return (
@@ -54,56 +106,13 @@ export default function WithdrawPanel() {
       </Box>
       <Box marginBottom="40px">
         <Table
-          columns={[
-            {
-              title: 'ID',
-              dataIndex: 'id',
-              sorter: true,
-            },
-            {
-              title: 'Amount (AT)',
-              dataIndex: 'amount',
-              sorter: true,
-            },
-            {
-              title: 'Status',
-              dataIndex: 'status',
-              sorter: true,
-            },
-          ]}
-          dataSources={[
-            {
-              id: '82659894393984111',
-              amount: 1000,
-              status: 'Successed',
-            },
-            {
-              id: '82659894393984222',
-              amount: 1000,
-              status: 'Pending',
-            },
-            {
-              id: '82659894393984333',
-              amount: 1000,
-              status: 'Failed',
-            },
-            {
-              id: '82659894393984444',
-              amount: 1000,
-              status: 'Successed',
-            },
-            {
-              id: '82659894393984555',
-              amount: 1000,
-              status: 'Pending',
-            },
-            {
-              id: '82659894393984666',
-              amount: 1000,
-              status: 'Failed',
-            },
-          ]}
+          rowKey="id"
+          columns={MOCK_COLUMNS}
+          dataSources={MOCK_DATASOURCE}
         />
+        <Box marginTop="30px">
+          <Pagination total={500} showQuickJumper />
+        </Box>
       </Box>
       <Flex justifyContent="center">
         <Dialog
@@ -111,9 +120,7 @@ export default function WithdrawPanel() {
           description="Your available withdrawal amount is 2000AT"
           confrmLabel="Withdraw"
         >
-          <Button size="lg">
-            Withdraw
-          </Button>
+          <Button size="lg">Withdraw</Button>
         </Dialog>
       </Flex>
     </Box>
