@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import Table from './table';
+import Badge from './badge';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Table> = {
@@ -29,23 +30,26 @@ export const Default: Story = {
       {
         title: 'Status',
         dataIndex: 'status',
+        render: (status, data) => {
+          return <Badge key={data.id} status={status} />
+        }
       },
     ],
     dataSources: [
       {
         id: '82659894393984111',
         amount: 1000,
-        status: 'Successed',
+        status: 'succeed',
       },
       {
         id: '82659894393984111',
         amount: 1000,
-        status: 'Pending',
+        status: 'pending',
       },
       {
         id: '82659894393984111',
         amount: 1000,
-        status: 'Failed',
+        status: 'failed',
       },
     ],
   },

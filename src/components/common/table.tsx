@@ -18,6 +18,7 @@ interface ColumnType {
   dataIndex: string;
   key?: string;
   sorter?: boolean | ((a: any, b: any) => number);
+  render?: (value: any, data: DataSourceType) => React.ReactNode;
 }
 
 interface DataSourceType {
@@ -64,11 +65,15 @@ export default function Table(props: ITableProps) {
             const rkey = dataSource[rowKey];
             return (
               <Tr key={rkey}>
-                {columns.map(({ dataIndex, key }) => (
-                  <Td key={`row_${rkey}_${key ?? dataIndex}`}>
-                    {dataSource[dataIndex]}
-                  </Td>
-                ))}
+                {columns.map(({ dataIndex, key, render }) => {
+                  return (
+                    <Td key={`row_${rkey}_${key ?? dataIndex}`}>
+                      {render
+                        ? render(dataSource[dataIndex], dataSource)
+                        : dataSource[dataIndex]}
+                    </Td>
+                  );
+                })}
               </Tr>
             );
           })}
