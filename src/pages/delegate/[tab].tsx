@@ -6,7 +6,8 @@ import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
 import DelegatePanel from '@/components/delegate/delegate-panel';
 import UndelegatePanel from '@/components/delegate/undelegate-panel';
-import WithdrawPanel from '@/components/stake/withdraw-panel';
+import WithdrawPanel from '@/components/delegate/withdraw-panel';
+import HistoryPanel from '@/components/delegate/history-panel';
 
 export enum DelegateTabType {
   Delegate = 'delegate',
@@ -26,7 +27,7 @@ const panels = {
   [DelegateTabType.Delegate]: DelegatePanel,
   [DelegateTabType.Undelegate]: UndelegatePanel,
   [DelegateTabType.Withdraw]: WithdrawPanel,
-  [DelegateTabType.History]: () => <Text>TODO</Text>,
+  [DelegateTabType.History]: HistoryPanel,
 };
 
 export default function DelegatePage() {

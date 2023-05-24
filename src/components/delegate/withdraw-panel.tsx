@@ -7,12 +7,14 @@ import {
   StatLabel,
   StatNumber,
   Flex,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
 import Table from '../common/table';
 import Button from '../common/button';
 import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
+import Badge from '../common/badge';
 
 const MOCK_COLUMNS = [
   {
@@ -29,6 +31,9 @@ const MOCK_COLUMNS = [
     title: 'Status',
     dataIndex: 'status',
     sorter: true,
+    render: (status: string, data: any) => {
+      return <Badge key={data.id} status={status} />;
+    },
   },
 ];
 
@@ -36,32 +41,32 @@ const MOCK_DATASOURCE = [
   {
     id: '82659894393984111',
     amount: 1000,
-    status: 'Successed',
+    status: 'succeed',
   },
   {
     id: '82659894393984222',
     amount: 1000,
-    status: 'Pending',
+    status: 'pending',
   },
   {
     id: '82659894393984333',
     amount: 1000,
-    status: 'Failed',
+    status: 'failed',
   },
   {
     id: '82659894393984444',
     amount: 1000,
-    status: 'Successed',
+    status: 'succeed',
   },
   {
     id: '82659894393984555',
     amount: 1000,
-    status: 'Pending',
+    status: 'pending',
   },
   {
     id: '82659894393984666',
     amount: 1000,
-    status: 'Failed',
+    status: 'failed',
   },
 ];
 
@@ -116,8 +121,39 @@ export default function WithdrawPanel() {
       </Box>
       <Flex justifyContent="center">
         <Dialog
-          title="Total Withdrawlable Amount"
-          description="Your available withdrawal amount is 2000AT"
+          title="Total Withdraw Amount"
+          description={
+            <Box>
+              <Box fontFamily="montserrat" marginBottom="20px">
+                <Text>Your available withdrawal amount is:</Text>
+                <Text fontWeight="extrabold">2000AT</Text>
+              </Box>
+              <Alert borderRadius="8px">
+                <Flex>
+                  <AlertIcon marginTop="4px" />
+                  <Box>
+                    <Text
+                      as="span"
+                      fontFamily="montserrat"
+                      fontSize="14px"
+                      marginRight={1}
+                    >
+                      To withdraw unstaked tokens, you must withdraw all of them
+                      at once.
+                    </Text>
+                    <Text
+                      as="span"
+                      fontFamily="montserrat"
+                      fontSize="14px"
+                      fontWeight="extrabold"
+                    >
+                      Withdrawal requests are subject to a processing period.
+                    </Text>
+                  </Box>
+                </Flex>
+              </Alert>
+            </Box>
+          }
           confrmLabel="Withdraw"
         >
           <Button size="lg">Withdraw</Button>
