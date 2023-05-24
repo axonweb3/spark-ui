@@ -16,7 +16,7 @@ import {
 
 export interface IDialogProps extends PropsWithChildren {
   title: string;
-  description?: string;
+  description?: string | React.ReactNode;
   open?: boolean;
   footer?: React.ReactNode;
   confrmLabel?: string;
@@ -59,14 +59,18 @@ export default function Dialog(props: IDialogProps) {
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody marginY={4} padding={0}>
-            <Text
-              fontFamily="montserrat"
-              color="grey.900"
-              lineHeight={title ? 4 : 5}
-              fontSize={title ? 'sm' : 'md'}
-            >
-              {description}
-            </Text>
+            {typeof description === 'string' ? (
+              <Text
+                fontFamily="montserrat"
+                color="grey.900"
+                lineHeight={title ? 4 : 5}
+                fontSize={title ? 'sm' : 'md'}
+              >
+                {description}
+              </Text>
+            ) : (
+              description
+            )}
           </ModalBody>
           <ModalFooter marginTop={6} padding={0}>
             {props.footer || (

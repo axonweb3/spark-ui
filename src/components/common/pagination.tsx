@@ -24,7 +24,7 @@ const PAGE_NUM_STYLE = {
 
 export default function Pagination(props: IPaginationProps) {
   const {
-    defaultCurrent = 0,
+    defaultCurrent = 1,
     defaultPageSize = 10,
     current,
     total,

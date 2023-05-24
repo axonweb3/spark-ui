@@ -10,6 +10,7 @@ import {
   Tr,
   Box,
   Spacer,
+  LayoutProps,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 
@@ -17,6 +18,7 @@ interface ColumnType {
   title: string;
   dataIndex: string;
   key?: string;
+  width?: LayoutProps['width'];
   sorter?: boolean | ((a: any, b: any) => number);
   render?: (value: any, data: DataSourceType) => React.ReactNode;
 }
@@ -49,8 +51,13 @@ export default function Table(props: ITableProps) {
           borderColor="gray.100"
         >
           <Tr>
-            {columns.map(({ title, key, dataIndex, sorter }) => (
-              <Th key={`col_${key ?? dataIndex}`} textTransform="capitalize">
+            {columns.map(({ title, key, dataIndex, sorter, ...rest }) => (
+              <Th
+                key={`col_${key ?? dataIndex}`}
+                textTransform="capitalize"
+                padding="16px"
+                width={rest.width}
+              >
                 <Flex>
                   <Text color="black" fontFamily="montserrat" fontSize="sm">
                     {title}
@@ -69,7 +76,13 @@ export default function Table(props: ITableProps) {
               <Tr key={rkey}>
                 {columns.map(({ dataIndex, key, render }) => {
                   return (
-                    <Td key={`row_${rkey}_${key ?? dataIndex}`}>
+                    <Td
+                      key={`row_${rkey}_${key ?? dataIndex}`}
+                      padding="16px"
+                      fontFamily="montserrat"
+                      fontSize="14px"
+                      backgroundColor="white"
+                    >
                       {render
                         ? render(dataSource[dataIndex], dataSource)
                         : dataSource[dataIndex]}

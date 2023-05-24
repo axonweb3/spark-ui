@@ -40,32 +40,32 @@ const MOCK_DATASOURCE = [
   {
     id: '82659894393984111',
     amount: 1000,
-    status: 'Successed',
+    status: 'succeed',
   },
   {
     id: '82659894393984222',
     amount: 1000,
-    status: 'Pending',
+    status: 'pending',
   },
   {
     id: '82659894393984333',
     amount: 1000,
-    status: 'Failed',
+    status: 'failed',
   },
   {
     id: '82659894393984444',
     amount: 1000,
-    status: 'Successed',
+    status: 'succeed',
   },
   {
     id: '82659894393984555',
     amount: 1000,
-    status: 'Pending',
+    status: 'pending',
   },
   {
     id: '82659894393984666',
     amount: 1000,
-    status: 'Failed',
+    status: 'failed',
   },
 ];
 

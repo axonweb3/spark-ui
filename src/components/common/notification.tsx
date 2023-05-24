@@ -7,14 +7,14 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 
-export interface IAlertProps {
+export interface INotificationProps {
   status: 'info' | 'success' | 'warning' | 'error';
   message: string;
   visible?: boolean;
   onClose?(): void;
 }
 
-export default function Alert(props: IAlertProps) {
+export default function Notification(props: INotificationProps) {
   const { status, message, onClose } = props;
   const [visible, setVisible] = React.useState(props.visible ?? true);
 

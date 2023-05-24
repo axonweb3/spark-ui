@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Alert from './alert';
+import Notification from './notification';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof Alert> = {
-  title: 'SparkUI/Common/Alert',
-  component: Alert,
+const meta: Meta<typeof Notification> = {
+  title: 'SparkUI/Common/Notification',
+  component: Notification,
   argTypes: {},
   args: {
     message: 'Token Amount has been changed',
@@ -13,7 +13,7 @@ const meta: Meta<typeof Alert> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof Alert>;
+type Story = StoryObj<typeof Notification>;
 
 export const Default: Story = {
   args: {

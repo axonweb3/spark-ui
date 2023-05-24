@@ -5,7 +5,6 @@ import { useCapacities, useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
-import InputField from '../input-filed';
 import EpochField from '../epoch-field';
 
 export default function StakePanel() {

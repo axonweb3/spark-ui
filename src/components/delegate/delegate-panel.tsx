@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
-import { Box, Flex } from '@chakra-ui/react';
+import { Text, Box, Flex, Divider } from '@chakra-ui/react';
 import { useCapacities, useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
@@ -79,8 +79,33 @@ export default function DelegatePanel() {
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
         <Dialog
-          title="Staking Submitted"
-          description="Your transaction is already submitted, please check out the stake history later."
+          title="Delegation Information"
+          description={
+            <Box>
+              <Box fontFamily="montserrat" marginBottom={4}>
+                <Text fontWeight="medium" marginRight={2}>
+                  Delegate Address:
+                </Text>
+                <Text fontWeight="normal">
+                  0x1234abcd5678efgh9012ijkl3456mnop7890qrst
+                </Text>
+              </Box>
+              <Flex fontFamily="montserrat">
+                <Text fontWeight="medium" marginRight={2}>
+                  Commission Rate:
+                </Text>
+                <Text fontWeight="normal">3.5%</Text>
+              </Flex>
+              <Divider marginY="18px" backgroundColor="grey.200" />
+              <Flex fontFamily="montserrat">
+                <Text fontWeight="medium" marginRight={2}>
+                  Minimum Amount:
+                </Text>
+                <Text fontWeight="normal">10,000 AT</Text>
+              </Flex>
+            </Box>
+          }
+          cancelLabel="Redelegate"
         >
           <Button size="lg">Submit</Button>
         </Dialog>
