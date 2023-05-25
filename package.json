@@ -21,6 +21,7 @@
     "@emotion/styled": "^11.11.0",
     "@joyid/core": "^0.1.0",
     "@lay2/pw-core": "^0.3.23",
+    "@observablehq/plot": "^0.6.7",
     "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-form": "^0.0.2",
     "@radix-ui/react-tabs": "^1.0.3",

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Button from '@/components/common/button';
@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <header>
       <Container maxW="1440px">
-        <Flex height="84px" backgroundColor="secondary" alignItems="center">
+        <Flex height="84px" backgroundColor="transparent" alignItems="center">
           <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
           <Spacer />
           <Navigation navs={navs} active={active} />
