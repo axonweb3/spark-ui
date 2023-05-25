@@ -1,6 +1,6 @@
 import React from 'react';
 import { MdDone } from 'react-icons/md';
-import { Text, Button, ButtonGroup, Box } from '@chakra-ui/react';
+import { Text, Button, ButtonGroup, Box, SimpleGrid } from '@chakra-ui/react';
 
 export interface ISegmentedButtonProps {
   options: string[];
@@ -11,7 +11,9 @@ export interface ISegmentedButtonProps {
 
 export default function SegmentedButton(props: ISegmentedButtonProps) {
   const { options, value, onChange, defaultValue } = props;
-  const [active, setActive] = React.useState(value ?? defaultValue ?? options[0]);
+  const [active, setActive] = React.useState(
+    value ?? defaultValue ?? options[0],
+  );
 
   React.useEffect(() => {
     if (value !== undefined && value !== active) {
@@ -26,29 +28,30 @@ export default function SegmentedButton(props: ISegmentedButtonProps) {
 
   return (
     <ButtonGroup spacing={0} width="100%">
-      {options.map((option: string, index: number) => (
-        <Button
-          key={option}
-          borderLeftRadius={index === 0 ? '6px' : 'none'}
-          borderRightRadius={index === options.length - 1 ? '6px' : 'none'}
-          borderLeftWidth={index === 0 ? 1 : 0}
-          backgroundColor={option === active ? 'yellow.300' : 'transparent'}
-          paddingX={option === active ? '7px' : '5'}
-          minWidth="110px"
-          height="48px"
-          _hover={{ backgroundColor: 'yellow.300' }}
-          onClick={() => handleClick(option)}
-        >
-          {option === active && (
-            <Box width="18px" height="18px" marginRight="1">
-              <MdDone />
-            </Box>
-          )}
-          <Text fontFamily="montserrat" fontSize="md" fontWeight="medium">
-            {option}
-          </Text>
-        </Button>
-      ))}
+      <SimpleGrid width="100%" columns={options.length}>
+        {options.map((option: string, index: number) => (
+          <Button
+            key={option}
+            borderLeftRadius={index === 0 ? '6px' : 'none'}
+            borderRightRadius={index === options.length - 1 ? '6px' : 'none'}
+            borderLeftWidth={index === 0 ? 1 : 0}
+            backgroundColor={option === active ? 'yellow.300' : 'transparent'}
+            paddingX={option === active ? '7px' : '5'}
+            height="48px"
+            _hover={{ backgroundColor: 'yellow.300' }}
+            onClick={() => handleClick(option)}
+          >
+            {option === active && (
+              <Box width="18px" height="18px" marginRight="1">
+                <MdDone />
+              </Box>
+            )}
+            <Text fontFamily="montserrat" fontSize="md" fontWeight="medium">
+              {option}
+            </Text>
+          </Button>
+        ))}
+      </SimpleGrid>
     </ButtonGroup>
   );
 }

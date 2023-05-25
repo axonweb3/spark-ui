@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 
 export interface IDialogProps extends PropsWithChildren {
-  title: string;
+  title?: string;
   description?: string | React.ReactNode;
   open?: boolean;
   footer?: React.ReactNode;

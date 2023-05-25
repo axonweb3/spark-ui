@@ -42,7 +42,7 @@ export default function AmountField(props: IAmountFieldProps) {
         <Text fontWeight="extrabold">{label ?? 'Amount'}</Text>
       </Flex>
       <Spacer />
-      <Box>
+      <Box width="550px">
         <SegmentedButton
           options={AMOUNT_OPTIONS}
           value={custom ? 'Custom' : `${percent}%`}
