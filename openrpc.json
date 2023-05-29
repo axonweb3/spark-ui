@@ -1,0 +1,38 @@
+{
+  "openrpc": "1.2.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Spark Mock"
+  },
+  "methods": [
+    {
+      "name": "getStakeState",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "state",
+        "schema": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "integer",
+              "minimum": 100000000000,
+              "maximum": 100000000000000
+            },
+            "stake_amount": {
+              "type": "integer",
+              "minimum": 100000000000,
+              "maximum": 100000000000000
+            }
+          }
+        }
+      }
+    }
+  ]
+}

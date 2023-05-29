@@ -70,10 +70,10 @@ export default function Table(props: ITableProps) {
           </Tr>
         </Thead>
         <Tbody>
-          {dataSources.map((dataSource: DataSourceType) => {
+          {dataSources.map((dataSource: DataSourceType, index: number) => {
             const rkey = dataSource[rowKey];
             return (
-              <Tr key={rkey}>
+              <Tr key={`${rkey}_${index}`}>
                 {columns.map(({ dataIndex, key, render }) => {
                   return (
                     <Td

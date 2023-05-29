@@ -1,32 +1,33 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
-import { useCapacities, useConnect } from '@spinal-ckb/react';
+import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
 export default function StakePanel() {
-  const { capacities: total = BI.from(0), refresh, isSuccess } = useCapacities();
-  const { connected } = useConnect({});
-  const disabled = useMemo(
-    () => !connected || !isSuccess,
-    [connected, isSuccess],
-  );
-  const [amount, setAmount] = useState<BI>(total);
+  const { connected, address } = useConnect();
+  const disabled = useMemo(() => !connected, [connected]);
+  const { data } = useQuery(['tokenAmount', address], async () => {
+    if (!address) return '0';
+    const response = await axios.get('/api/stake', { params: { address } });
+    return response.data?.amount ?? '0';
+  });
+  const total = useMemo(() => (data ? BI.from(data) : BI.from(0)), [data]);
+  const [amount, setAmount] = useState<BI>(BI.from(0));
 
-  useEffect(() => {
-    if (connected) {
-      refresh();
-    }
-  }, [connected, refresh]);
-
-  useEffect(() => {
-    if (isSuccess) {
+  React.useEffect(() => {
+    if (connected && !total.isZero()) {
       setAmount(total);
     }
-  }, [isSuccess, total]);
+    if (!connected) {
+      setAmount(BI.from(0));
+    }
+  }, [connected, total]);
 
   const handleOptionChange = useCallback(
     (option: string) => {
