@@ -1,4 +1,4 @@
-import { Text, Flex, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import { Flex, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import Card from '@/components/common/card';
