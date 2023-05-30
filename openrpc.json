@@ -19,6 +19,11 @@
         "name": "state",
         "schema": {
           "type": "object",
+          "required": [
+            "amount",
+            "stake_amount",
+            "delegate_amount"
+          ],
           "properties": {
             "amount": {
               "type": "integer",
@@ -27,8 +32,13 @@
             },
             "stake_amount": {
               "type": "integer",
-              "minimum": 100000000000,
-              "maximum": 100000000000000
+              "minimum": 10000000,
+              "maximum": 10000000000
+            },
+            "delegate_amount": {
+              "type": "integer",
+              "minimum": 10000000,
+              "maximum": 10000000000
             }
           }
         }

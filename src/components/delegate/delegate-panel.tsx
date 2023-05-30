@@ -1,53 +1,44 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Text, Box, Flex, Divider } from '@chakra-ui/react';
-import { useCapacities, useConnect } from '@spinal-ckb/react';
+import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 import EpochField from '../epoch-field';
+import { useAmountQuery } from '@/hooks/useAmountQuery';
 
 export default function DelegatePanel() {
-  const {
-    capacities: total = BI.from(0),
-    refresh,
-    isSuccess,
-  } = useCapacities();
-  const { connected } = useConnect({});
-  const disabled = useMemo(
-    () => !connected || !isSuccess,
-    [connected, isSuccess],
-  );
-  const [amount, setAmount] = useState<BI>(total);
+  const { connected, address } = useConnect();
+  const disabled = useMemo(() => !connected, [connected]);
+  const { isLoading, availableAmount } = useAmountQuery(address);
+  const [amount, setAmount] = useState<BI>(availableAmount);
 
   useEffect(() => {
-    if (connected) {
-      refresh();
+    if (!availableAmount.isZero()) {
+      setAmount(availableAmount);
     }
-  }, [connected, refresh]);
-
-  useEffect(() => {
-    if (isSuccess) {
-      setAmount(total);
+    if (!connected) {
+      setAmount(BI.from(0));
     }
-  }, [isSuccess, total]);
+  }, [connected, availableAmount]);
 
   const handleOptionChange = useCallback(
     (option: string) => {
       switch (option) {
         case 'Custom':
-          if (!amount.eq(total)) {
-            setAmount(total);
+          if (!amount.eq(availableAmount)) {
+            setAmount(availableAmount);
           }
           break;
         default:
           const [percent] = option.split('%');
-          setAmount(total.mul(percent).div(100));
+          setAmount(availableAmount.mul(percent).div(100));
           break;
       }
     },
-    [total, amount],
+    [availableAmount, amount],
   );
 
   const handleAmountChange = useCallback((amount: string) => {
@@ -70,11 +61,12 @@ export default function DelegatePanel() {
       />
       <AmountField
         label="Stake Amount"
-        total={total}
+        total={availableAmount}
         amount={amount}
         onOptionChange={handleOptionChange}
         onAmountChange={handleAmountChange}
         disabled={disabled}
+        isLoading={isLoading}
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>

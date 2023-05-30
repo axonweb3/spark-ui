@@ -3,47 +3,41 @@ import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
 import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
+import { useAmountQuery } from '@/hooks/useAmountQuery';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 
 export default function StakePanel() {
   const { connected, address } = useConnect();
   const disabled = useMemo(() => !connected, [connected]);
-  const { data } = useQuery(['tokenAmount', address], async () => {
-    if (!address) return '0';
-    const response = await axios.get('/api/stake', { params: { address } });
-    return response.data?.amount ?? '0';
-  });
-  const total = useMemo(() => (data ? BI.from(data) : BI.from(0)), [data]);
+  const { isLoading, availableAmount } = useAmountQuery(address);
   const [amount, setAmount] = useState<BI>(BI.from(0));
 
   React.useEffect(() => {
-    if (connected && !total.isZero()) {
-      setAmount(total);
+    if (!availableAmount.isZero()) {
+      setAmount(availableAmount);
     }
     if (!connected) {
       setAmount(BI.from(0));
     }
-  }, [connected, total]);
+  }, [connected, availableAmount]);
 
   const handleOptionChange = useCallback(
     (option: string) => {
       switch (option) {
         case 'Custom':
-          if (!amount.eq(total)) {
-            setAmount(total);
+          if (!amount.eq(availableAmount)) {
+            setAmount(availableAmount);
           }
           break;
         default:
           const [percent] = option.split('%');
-          setAmount(total.mul(percent).div(100));
+          setAmount(availableAmount.mul(percent).div(100));
           break;
       }
     },
-    [total, amount],
+    [availableAmount, amount],
   );
 
   const handleAmountChange = useCallback((amount: string) => {
@@ -62,11 +56,12 @@ export default function StakePanel() {
     <Box width="756px" marginTop={10} marginX="auto">
       <AmountField
         label="Stake Amount"
-        total={total}
+        total={availableAmount}
         amount={amount}
         onOptionChange={handleOptionChange}
         onAmountChange={handleAmountChange}
         disabled={disabled}
+        isLoading={isLoading}
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>

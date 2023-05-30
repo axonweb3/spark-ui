@@ -14,11 +14,12 @@ router
       method: 'getStakeState',
       params: [address],
     });
-    const { amount, stake_amount } = data.result;
+    const { amount, stake_amount, delegate_amount } = data.result;
 
     res.json({
       amount,
       stake_amount,
+      delegate_amount,
     });
   });
 

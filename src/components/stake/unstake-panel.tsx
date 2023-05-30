@@ -5,30 +5,39 @@ import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
-import InputField from '../input-filed';
 import EpochField from '../epoch-field';
+import { useAmountQuery } from '@/hooks/useAmountQuery';
 
 export default function UnstakePanel() {
-  const { connected } = useConnect({});
+  const { connected, address } = useConnect({});
   const disabled = useMemo(() => !connected, [connected]);
-  const total = useMemo(() => BI.from(0), []);
-  const [amount, setAmount] = useState<BI>(total);
+  const { isLoading, stakeAmount } = useAmountQuery(address);
+  const [amount, setAmount] = useState<BI>(stakeAmount);
+
+  React.useEffect(() => {
+    if (!stakeAmount.isZero()) {
+      setAmount(stakeAmount);
+    }
+    if (!connected) {
+      setAmount(BI.from(0));
+    }
+  }, [connected, stakeAmount]);
 
   const handleOptionChange = useCallback(
     (option: string) => {
       switch (option) {
         case 'Custom':
-          if (!amount.eq(total)) {
-            setAmount(total);
+          if (!amount.eq(stakeAmount)) {
+            setAmount(stakeAmount);
           }
           break;
         default:
           const [percent] = option.split('%');
-          setAmount(total.mul(percent).div(100));
+          setAmount(stakeAmount.mul(percent).div(100));
           break;
       }
     },
-    [total, amount],
+    [stakeAmount, amount],
   );
 
   const handleAmountChange = useCallback((amount: string) => {
@@ -47,11 +56,12 @@ export default function UnstakePanel() {
     <Box width="756px" marginTop={10} marginX="auto">
       <AmountField
         label="Unstake Amount"
-        total={total}
+        total={stakeAmount}
         amount={amount}
         onOptionChange={handleOptionChange}
         onAmountChange={handleAmountChange}
         disabled={disabled}
+        isLoading={isLoading}
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
