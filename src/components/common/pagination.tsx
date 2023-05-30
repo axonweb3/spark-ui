@@ -3,11 +3,12 @@ import React, { useEffect, useMemo } from 'react';
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
 export interface IPaginationProps {
+  total: number;
   defaultCurrent?: number;
   defaultPageSize?: number;
   current?: number;
-  total: number;
   showQuickJumper?: boolean;
+  onChange?(page: number): void;
 }
 
 const PAGE_NUM_STYLE = {
@@ -24,11 +25,12 @@ const PAGE_NUM_STYLE = {
 
 export default function Pagination(props: IPaginationProps) {
   const {
+    total,
     defaultCurrent = 1,
     defaultPageSize = 10,
     current,
-    total,
     showQuickJumper = false,
+    onChange,
   } = props;
   const [page, setPage] = React.useState(current ?? defaultCurrent);
   const [pageSize, setPageSize] = React.useState(defaultPageSize);
@@ -63,6 +65,10 @@ export default function Pagination(props: IPaginationProps) {
       setPage(current);
     }
   }, [current]);
+
+  useEffect(() => {
+    onChange?.(page);
+  }, [page, onChange])
 
   return (
     <Box>

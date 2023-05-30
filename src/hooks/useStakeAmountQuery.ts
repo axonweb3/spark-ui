@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 
-export function useAmountQuery(address: string | undefined) {
+export function useStakeAmountQuery(address: string | undefined) {
   const { isLoading, data, error } = useQuery(
     ['stakeState', address],
     async () => {

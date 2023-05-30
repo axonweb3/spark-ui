@@ -1,18 +1,33 @@
-import { Box } from '@chakra-ui/react';
+import { Text, Box } from '@chakra-ui/react';
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
+import { useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
+import axios from 'axios';
+import { useConnect } from '@spinal-ckb/react';
 
-const MOCK_COLUMNS = [
+const columns = [
+  {
+    title: 'Event',
+    dataIndex: 'event',
+    sorter: true,
+    render: (event: string) => {
+      return <Text textTransform="capitalize">{event}</Text>;
+    },
+  },
   {
     title: 'ID',
     dataIndex: 'id',
     sorter: true,
   },
   {
-    title: 'Amount (AT)',
+    title: 'Amount',
     dataIndex: 'amount',
     sorter: true,
+    render: (amount: string) => {
+      return `${(parseInt(amount, 10) / 10 ** 8).toFixed(2)} AT`;
+    },
   },
   {
     title: 'Status',
@@ -24,46 +39,41 @@ const MOCK_COLUMNS = [
   },
 ];
 
-const MOCK_DATASOURCE = [
-  {
-    id: '82659894393984111',
-    amount: 1000,
-    status: 'succeed',
-  },
-  {
-    id: '82659894393984222',
-    amount: 1000,
-    status: 'pending',
-  },
-  {
-    id: '82659894393984333',
-    amount: 1000,
-    status: 'failed',
-  },
-  {
-    id: '82659894393984444',
-    amount: 1000,
-    status: 'succeed',
-  },
-  {
-    id: '82659894393984555',
-    amount: 1000,
-    status: 'pending',
-  },
-  {
-    id: '82659894393984666',
-    amount: 1000,
-    status: 'failed',
-  },
-];
-
 export default function HistoryPanel() {
+  const { address } = useConnect();
+  const [page, setPage] = useState(1);
+  const { data, isFetching } = useQuery(
+    ['stakeHistory', address, page],
+    () => {
+      if (!address) {
+        return undefined;
+      }
+      return axios.get('/api/stake', {
+        params: {
+          address,
+          pageNumber: page,
+        },
+      });
+    },
+    { keepPreviousData: true },
+  );
+
+  const dataSources = useMemo(() => data?.data ?? [], [data]);
+
   return (
     <Box>
-      <Table columns={MOCK_COLUMNS} dataSources={MOCK_DATASOURCE} />
-
+      <Table
+        columns={columns}
+        dataSources={dataSources}
+        isLoading={isFetching}
+      />
       <Box marginTop="30px">
-        <Pagination total={500} showQuickJumper />
+        <Pagination
+          total={500}
+          current={page}
+          onChange={setPage}
+          showQuickJumper
+        />
       </Box>
     </Box>
   );

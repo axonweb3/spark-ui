@@ -54,3 +54,46 @@ export const Default: Story = {
     ],
   },
 };
+
+export const Loading: Story = {
+  args: {
+    rowKey: 'id',
+    isLoading: true,
+    columns: [
+      {
+        title: 'ID',
+        dataIndex: 'id',
+        sorter: true,
+      },
+      {
+        title: 'Amount (AT)',
+        dataIndex: 'amount',
+        sorter: true,
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        render: (status, data) => {
+          return <Badge key={data.id} status={status} />
+        }
+      },
+    ],
+    dataSources: [
+      {
+        id: '82659894393984111',
+        amount: 1000,
+        status: 'succeed',
+      },
+      {
+        id: '82659894393984111',
+        amount: 1000,
+        status: 'pending',
+      },
+      {
+        id: '82659894393984111',
+        amount: 1000,
+        status: 'failed',
+      },
+    ],
+  },
+};

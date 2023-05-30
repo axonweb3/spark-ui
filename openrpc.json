@@ -43,6 +43,101 @@
           }
         }
       }
+    },
+    {
+      "name": "getStakeHistory",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page_number",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "model",
+        "schema": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "address",
+              "timestamp",
+              "event",
+              "operation",
+              "tx_hash",
+              "amount",
+              "epoch",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "address": {
+                "type": "string",
+                "pattern": "^(ckt)[\\d\\w]{97}$"
+              },
+              "timestamp": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "event": {
+                "type": "string",
+                "enum": [
+                  "add",
+                  "reedem",
+                  "withdraw"
+                ]
+              },
+              "operation": {
+                "type": "string",
+                "enum": [
+                  "stake",
+                  "delegate"
+                ]
+              },
+              "tx_hash": {
+                "type": "string",
+                "pattern": "^(0x)[\\d\\w]{64}$"
+              },
+              "amount": {
+                "type": "integer",
+                "minimum": 100000000000,
+                "maximum": 100000000000000
+              },
+              "epoch": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "success",
+                  "failed"
+                ]
+              }
+            }
+          },
+          "minItems": 10,
+          "maxItems": 10
+        }
+      }
     }
   ]
 }

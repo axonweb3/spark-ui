@@ -11,6 +11,7 @@ import {
   Box,
   Spacer,
   LayoutProps,
+  Spinner,
 } from '@chakra-ui/react';
 import { useMemo, useState } from 'react';
 
@@ -30,71 +31,88 @@ interface DataSourceType {
 
 export interface ITableProps {
   rowKey?: string;
+  isLoading?: boolean;
   columns: ColumnType[];
   dataSources: DataSourceType[];
 }
 
 export default function Table(props: ITableProps) {
-  const { rowKey = 'key', dataSources } = props;
+  const { rowKey = 'key', isLoading, dataSources } = props;
   const [columns] = useState(props.columns);
 
   return (
-    <TableContainer
-      borderWidth="1px"
-      borderColor="gray.700"
-      borderRadius="16px"
-    >
-      <ChakraTable variant="simple">
-        <Thead
-          backgroundColor="secondary"
-          borderBottom="1px"
-          borderColor="gray.100"
+    <Box position="relative">
+      {isLoading && (
+        <Flex
+          position="absolute"
+          width="100%"
+          height="100%"
+          backgroundColor="white"
+          opacity="50%"
+          justifyContent="center"
+          alignItems="center"
+          cursor="wait"
         >
-          <Tr>
-            {columns.map(({ title, key, dataIndex, sorter, ...rest }) => (
-              <Th
-                key={`col_${key ?? dataIndex}`}
-                textTransform="capitalize"
-                padding="16px"
-                width={rest.width}
-              >
-                <Flex>
-                  <Text color="black" fontFamily="montserrat" fontSize="sm">
-                    {title}
-                  </Text>
-                  <Spacer />
-                  {sorter && <Sorter />}
-                </Flex>
-              </Th>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {dataSources.map((dataSource: DataSourceType, index: number) => {
-            const rkey = dataSource[rowKey];
-            return (
-              <Tr key={`${rkey}_${index}`}>
-                {columns.map(({ dataIndex, key, render }) => {
-                  return (
-                    <Td
-                      key={`row_${rkey}_${key ?? dataIndex}`}
-                      padding="16px"
-                      fontFamily="montserrat"
-                      fontSize="14px"
-                      backgroundColor="white"
-                    >
-                      {render
-                        ? render(dataSource[dataIndex], dataSource)
-                        : dataSource[dataIndex]}
-                    </Td>
-                  );
-                })}
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </ChakraTable>
-    </TableContainer>
+          <Spinner color="brand" width={30} height={30} />
+        </Flex>
+      )}
+      <TableContainer
+        borderWidth="1px"
+        borderColor="gray.700"
+        borderRadius="16px"
+      >
+        <ChakraTable variant="simple">
+          <Thead
+            backgroundColor="secondary"
+            borderBottom="1px"
+            borderColor="gray.100"
+          >
+            <Tr>
+              {columns.map(({ title, key, dataIndex, sorter, ...rest }) => (
+                <Th
+                  key={`col_${key ?? dataIndex}`}
+                  textTransform="capitalize"
+                  padding="16px"
+                  width={rest.width}
+                >
+                  <Flex>
+                    <Text color="black" fontFamily="montserrat" fontSize="sm">
+                      {title}
+                    </Text>
+                    <Spacer />
+                    {sorter && <Sorter />}
+                  </Flex>
+                </Th>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody>
+            {dataSources.map((dataSource: DataSourceType, index: number) => {
+              const rkey = dataSource[rowKey];
+              return (
+                <Tr key={`${rkey}_${index}`}>
+                  {columns.map(({ dataIndex, key, render }) => {
+                    return (
+                      <Td
+                        key={`row_${rkey}_${key ?? dataIndex}`}
+                        padding="16px"
+                        fontFamily="montserrat"
+                        fontSize="14px"
+                        backgroundColor="white"
+                      >
+                        {render
+                          ? render(dataSource[dataIndex], dataSource)
+                          : dataSource[dataIndex]}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </ChakraTable>
+      </TableContainer>
+    </Box>
   );
 }
 
