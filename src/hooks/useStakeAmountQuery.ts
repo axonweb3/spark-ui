@@ -36,6 +36,13 @@ export function useStakeAmountQuery(address: string | undefined) {
     return BI.from(data.delegate_amount);
   }, [data]);
 
+  const withdrawableAmount = useMemo(() => {
+    if (!data || !data.withdrawable_amount) {
+      return BI.from(0);
+    }
+    return BI.from(data.withdrawable_amount);
+  }, [data]);
+
   const availableAmount = useMemo(() => {
     return amount.sub(stakeAmount).sub(delegateAmount);
   }, [amount, stakeAmount, delegateAmount]);
@@ -46,6 +53,7 @@ export function useStakeAmountQuery(address: string | undefined) {
     amount,
     stakeAmount,
     delegateAmount,
+    withdrawableAmount,
     availableAmount,
   };
 }

@@ -14,13 +14,7 @@ router
       method: 'getStakeState',
       params: [address],
     });
-    const { amount, stake_amount, delegate_amount } = data.result;
-
-    res.json({
-      amount,
-      stake_amount,
-      delegate_amount,
-    });
+    res.json(data.result);
   });
 
 export default router.handler({

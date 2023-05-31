@@ -9,6 +9,7 @@ const nextConfig = {
       ...config.resolve.fallback,
       crypto: require.resolve('crypto-browserify'),
       buffer: require.resolve('buffer/'),
+      encoding: false,
       path: false,
       fs: false,
       stream: false,
@@ -19,6 +20,18 @@ const nextConfig = {
       new webpack.ProvidePlugin({ Buffer: ['buffer', 'Buffer'] }),
     ];
     return config;
+  },
+  async rewrites() {
+    return [
+      {
+        source: '/stake',
+        destination: '/stake/stake',
+      },
+      {
+        source: '/delegate',
+        destination: '/delegate/delegate',
+      },
+    ];
   },
 };
 

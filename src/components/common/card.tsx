@@ -14,6 +14,7 @@ export default function Card(props: ICardProps) {
       borderColor="grey.700"
       borderRadius="md"
       backgroundColor="primary"
+      height="full"
       maxWidth="1080px"
       mx="auto"
     >

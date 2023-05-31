@@ -3,7 +3,12 @@ import Header from './header';
 import { Box, Container } from '@chakra-ui/react';
 import { NotificationProvider } from '@/hooks/useNotification';
 
-export default function Layout(props: React.PropsWithChildren<{}>) {
+export interface ILayoutProps {
+  logoOnly?: boolean;
+}
+
+export default function Layout(props: React.PropsWithChildren<ILayoutProps>) {
+  const { logoOnly } = props;
   return (
     <Box backgroundColor="secondary" minHeight="100vh">
       <Box
@@ -12,7 +17,7 @@ export default function Layout(props: React.PropsWithChildren<{}>) {
         backgroundImage="/img/background.png"
         backgroundRepeat="repeat"
       >
-        <Header />
+        <Header logoOnly={logoOnly} />
         <main>
           <Container maxWidth="1440px" paddingY={10}>
             <NotificationProvider>{props.children}</NotificationProvider>
