@@ -2,7 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createRouter } from 'next-connect';
 import { addressMiddleware } from '@/middlewares/address';
 import Boom from '@hapi/boom';
-import axios from 'axios';
+import axios from '@/lib/axios';
+import env from '@/lib/env';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 
@@ -12,22 +13,28 @@ router
     const { address, event, operation } = req.query;
     const pageNumber = req.query.pageNumber ? Number(req.query.pageNumber) : 1;
     const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 10;
-    const { data } = await axios.post(process.env.SPARK_RPC_URL!, {
+    const { data } = await axios.post(env.SPARK_RPC_URL!, {
       method: 'getStakeHistory',
       params: [address, pageNumber, pageSize, event, operation],
     });
-    if (data.error) {
-      throw Boom.badRequest(data.error.message);
-    }
     res.json(data.result);
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { address, amount } = req.query;
-    const { data } = await axios.post(process.env.SPARK_RPC_URL!, {
-      method: 'addStake',
+    const { address } = req.query;
+    const { amount } = req.body;
+    const { data } = await axios.post(env.SPARK_RPC_URL!, {
+      method: 'stake',
       params: [address, amount],
     });
-    // FIXME: parse response tx
+    res.json(data.result);
+  })
+  .delete(async (req: NextApiRequest, res: NextApiResponse) => {
+    const { address } = req.query;
+    const { amount } = req.body;
+    const { data } = await axios.post(env.SPARK_RPC_URL!, {
+      method: 'unstake',
+      params: [address, amount],
+    });
     res.json(data.result);
   });
 

@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { createRouter } from 'next-connect';
 import { addressMiddleware } from '@/middlewares/address';
 import Boom from '@hapi/boom';
-import axios from 'axios';
+import axios from '@/lib/axios';
 
 const router = createRouter<NextApiRequest, NextApiResponse>();
 

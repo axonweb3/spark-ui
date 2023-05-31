@@ -24,10 +24,20 @@ export interface IDialogProps extends PropsWithChildren {
   onConfirm?(): void;
   onCancel?(): void;
   onChange?(open: boolean): void;
+  hideCloseButton?: boolean;
+  hideCancel?: boolean;
 }
 
 export default function Dialog(props: IDialogProps) {
-  const { title, description, children, open, onChange } = props;
+  const {
+    title,
+    description,
+    children,
+    open,
+    onChange,
+    hideCloseButton,
+    hideCancel,
+  } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -57,7 +67,7 @@ export default function Dialog(props: IDialogProps) {
               {title}
             </Text>
           </ModalHeader>
-          <ModalCloseButton />
+          {!hideCloseButton && <ModalCloseButton />}
           <ModalBody marginY={4} padding={0}>
             {typeof description === 'string' ? (
               <Text
@@ -75,16 +85,18 @@ export default function Dialog(props: IDialogProps) {
           <ModalFooter marginTop={6} padding={0}>
             {props.footer || (
               <Flex>
-                <Button
-                  variant="outlined"
-                  size="sm"
-                  onClick={() => {
-                    onClose();
-                    props.onCancel?.();
-                  }}
-                >
-                  {props.cancelLabel ?? 'Cancel'}
-                </Button>
+                {!hideCancel && (
+                  <Button
+                    variant="outlined"
+                    size="sm"
+                    onClick={() => {
+                      onClose();
+                      props.onCancel?.();
+                    }}
+                  >
+                    {props.cancelLabel ?? 'Cancel'}
+                  </Button>
+                )}
                 <Box width={3} />
                 <Button
                   variant="contained"

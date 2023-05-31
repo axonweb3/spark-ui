@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './header';
 import { Box, Container } from '@chakra-ui/react';
+import { NotificationProvider } from '@/hooks/useNotification';
 
 export default function Layout(props: React.PropsWithChildren<{}>) {
   return (
@@ -14,7 +15,7 @@ export default function Layout(props: React.PropsWithChildren<{}>) {
         <Header />
         <main>
           <Container maxWidth="1440px" paddingY={10}>
-            {props.children}
+            <NotificationProvider>{props.children}</NotificationProvider>
           </Container>
         </main>
       </Box>

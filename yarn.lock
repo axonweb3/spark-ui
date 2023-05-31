@@ -2773,10 +2773,10 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.25.24.tgz#8c7688559979f7079aacaf31aa881c3aa410b718"
   integrity sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==
 
-"@spinal-ckb/core@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@spinal-ckb/core/-/core-0.1.11.tgz#ae2fd9937c0ba4ad3aadbdfe278d8c26cf8db0ca"
-  integrity sha512-6LraniJ5H9xtT9HZSGHUd8Maix0w0BR0ggotEPk+RdunDr07ezKaTXM4Lh8kzSMQNhzWGVceQkmP/Q5R49jjdQ==
+"@spinal-ckb/core@0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@spinal-ckb/core/-/core-0.2.0.tgz#aec2a8863cade5e812118fed01040079fea3cdbc"
+  integrity sha512-41Fk/vRrf0iwxOLhaJMhDSwWqIH67/6/wiOnTSmAsZbTMrHxv8aeIGcd88lkm288FBHCQy+AXrGSfnejhijJEg==
   dependencies:
     "@ckb-lumos/base" "^0.19.0"
     "@ckb-lumos/codec" "^0.19.0"
@@ -2789,13 +2789,12 @@
     jsbi "^4.3.0"
     viem "^0.3.22"
 
-"@spinal-ckb/react@0.1.12":
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/@spinal-ckb/react/-/react-0.1.12.tgz#780e6c244dd781c6b4e99fffdc886f53b40c944d"
-  integrity sha512-HjmrQ2BFIonL75a1VEMDh6rqHv4MFXqscN3uBnw7WzD6kD4Sqmy52xuJHRMzneU9UQy2y+8SIfPhfQ0YeCdKxw==
+"@spinal-ckb/react@0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@spinal-ckb/react/-/react-0.2.2.tgz#19afefd6d1556923d20f92ee77cd2238d2a52779"
+  integrity sha512-QSl11gHMYYo9ysCfUGx2yWwwOL0sNy/10uAHYS4FKvFfwUfRNx8/WUnS5uo7Wz39fFacR5AeCeIf6Kri61/bFA==
   dependencies:
-    "@ckb-lumos/lumos" "^0.19.0"
-    "@spinal-ckb/core" "0.1.11"
+    "@spinal-ckb/core" "0.2.0"
     "@tanstack/query-core" "^4.29.5"
     jotai "^2.1.0"
     jotai-tanstack-query "^0.7.0"
@@ -11503,7 +11502,7 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zod@3.21.4:
+zod@3.21.4, zod@^3.21.4:
   version "3.21.4"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.21.4.tgz#10882231d992519f0a10b5dd58a38c9dabbb64db"
   integrity sha512-m46AKbrzKVzOzs/DZgVnG5H55N1sv1M8qZU3A8RIKbs3mrACDNeIOeilDymVb2HdmP8uwshOCF4uJ8uM9rCqJw==
