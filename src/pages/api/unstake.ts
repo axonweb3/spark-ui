@@ -9,24 +9,14 @@ const router = createRouter<NextApiRequest, NextApiResponse>();
 
 router
   .use(addressMiddleware)
-  .get(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { address, event, operation } = req.query;
-    const pageNumber = req.query.pageNumber ? Number(req.query.pageNumber) : 1;
-    const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 10;
-    const { data } = await axios.post(env.SPARK_RPC_URL!, {
-      method: 'getStakeHistory',
-      params: [address, pageNumber, pageSize, event, operation],
-    });
-    res.json(data.result);
-  })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { address, amount } = req.body;
     const { data } = await axios.post(env.SPARK_RPC_URL!, {
-      method: 'stake',
+      method: 'unstake',
       params: [address, amount],
     });
     res.json(data.result);
-  })
+  });
 
 export default router.handler({
   onError: (err, _, res) => {

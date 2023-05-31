@@ -9,7 +9,7 @@ export async function addressMiddleware(
   _: NextApiResponse,
   next: NextHandler,
 ) {
-  const { address } = req.query;
+  const { address } = req.method === 'GET' ? req.query : req.body;
 
   config.initializeConfig(
     process.env.NODE_ENV === 'production'

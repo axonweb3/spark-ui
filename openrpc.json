@@ -19,7 +19,11 @@
         "name": "state",
         "schema": {
           "type": "object",
-          "required": ["amount", "stake_amount", "delegate_amount"],
+          "required": [
+            "amount",
+            "stake_amount",
+            "delegate_amount"
+          ],
           "properties": {
             "amount": {
               "type": "integer",
@@ -94,11 +98,18 @@
               },
               "event": {
                 "type": "string",
-                "enum": ["add", "reedem", "withdraw"]
+                "enum": [
+                  "add",
+                  "reedem",
+                  "withdraw"
+                ]
               },
               "operation": {
                 "type": "string",
-                "enum": ["stake", "delegate"]
+                "enum": [
+                  "stake",
+                  "delegate"
+                ]
               },
               "tx_hash": {
                 "type": "string",
@@ -115,7 +126,11 @@
               },
               "status": {
                 "type": "string",
-                "enum": ["pending", "success", "failed"]
+                "enum": [
+                  "pending",
+                  "success",
+                  "failed"
+                ]
               }
             }
           },
@@ -143,22 +158,30 @@
       "result": {
         "name": "transaction",
         "schema": {
-          "type": "object",
-          "required": ["inputs", "outputs"],
-          "properties": {
-            "inputs": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Input"
-              }
-            },
-            "outputs": {
-              "type": "array",
-              "items": {
-                "$ref": "#/components/schemas/Output"
-              }
-            }
+          "$ref": "#/components/schemas/Transaction"
+        }
+      }
+    },
+    {
+      "name": "unstake",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
           }
+        },
+        {
+          "name": "amount",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "transaction",
+        "schema": {
+          "$ref": "#/components/schemas/Transaction"
         }
       }
     }
@@ -175,14 +198,21 @@
       },
       "Script": {
         "type": "object",
-        "required": ["codeHash", "hashType", "args"],
+        "required": [
+          "codeHash",
+          "hashType",
+          "args"
+        ],
         "properties": {
           "codeHash": {
             "$ref": "#/components/schemas/Hash"
           },
           "hashType": {
             "type": "string",
-            "enum": ["type", "data"]
+            "enum": [
+              "type",
+              "data"
+            ]
           },
           "args": {
             "$ref": "#/components/schemas/Hex"
@@ -192,7 +222,10 @@
       "Transaction": {
         "title": "transaction",
         "type": "object",
-        "required": ["inputs", "outputs"],
+        "required": [
+          "inputs",
+          "outputs"
+        ],
         "properties": {
           "inputs": {
             "type": "array",
@@ -211,11 +244,17 @@
       "Input": {
         "title": "input",
         "type": "object",
-        "required": ["previousOutput", "since"],
+        "required": [
+          "previousOutput",
+          "since"
+        ],
         "properties": {
           "previousOutput": {
             "type": "object",
-            "required": ["txHash", "index"],
+            "required": [
+              "txHash",
+              "index"
+            ],
             "properties": {
               "txHash": {
                 "$ref": "#/components/schemas/Hash"
@@ -236,7 +275,11 @@
       "Output": {
         "title": "output",
         "type": "object",
-        "required": ["capacity", "lock", "type"],
+        "required": [
+          "capacity",
+          "lock",
+          "type"
+        ],
         "properties": {
           "capacity": {
             "$ref": "#/components/schemas/Hex"

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
 import { useConnect } from '@spinal-ckb/react';
@@ -7,8 +7,9 @@ import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useStakeMutation } from '@/hooks/useStakeMutation';
 import { useNotification } from '@/hooks/useNotification';
+import { useSendTxMutation } from '@/hooks/useSendTxMutation';
+import axios from 'axios';
 
 export default function StakePanel() {
   const notify = useNotification();
@@ -17,17 +18,22 @@ export default function StakePanel() {
   const disabled = useMemo(() => !connected, [connected]);
   const { isLoading, availableAmount } = useStakeAmountQuery(address);
   const [amount, setAmount] = useState(availableAmount);
-  const mutation = useStakeMutation({
-    onError: (err) => {
-      notify({
-        status: 'error',
-        message: (err as Error).message,
-      });
+  const mutation = useSendTxMutation(
+    (params: { address: string; amount: number }) => {
+      return axios.post(`/api/stake`, params);
     },
-    onSuccess: () => {
-      setIsOpenDialog(true);
+    {
+      onError: (err) => {
+        notify({
+          status: 'error',
+          message: (err as Error).message,
+        });
+      },
+      onSuccess: () => {
+        setIsOpenDialog(true);
+      },
     },
-  });
+  );
 
   React.useEffect(() => {
     if (!availableAmount.isZero()) {
@@ -37,6 +43,11 @@ export default function StakePanel() {
       setAmount(BI.from(0));
     }
   }, [connected, availableAmount, setAmount]);
+
+  const startStakeTransaction = useCallback(() => {
+    if (!address) return;
+    mutation.mutate({ address, amount: amount.toNumber() });
+  }, [address, amount, mutation]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
@@ -54,7 +65,7 @@ export default function StakePanel() {
           size="lg"
           disabled={disabled || amount.isZero()}
           isLoading={mutation.isLoading}
-          onClick={() => address && mutation.mutate({ address, amount })}
+          onClick={startStakeTransaction}
         >
           Submit
         </Button>
