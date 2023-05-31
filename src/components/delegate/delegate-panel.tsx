@@ -8,13 +8,12 @@ import AmountField from '../amount-field';
 import InputField from '../input-filed';
 import EpochField from '../epoch-field';
 import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
-import { useAmountState } from '@/hooks/useAmountState';
 
 export default function DelegatePanel() {
   const { connected, address } = useConnect();
   const disabled = useMemo(() => !connected, [connected]);
   const { isLoading, availableAmount } = useStakeAmountQuery(address);
-  const { amount, setAmount, onAmountChange } = useAmountState(availableAmount);
+  const [amount, setAmount] = useState(availableAmount);
 
   useEffect(() => {
     if (!availableAmount.isZero()) {
@@ -24,23 +23,6 @@ export default function DelegatePanel() {
       setAmount(BI.from(0));
     }
   }, [connected, availableAmount, setAmount]);
-
-  const handleOptionChange = useCallback(
-    (option: string) => {
-      switch (option) {
-        case 'Custom':
-          if (!amount.eq(availableAmount)) {
-            setAmount(availableAmount);
-          }
-          break;
-        default:
-          const [percent] = option.split('%');
-          setAmount(availableAmount.mul(percent).div(100));
-          break;
-      }
-    },
-    [availableAmount, amount, setAmount],
-  );
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
@@ -52,8 +34,7 @@ export default function DelegatePanel() {
         label="Stake Amount"
         total={availableAmount}
         amount={amount}
-        onOptionChange={handleOptionChange}
-        onAmountChange={onAmountChange}
+        onChange={setAmount}
         disabled={disabled}
         isLoading={isLoading}
       />

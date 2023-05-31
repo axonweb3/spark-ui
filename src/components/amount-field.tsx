@@ -9,23 +9,14 @@ const AMOUNT_OPTIONS = ['25%', '50%', '75%', '100%', 'Custom'];
 export interface IAmountFieldProps {
   total: BI;
   amount: BI;
-  onOptionChange(option: string): void;
-  onAmountChange(amount: string): void;
+  onChange(amount: BI): void;
   label?: string;
   disabled?: boolean;
   isLoading?: boolean;
 }
 
 export default function AmountField(props: IAmountFieldProps) {
-  const {
-    total,
-    amount,
-    label,
-    onOptionChange,
-    onAmountChange,
-    disabled,
-    isLoading,
-  } = props;
+  const { total, amount, label, onChange, disabled, isLoading } = props;
   const [custom, setCustom] = useState(true);
 
   const percent = useMemo(() => {
@@ -38,17 +29,35 @@ export default function AmountField(props: IAmountFieldProps) {
   const handleOptionChange = useCallback(
     (option: string) => {
       setCustom(option === 'Custom');
-      onOptionChange(option);
+      switch (option) {
+        case 'Custom':
+          if (!amount.eq(total)) {
+            onChange(total);
+          }
+          break;
+        default:
+          const [percent] = option.split('%');
+          onChange(total.mul(percent).div(100));
+          break;
+      }
     },
-    [onOptionChange],
+    [total, amount, onChange],
   );
 
   const handleAmountChange = useCallback(
     (val: string) => {
       setCustom(true);
-      onAmountChange(val);
+      if (val === '') {
+        onChange(BI.from(0));
+        return;
+      }
+      const [_, int, dec = '.0'] = val.match(/^(\d+)(\.\d+)?$/)!;
+      const amount = BI.from(int)
+        .mul(10 ** 8)
+        .add(BI.from(dec.slice(1)).mul(10 ** (9 - dec.length)));
+      onChange(amount);
     },
-    [onAmountChange],
+    [onChange],
   );
 
   return (
