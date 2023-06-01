@@ -7,7 +7,7 @@ const theme = extendTheme({
   colors,
   fonts: {
     'alfarn-2': `'alfarn-2', 'serif'`,
-    montserrat: `'Montserrat', 'sans-serif'`,
+    montserrat: `var(--montserrat-font), 'sans-serif'`,
   },
   components: {
     Button,

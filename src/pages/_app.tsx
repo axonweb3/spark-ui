@@ -8,6 +8,9 @@ import {
   chains,
 } from '@spinal-ckb/react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { Montserrat } from 'next/font/google';
+
+const montserrat = Montserrat({ subsets: ['latin'] });
 
 const queryClient = new QueryClient();
 
@@ -24,6 +27,11 @@ export default function App({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
         <JotaiProvider store={store}>
           <SpinalConfigProvider config={config}>
+            <style jsx global>{`
+              :root {
+                --montserrat-font: ${montserrat.style.fontFamily};
+              }
+            `}</style>
             <Component {...pageProps} />
           </SpinalConfigProvider>
         </JotaiProvider>

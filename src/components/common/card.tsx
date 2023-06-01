@@ -12,7 +12,7 @@ export default function Card(props: ICardProps) {
     <Box
       borderWidth={1}
       borderColor="grey.700"
-      borderRadius="md"
+      borderRadius="16px"
       backgroundColor="primary"
       height="full"
       maxWidth="1080px"
