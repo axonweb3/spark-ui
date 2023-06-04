@@ -1,4 +1,16 @@
-import { Flex, TabPanel, TabPanels, Tabs } from '@chakra-ui/react';
+import {
+  Box,
+  Flex,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Spacer,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useMemo } from 'react';
 import Card from '@/components/common/card';
@@ -8,6 +20,8 @@ import DelegatePanel from '@/components/delegate/delegate-panel';
 import UndelegatePanel from '@/components/delegate/undelegate-panel';
 import WithdrawPanel from '@/components/delegate/withdraw-panel';
 import HistoryPanel from '@/components/delegate/history-panel';
+import { MdSettings } from 'react-icons/md';
+import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
 
 export enum DelegateTabType {
   Delegate = 'delegate',
@@ -32,6 +46,7 @@ const panels = {
 
 export default function DelegatePage() {
   const router = useRouter();
+  const { role } = useStakeRole();
   const tab = useMemo(
     () => (router.query.tab as string) ?? DelegateTabType.Delegate,
     [router.query.tab],
@@ -47,10 +62,25 @@ export default function DelegatePage() {
         title={
           <Flex alignItems="center">
             <Navigation navs={navs} active={tab} />
+            {role === StakeRoleType.Delegator && (
+              <>
+                <Spacer />
+                <Menu placement="bottom-end">
+                  <MenuButton as={Box} cursor="pointer">
+                    <Icon as={MdSettings} width="20px" height="20px" />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={() => router.push('/?redirect=false')}>
+                      Switch Role
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              </>
+            )}
           </Flex>
         }
       >
-        <Tabs index={tabIndex}>
+        <Tabs index={tabIndex} isLazy>
           <TabPanels>
             {navs.map(({ name }, index) => {
               const Panel = panels[name];

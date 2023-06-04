@@ -8,8 +8,12 @@ import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
 import { NextPageContext } from 'next';
 
 export function getServerSideProps(context: NextPageContext) {
+  if (context.query.redirect === 'false') {
+    return {
+      props: {},
+    };
+  }
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
-  console.log(cookies);
 
   switch (cookies.role) {
     case StakeRoleType.Validator:

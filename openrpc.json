@@ -6,6 +6,37 @@
   },
   "methods": [
     {
+      "name": "getStakeRate",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "rate",
+        "schema": {
+          "type": "object",
+          "required": [
+            "amount",
+            "rate"
+          ],
+          "properties": {
+            "address": {
+              "$ref": "#/components/schemas/Address"
+            },
+            "rate": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "getStakeState",
       "params": [
         {
@@ -193,6 +224,10 @@
   ],
   "components": {
     "schemas": {
+      "Address": {
+        "type": "string",
+        "pattern": "ckt1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{42}"
+      },
       "Hash": {
         "type": "string",
         "pattern": "^(0x)[\\d\\w]{64}$"

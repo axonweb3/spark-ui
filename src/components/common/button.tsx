@@ -22,7 +22,7 @@ export default function Button(props: IButtonProps & ChakraButtonProps) {
       variant={variant ?? 'contained'}
       size={size ?? 'md'}
       disabled={disabled}
-      onClick={onClick}
+      onClick={() => !disabled && onClick?.()}
       isLoading={isLoading}
     >
       {children}

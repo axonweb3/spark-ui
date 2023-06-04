@@ -5,11 +5,12 @@ import {
   InputGroup,
   InputLeftAddon,
   InputRightAddon,
+  InputProps,
 } from '@chakra-ui/react';
 import React, { ChangeEvent } from 'react';
 
-export interface ITextFieldProps {
-  value?: string;
+export interface ITextFieldProps extends Omit<InputProps, 'onChange'> {
+  value?: string | number;
   onChange?(value: string): void;
   placeholder?: string;
   size?: 'sm' | 'md' | 'lg';
@@ -31,6 +32,9 @@ export default function TextField(props: ITextFieldProps) {
     message,
     status,
     disabled,
+    leftAddon,
+    rightAddon,
+    ...inputProps
   } = props;
 
   const handleChange = React.useCallback(
@@ -55,7 +59,7 @@ export default function TextField(props: ITextFieldProps) {
   return (
     <Box>
       <InputGroup size={size}>
-        {props.leftAddon && (
+        {leftAddon && (
           <InputLeftAddon
             padding={0}
             backgroundColor="transparent"
@@ -63,10 +67,11 @@ export default function TextField(props: ITextFieldProps) {
             borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
             borderLeftRadius="6px"
           >
-            {props.leftAddon}
+            {leftAddon}
           </InputLeftAddon>
         )}
         <Input
+          {...inputProps}
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
@@ -81,7 +86,7 @@ export default function TextField(props: ITextFieldProps) {
             boxShadow: 'none',
           }}
         />
-        {props.rightAddon && (
+        {rightAddon && (
           <InputRightAddon
             padding={0}
             backgroundColor="transparent"
@@ -89,7 +94,7 @@ export default function TextField(props: ITextFieldProps) {
             borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
             borderRightRadius="6px"
           >
-            {props.rightAddon}
+            {rightAddon}
           </InputRightAddon>
         )}
       </InputGroup>

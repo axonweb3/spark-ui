@@ -11,6 +11,7 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
+import * as cookie from 'cookie';
 import React, { useMemo } from 'react';
 import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
@@ -21,6 +22,8 @@ import StakePanel from '@/components/stake/stake-panel';
 import UnstakePanel from '@/components/stake/unstake-panel';
 import WithdrawPanel from '@/components/stake/withdraw-panel';
 import HistoryPanel from '@/components/stake/history-panel';
+import { NextPageContext } from 'next';
+import { StakeRoleType } from '@/hooks/useStakeRole';
 
 export enum StakeTabType {
   Stake = 'stake',
@@ -42,6 +45,24 @@ const panels = {
   [StakeTabType.Withdraw]: WithdrawPanel,
   [StakeTabType.History]: HistoryPanel,
 };
+
+export function getServerSideProps(context: NextPageContext) {
+  const cookies = cookie.parse(context.req?.headers.cookie ?? '');
+
+  if (cookies.role !== StakeRoleType.Validator) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
+}
 
 export default function StakePage() {
   const router = useRouter();
@@ -72,7 +93,7 @@ export default function StakePage() {
           </Flex>
         }
       >
-        <Tabs index={tabIndex}>
+        <Tabs index={tabIndex} isLazy>
           <TabPanels>
             {navs.map(({ name }, index) => {
               const Panel = panels[name] as () => React.ReactElement;

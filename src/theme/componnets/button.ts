@@ -43,6 +43,7 @@ const Button = defineStyleConfig({
       color: 'grey.400',
       backgroundColor: 'grey.100',
       border: 'none',
+      cursor: 'not-allowed',
     },
     outlined: {
       backgroundColor: 'transparent',
@@ -57,6 +58,7 @@ const Button = defineStyleConfig({
     outlined_disabled: {
       color: 'grey.400',
       backgroundColor: 'grey.400',
+      cursor: 'not-allowed',
     },
     text: {
       backgroundColor: 'transparent',
@@ -69,6 +71,7 @@ const Button = defineStyleConfig({
     },
     text_disabled: {
       color: 'grey.400',
+      cursor: 'not-allowed',
     },
   },
   defaultProps: {

@@ -9,11 +9,11 @@ export enum StakeRoleType {
 
 export function useStakeRole() {
   const router = useRouter();
-  const [value, updateCookie] = useCookie('role');
+  const [value, updateCookie] = useCookie('spark@stake-role');
 
   const beValidator = useCallback(() => {
     updateCookie(StakeRoleType.Validator);
-    router.push('/stake');
+    router.push('/stake/settings');
   }, [router, updateCookie]);
 
   const beDelegator = useCallback(() => {
