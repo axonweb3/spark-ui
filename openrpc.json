@@ -220,13 +220,42 @@
           "$ref": "#/components/schemas/Transaction"
         }
       }
+    },
+    {
+      "name": "delegate",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "$ref": "#/components/schemas/Address"
+          }
+        },
+        {
+          "name": "delegateTo",
+          "schema": {
+            "$ref": "#/components/schemas/Address"
+          }
+        },
+        {
+          "name": "amount",
+          "schema": {
+            "type": "number"
+          }
+        }
+      ],
+      "result": {
+        "name": "transaction",
+        "schema": {
+          "$ref": "#/components/schemas/Transaction"
+        }
+      }
     }
   ],
   "components": {
     "schemas": {
       "Address": {
         "type": "string",
-        "pattern": "ckt1[qpzry9x8gf2tvdw0s3jn54khce6mua7l]{42}"
+        "pattern": "ckt1[/d/w]{97}"
       },
       "Hash": {
         "type": "string",

@@ -2,9 +2,24 @@ import { BI } from '@ckb-lumos/lumos';
 import axios from 'axios';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';
+import { IQueryError } from './type';
 
-export function useStakeAmountQuery(address: string | undefined) {
-  const { isLoading, data, error } = useQuery(
+interface IQueryData {
+  amount: string;
+  stake_amount: string;
+  delegate_amount: string;
+  withdrawable_amount: string;
+}
+
+export function useStakeAmountQuery(
+  address: string | undefined,
+  options?: Parameters<typeof useQuery<unknown, IQueryError, IQueryData>>[2],
+) {
+  const { isLoading, isSuccess, isError, data, error } = useQuery<
+    unknown,
+    IQueryError,
+    IQueryData
+  >(
     ['stakeState', address],
     async () => {
       if (!address) {
@@ -13,6 +28,7 @@ export function useStakeAmountQuery(address: string | undefined) {
       const response = await axios.get('/api/amount', { params: { address } });
       return response.data;
     },
+    options,
   );
 
   const amount = useMemo(() => {
@@ -49,6 +65,8 @@ export function useStakeAmountQuery(address: string | undefined) {
 
   return {
     isLoading,
+    isSuccess,
+    isError,
     error,
     amount,
     stakeAmount,

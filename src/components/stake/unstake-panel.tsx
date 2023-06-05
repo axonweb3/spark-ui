@@ -20,7 +20,7 @@ export default function UnstakePanel() {
   const [amount, setAmount] = useState(stakeAmount);
   const mutation = useSendTxMutation(
     (params: { address: string; amount: number }) => {
-      return axios.post(`/api/unstake`, params);
+      return axios.post(`/api/stake/unstake`, params);
     },
     {
       onError: (err) => {

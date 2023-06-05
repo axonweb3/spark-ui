@@ -13,7 +13,7 @@ import axios from 'axios';
 
 export default function StakePanel() {
   const notify = useNotification();
-  const [isOpenDialog, setIsOpenDialog] = React.useState(false);
+  const [isOpenSubmitedDialog, setIsOpenSubmitedDialog] = React.useState(false);
   const { connected, address } = useConnect();
   const disabled = useMemo(() => !connected, [connected]);
   const { isLoading, availableAmount } = useStakeAmountQuery(address);
@@ -30,7 +30,7 @@ export default function StakePanel() {
         });
       },
       onSuccess: () => {
-        setIsOpenDialog(true);
+        setIsOpenSubmitedDialog(true);
       },
     },
   );
@@ -70,11 +70,11 @@ export default function StakePanel() {
           Submit
         </Button>
         <Dialog
-          open={isOpenDialog}
+          open={isOpenSubmitedDialog}
           title="Staking Submitted"
           description="Your transaction is already submitted, please check out the stake history later."
           hideCancel={true}
-          onConfirm={() => setIsOpenDialog(false)}
+          onConfirm={() => setIsOpenSubmitedDialog(false)}
         />
       </Flex>
     </Box>

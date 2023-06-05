@@ -23,9 +23,11 @@ export interface IDialogProps extends PropsWithChildren {
   cancelLabel?: string;
   onConfirm?(): void;
   onCancel?(): void;
+  confirming?: boolean;
   onChange?(open: boolean): void;
   hideCloseButton?: boolean;
   hideCancel?: boolean;
+  disabled?: boolean;
 }
 
 export default function Dialog(props: IDialogProps) {
@@ -35,8 +37,10 @@ export default function Dialog(props: IDialogProps) {
     children,
     open,
     onChange,
+    confirming,
     hideCloseButton,
     hideCancel,
+    disabled,
   } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -50,7 +54,7 @@ export default function Dialog(props: IDialogProps) {
 
   return (
     <>
-      {children && <Box onClick={onOpen}>{children}</Box>}
+      {children && <Box onClick={() => !disabled && onOpen()}>{children}</Box>}
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
         <ModalOverlay />
@@ -89,6 +93,7 @@ export default function Dialog(props: IDialogProps) {
                   <Button
                     variant="outlined"
                     size="sm"
+                    disabled={confirming}
                     onClick={() => {
                       onClose();
                       props.onCancel?.();
@@ -101,6 +106,7 @@ export default function Dialog(props: IDialogProps) {
                 <Button
                   variant="contained"
                   size="sm"
+                  isLoading={confirming}
                   onClick={() => props.onConfirm?.()}
                 >
                   {props.confrmLabel ?? 'Got it'}

@@ -15,15 +15,15 @@ router
     const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 10;
     const { data } = await axios.post(env.SPARK_RPC_URL!, {
       method: 'getStakeHistory',
-      params: [address, pageNumber, pageSize, event, 'stake'],
+      params: [address, pageNumber, pageSize, event, 'delegate'],
     });
     res.json(data.result);
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { address, amount } = req.body;
+    const { address, amount, to } = req.body;
     const { data } = await axios.post(env.SPARK_RPC_URL!, {
-      method: 'stake',
-      params: [address, amount],
+      method: 'delegate',
+      params: [address, to, amount],
     });
     res.json(data.result);
   });

@@ -8,7 +8,7 @@ export interface IInputFieldProps extends ITextFieldProps {
 export default function InputField(props: IInputFieldProps) {
   const { label, ...restProps } = props;
   return (
-    <Flex marginBottom={14}>
+    <Flex marginBottom={restProps.message ? '40px' : '58px'}>
       <Flex height={12} alignItems="center">
         <Text fontWeight="extrabold">{label}</Text>
       </Flex>

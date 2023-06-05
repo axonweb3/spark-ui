@@ -1,5 +1,5 @@
 import * as cookie from 'cookie';
-import { useStakeRate } from '@/hooks/useStakeRate';
+import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
 import { useConnect } from '@spinal-ckb/react';
 import React, { useEffect, useMemo } from 'react';
 import {
@@ -46,7 +46,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { address, connected } = useConnect();
   const [isDialogOpen, setIsDialogOpen] = React.useState(true);
-  const { stakeRate, isSuccess, isLoading } = useStakeRate(address);
+  const { stakeRate, isSuccess, isLoading } = useStakeRateQuery(address);
   const [rate, setRate] = React.useState(stakeRate ?? 0);
 
   useEffect(() => {
