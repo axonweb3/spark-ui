@@ -10,7 +10,7 @@ export default function Badge(props: IBadgeProps) {
 
   const colorScheme = React.useMemo(() => {
     switch (status) {
-      case 'succeed':
+      case 'success':
         return 'green';
       case 'pending':
         return 'yellow';

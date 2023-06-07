@@ -15,6 +15,8 @@ import Button from '../common/button';
 import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
+import { useConnect } from '@spinal-ckb/react';
+import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
 
 const MOCK_COLUMNS = [
   {
@@ -41,7 +43,7 @@ const MOCK_DATASOURCE = [
   {
     id: '82659894393984111',
     amount: 1000,
-    status: 'succeed',
+    status: 'success',
   },
   {
     id: '82659894393984222',
@@ -56,7 +58,7 @@ const MOCK_DATASOURCE = [
   {
     id: '82659894393984444',
     amount: 1000,
-    status: 'succeed',
+    status: 'success',
   },
   {
     id: '82659894393984555',
@@ -71,6 +73,9 @@ const MOCK_DATASOURCE = [
 ];
 
 export default function WithdrawPanel() {
+  const { address } = useConnect();
+  const { withdrawableAmount } = useStakeAmountQuery(address);
+
   return (
     <Box>
       <Box marginBottom="40px">
@@ -102,7 +107,7 @@ export default function WithdrawPanel() {
           <StatNumber>
             <Flex alignItems="baseline">
               <Text fontSize="30px" marginRight={1}>
-                35000
+                {(withdrawableAmount.toNumber() / 10 ** 8).toFixed(2)}
               </Text>
               <Text fontSize="md">AT</Text>
             </Flex>
