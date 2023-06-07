@@ -23,11 +23,12 @@ import Dialog from '@/components/common/dialog';
 import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 import TextField from '@/components/common/text-field';
 import { useRouter } from 'next/router';
+import { STAKE_ROLE_KEY } from '@/consts';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
 
-  if (cookies.role !== StakeRoleType.Validator) {
+  if (cookies[STAKE_ROLE_KEY] !== StakeRoleType.Validator) {
     return {
       redirect: {
         permanent: false,

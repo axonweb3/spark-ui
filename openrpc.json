@@ -254,8 +254,7 @@
   "components": {
     "schemas": {
       "Address": {
-        "type": "string",
-        "pattern": "ckt1[/d/w]{97}"
+        "type": "string"
       },
       "Hash": {
         "type": "string",

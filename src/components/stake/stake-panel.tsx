@@ -4,16 +4,16 @@ import { Box, Flex } from '@chakra-ui/react';
 import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
 import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
-import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
 import { useNotification } from '@/hooks/useNotification';
 import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import axios from 'axios';
+import { useDialog } from '@/hooks/useDialog';
 
 export default function StakePanel() {
   const notify = useNotification();
-  const [isOpenSubmitedDialog, setIsOpenSubmitedDialog] = React.useState(false);
+  const showDialog = useDialog();
   const { connected, address } = useConnect();
   const disabled = useMemo(() => !connected, [connected]);
   const { isLoading, availableAmount } = useStakeAmountQuery(address);
@@ -30,7 +30,11 @@ export default function StakePanel() {
         });
       },
       onSuccess: () => {
-        setIsOpenSubmitedDialog(true);
+        showDialog({
+          title: 'Staking Submitted',
+          description: 'Your transaction is already submitted, please check out the stake history later.',
+          hideCancel: true,
+        });
       },
     },
   );
@@ -69,13 +73,6 @@ export default function StakePanel() {
         >
           Submit
         </Button>
-        <Dialog
-          open={isOpenSubmitedDialog}
-          title="Staking Submitted"
-          description="Your transaction is already submitted, please check out the stake history later."
-          hideCancel={true}
-          onConfirm={() => setIsOpenSubmitedDialog(false)}
-        />
       </Flex>
     </Box>
   );

@@ -12,13 +12,15 @@ import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
 import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import axios from 'axios';
 import { useNotification } from '@/hooks/useNotification';
+import { useDialog } from '@/hooks/useDialog';
 
 export default function DelegatePanel() {
   const notify = useNotification();
+  const showDialog = useDialog();
   const { connected, address } = useConnect();
-  const [isOpenSubmitedDialog, setIsOpenSubmitedDialog] = React.useState(false);
   const { isLoading, availableAmount } = useStakeAmountQuery(address);
   const [delegateAddress, setDelegateAddress] = useState('');
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { stakeRate, error, isFetching } = useStakeRateQuery(delegateAddress, {
     retry: false,
   });
@@ -41,7 +43,13 @@ export default function DelegatePanel() {
         });
       },
       onSuccess: () => {
-        setIsOpenSubmitedDialog(true);
+        setShowConfirmDialog(false);
+        showDialog({
+          title: 'Delegation Request Submitted',
+          description:
+            'Your request has been submitted. Check out Delegation history for details.',
+          hideCancel: true,
+        });
       },
     },
   );
@@ -88,7 +96,7 @@ export default function DelegatePanel() {
       <Flex justifyContent="center" marginBottom={10}>
         <Dialog
           title="Delegation Information"
-          disabled={disabled}
+          open={showConfirmDialog}
           description={
             <Box>
               <Box fontFamily="montserrat" marginBottom={4}>
@@ -122,7 +130,11 @@ export default function DelegatePanel() {
             })
           }
         >
-          <Button size="lg" disabled={disabled}>
+          <Button
+            size="lg"
+            disabled={disabled}
+            onClick={() => setShowConfirmDialog(true)}
+          >
             Submit
           </Button>
         </Dialog>
