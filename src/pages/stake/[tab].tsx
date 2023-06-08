@@ -88,7 +88,7 @@ export default function StakePage() {
                 <Icon as={MdSettings} width="20px" height="20px" />
               </MenuButton>
               <MenuList>
-                <MenuItem>Commission Rate</MenuItem>
+                <MenuItem onClick={() => router.push('/stake/settings')}>Commission Rate</MenuItem>
               </MenuList>
             </Menu>
           </Flex>

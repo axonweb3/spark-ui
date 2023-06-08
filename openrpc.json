@@ -20,8 +20,9 @@
         "schema": {
           "type": "object",
           "required": [
-            "amount",
-            "rate"
+            "address",
+            "rate",
+            "minimumAmount"
           ],
           "properties": {
             "address": {
@@ -31,6 +32,11 @@
               "type": "integer",
               "minimum": 0,
               "maximum": 100
+            },
+            "minimumAmount": {
+              "type": "integer",
+              "minimum": 100,
+              "maximum": 1000
             }
           }
         }

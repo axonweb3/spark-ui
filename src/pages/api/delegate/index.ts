@@ -33,9 +33,9 @@ export default router.handler({
     if ((err as Boom.Boom).isBoom) {
       const { statusCode, payload } = (err as Boom.Boom).output;
       res.status(statusCode).json(payload);
-    }
-    if (err instanceof Error) {
+    } else if (err instanceof Error) {
       res.status(500).json({ message: err.message });
     }
   },
 });
+

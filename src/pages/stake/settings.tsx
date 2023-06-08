@@ -1,7 +1,7 @@
 import * as cookie from 'cookie';
 import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
 import { useConnect } from '@spinal-ckb/react';
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Box,
   Flex,
@@ -24,9 +24,17 @@ import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 import TextField from '@/components/common/text-field';
 import { useRouter } from 'next/router';
 import { STAKE_ROLE_KEY } from '@/consts';
+import InputField from '@/components/input-filed';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
+  const { redirect } = context.query;
+
+  if (redirect === 'false') {
+    return {
+      props: {},
+    };
+  }
 
   if (cookies[STAKE_ROLE_KEY] !== StakeRoleType.Validator) {
     return {
@@ -46,9 +54,12 @@ export function getServerSideProps(context: NextPageContext) {
 export default function SettingsPage() {
   const router = useRouter();
   const { address, connected } = useConnect();
+  const disabled = useMemo(() => !connected, [connected]);
   const [isDialogOpen, setIsDialogOpen] = React.useState(true);
-  const { stakeRate, isSuccess, isLoading } = useStakeRateQuery(address);
+  const { stakeRate, minimumAmount, isSuccess, isLoading } =
+    useStakeRateQuery(address);
   const [rate, setRate] = React.useState(stakeRate ?? 0);
+  const [minAmount, setMinAmount] = React.useState(minimumAmount ?? '0');
 
   useEffect(() => {
     if (isSuccess) {
@@ -73,6 +84,12 @@ export default function SettingsPage() {
     [isLoading],
   );
 
+  const handleMiniumnAmountChange = useCallback((amount: string) => {
+    const [int, dec] = amount.split('.');
+    const newAmount = `${int}${dec ? `.${dec}` : ''}`;
+    setMinAmount(newAmount);
+  }, []);
+
   return (
     <Layout>
       <Card
@@ -96,7 +113,7 @@ export default function SettingsPage() {
               </Text>
             </Flex>
           </Flex>
-          <Flex width="full" alignItems="center" gap="8">
+          <Flex width="full" alignItems="center" gap="8" marginBottom="80px">
             <Box width="100px">
               <TextField
                 value={rate}
@@ -106,7 +123,7 @@ export default function SettingsPage() {
                   setRate(Math.min(parseInt(val || '0', 10), 100));
                 }}
                 rightAddon={inputAddon}
-                disabled={!connected}
+                disabled={disabled}
               />
             </Box>
             <Box flexGrow="1">
@@ -136,15 +153,37 @@ export default function SettingsPage() {
                   setRate(100 - Math.min(parseInt(val || '0', 10), 100));
                 }}
                 rightAddon={inputAddon}
-                disabled={!connected}
+                disabled={disabled}
               />
             </Box>
           </Flex>
+          <InputField
+            label="Minimum Amount"
+            width="715px"
+            type="number"
+            value={minAmount}
+            onChange={handleMiniumnAmountChange}
+            rightAddon={
+              !disabled && (
+                <Flex
+                  width={16}
+                  height="full"
+                  backgroundColor="secondary"
+                  alignItems="center"
+                  justifyContent="center"
+                  borderRightRadius="6px"
+                  paddingX={2}
+                >
+                  {isLoading ? <Spinner /> : <Text>AT</Text>}
+                </Flex>
+              )
+            }
+          />
         </Box>
         <Flex justifyContent="center" paddingTop="60px" marginBottom={10}>
           <Button
             size="lg"
-            disabled={!connected}
+            disabled={disabled}
             onClick={() => router.push('/stake')}
           >
             Submit

@@ -5,6 +5,7 @@ import { IQueryError } from './type';
 
 interface IQueryData {
   rate: number;
+  minimumAmount: string;
 }
 
 export function useStakeRateQuery(
@@ -36,6 +37,13 @@ export function useStakeRateQuery(
     return data.rate;
   }, [data]);
 
+  const minimumAmount = useMemo(() => {
+    if (!data) {
+      return '0';
+    }
+    return data.minimumAmount.toString();
+  }, [data]);
+
   return {
     isLoading,
     isSuccess,
@@ -43,5 +51,6 @@ export function useStakeRateQuery(
     isFetching,
     error,
     stakeRate,
+    minimumAmount,
   };
 }
