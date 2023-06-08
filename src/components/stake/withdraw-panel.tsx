@@ -7,6 +7,7 @@ import {
   StatLabel,
   StatNumber,
   Flex,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
 import Table from '../common/table';
@@ -16,6 +17,8 @@ import Pagination from '../common/pagination';
 import Badge from '../common/badge';
 import { useConnect } from '@spinal-ckb/react';
 import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
+import { useMemo, useState } from 'react';
+import { useDialog } from '@/hooks/useDialog';
 
 const MOCK_COLUMNS = [
   {
@@ -73,7 +76,23 @@ const MOCK_DATASOURCE = [
 
 export default function WithdrawPanel() {
   const { address } = useConnect();
+  const showDialog = useDialog();
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { withdrawableAmount } = useStakeAmountQuery(address);
+  const displayAmount = useMemo(
+    () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
+    [withdrawableAmount],
+  );
+
+  const handleWithdraw = () => {
+    setIsConfirmDialogOpen(false);
+    showDialog({
+      title: 'Withdrawal Requests Submitted',
+      description:
+        'Your request has been submitted. Check out staking history for details.',
+      hideCancel: true,
+    });
+  };
 
   return (
     <Box>
@@ -107,7 +126,7 @@ export default function WithdrawPanel() {
           <StatNumber>
             <Flex alignItems="baseline">
               <Text fontSize="30px" marginRight={1}>
-                {(withdrawableAmount.toNumber() / 10 ** 8).toFixed(2)}
+                {displayAmount}
               </Text>
               <Text fontSize="md">AT</Text>
             </Flex>
@@ -126,11 +145,48 @@ export default function WithdrawPanel() {
       </Box>
       <Flex justifyContent="center">
         <Dialog
-          title="Total Withdrawlable Amount"
-          description="Your available withdrawal amount is 2000AT"
+          open={isConfirmDialogOpen}
+          title="Total Withdraw Amount"
+          description={
+            <Box>
+              <Flex fontFamily="montserrat" marginBottom="20px">
+                <Text marginRight={1}>
+                  Your available withdrawal amount is:
+                </Text>
+                <Text fontWeight="extrabold">{displayAmount}AT</Text>
+              </Flex>
+              <Alert borderRadius="8px">
+                <Flex>
+                  <AlertIcon marginTop="4px" />
+                  <Box>
+                    <Text
+                      as="span"
+                      fontFamily="montserrat"
+                      fontSize="14px"
+                      marginRight={1}
+                    >
+                      To withdraw unstaked tokens, you must withdraw all of them
+                      at once.
+                    </Text>
+                    <Text
+                      as="span"
+                      fontFamily="montserrat"
+                      fontSize="14px"
+                      fontWeight="extrabold"
+                    >
+                      Withdrawal requests are subject to a processing period.
+                    </Text>
+                  </Box>
+                </Flex>
+              </Alert>
+            </Box>
+          }
           confrmLabel="Withdraw"
+          onConfirm={handleWithdraw}
         >
-          <Button size="lg">Withdraw</Button>
+          <Button size="lg" onClick={() => setIsConfirmDialogOpen(true)}>
+            Withdraw
+          </Button>
         </Dialog>
       </Flex>
     </Box>

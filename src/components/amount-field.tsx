@@ -23,7 +23,7 @@ export default function AmountField(props: IAmountFieldProps) {
     if (total.eq(0)) {
       return '0';
     }
-    return amount.mul(100).div(total).toNumber();
+    return Math.ceil(amount.mul(100).div(total).toNumber());
   }, [amount, total]);
 
   const handleOptionChange = useCallback(
@@ -63,7 +63,9 @@ export default function AmountField(props: IAmountFieldProps) {
   return (
     <Flex marginBottom={14}>
       <Flex height={12} alignItems="center">
-        <Text fontWeight="extrabold">{label ?? 'Amount'}</Text>
+        <Text fontFamily="montserrat" fontWeight="extrabold">
+          {label ?? 'Amount'}
+        </Text>
       </Flex>
       <Spacer />
       <Box width="550px">

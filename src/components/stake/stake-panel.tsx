@@ -31,8 +31,8 @@ export default function StakePanel() {
       },
       onSuccess: () => {
         showDialog({
-          title: 'Staking Submitted',
-          description: 'Your transaction is already submitted, please check out the stake history later.',
+          title: 'Staking Request Submitted',
+          description: 'Your request has been submitted. Check out staking history for details.',
           hideCancel: true,
         });
       },

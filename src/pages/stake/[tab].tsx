@@ -84,11 +84,28 @@ export default function StakePage() {
             <Navigation navs={navs} active={tab} />
             <Spacer />
             <Menu placement="bottom-end">
-              <MenuButton as={Box} cursor="pointer">
+              <MenuButton
+                as={Box}
+                cursor="pointer"
+                display="flex"
+                flexDirection="column"
+                justifyContent="center"
+              >
                 <Icon as={MdSettings} width="20px" height="20px" />
               </MenuButton>
-              <MenuList>
-                <MenuItem onClick={() => router.push('/stake/settings')}>Commission Rate</MenuItem>
+              <MenuList
+                boxShadow="0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15)"
+                borderWidth="0px"
+                borderRadius="4px"
+              >
+                <MenuItem
+                  onClick={() => router.push('/stake/settings')}
+                  _focus={{
+                    backgroundColor: 'white',
+                  }}
+                >
+                  Commission Rate
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>

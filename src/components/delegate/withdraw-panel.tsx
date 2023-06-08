@@ -17,6 +17,8 @@ import Pagination from '../common/pagination';
 import Badge from '../common/badge';
 import { useConnect } from '@spinal-ckb/react';
 import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
+import { useMemo, useState } from 'react';
+import { useDialog } from '@/hooks/useDialog';
 
 const MOCK_COLUMNS = [
   {
@@ -74,7 +76,24 @@ const MOCK_DATASOURCE = [
 
 export default function WithdrawPanel() {
   const { address } = useConnect();
+  const showDialog = useDialog();
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { withdrawableAmount } = useStakeAmountQuery(address);
+
+  const displayAmount = useMemo(
+    () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
+    [withdrawableAmount],
+  );
+
+  const handleWithdraw = () => {
+    setIsConfirmDialogOpen(false);
+    showDialog({
+      title: 'Withdrawal Requests Submitted',
+      description:
+        'Your request has been submitted. Check out staking history for details.',
+      hideCancel: true,
+    });
+  };
 
   return (
     <Box>
@@ -126,13 +145,16 @@ export default function WithdrawPanel() {
       </Box>
       <Flex justifyContent="center">
         <Dialog
+          open={isConfirmDialogOpen}
           title="Total Withdraw Amount"
           description={
             <Box>
-              <Box fontFamily="montserrat" marginBottom="20px">
-                <Text>Your available withdrawal amount is:</Text>
-                <Text fontWeight="extrabold">2000AT</Text>
-              </Box>
+              <Flex fontFamily="montserrat" marginBottom="20px">
+                <Text marginRight={1}>
+                  Your available withdrawal amount is:
+                </Text>
+                <Text fontWeight="extrabold">{displayAmount}AT</Text>
+              </Flex>
               <Alert borderRadius="8px">
                 <Flex>
                   <AlertIcon marginTop="4px" />
@@ -160,8 +182,11 @@ export default function WithdrawPanel() {
             </Box>
           }
           confrmLabel="Withdraw"
+          onConfirm={handleWithdraw}
         >
-          <Button size="lg">Withdraw</Button>
+          <Button size="lg" onClick={() => setIsConfirmDialogOpen(true)}>
+            Withdraw
+          </Button>
         </Dialog>
       </Flex>
     </Box>

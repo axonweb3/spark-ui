@@ -1,4 +1,5 @@
-import { Text, Flex, Spacer, Box } from '@chakra-ui/react';
+import { Text, Flex, Spacer, Icon, Tooltip } from '@chakra-ui/react';
+import { MdHelp } from 'react-icons/md';
 
 export interface IEpochFieldProps {
   epoch: number;
@@ -9,7 +10,21 @@ export default function EpochField(props: IEpochFieldProps) {
   return (
     <Flex marginBottom={14}>
       <Flex height={12} alignItems="center">
-        <Text fontWeight="extrabold">Effective Epoch</Text>
+        <Text fontWeight="extrabold" fontFamily="montserrat" marginRight={1}>
+          Effective Epoch
+        </Text>
+        <Tooltip
+          label="The effective epoch is two epochs ahead of the current one. Any operation performed in the current epoch will have an impact on the validator set of the effective epoch ahead."
+          fontSize="sm"
+          fontFamily="montserrat"
+          padding="8px"
+          placement="top-start"
+          hasArrow
+        >
+          <Flex alignItems="center">
+            <Icon as={MdHelp} width="20px" height="20px" />
+          </Flex>
+        </Tooltip>
       </Flex>
       <Spacer />
       <Flex width="550px" justifyContent="start">

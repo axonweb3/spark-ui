@@ -16,6 +16,7 @@ export default function Card(props: ICardProps) {
       backgroundColor="primary"
       height="full"
       maxWidth="1080px"
+      filter="drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.15))"
       mx="auto"
     >
       {title && (

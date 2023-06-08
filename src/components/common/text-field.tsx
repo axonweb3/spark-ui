@@ -78,6 +78,7 @@ export default function TextField(props: ITextFieldProps) {
           type={type}
           borderColor={statusColor}
           borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
+          backgroundColor="white"
           disabled={disabled}
           _focusVisible={{
             boxShadow: 'none',

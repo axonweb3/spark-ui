@@ -78,7 +78,7 @@ export default function SettingsPage() {
         borderRightRadius="6px"
         paddingX={2}
       >
-        {isLoading ? <Spinner /> : <Text>%</Text>}
+        {isLoading ? <Spinner size="sm" /> : <Text>%</Text>}
       </Flex>
     ),
     [isLoading],
@@ -99,7 +99,7 @@ export default function SettingsPage() {
           </Text>
         }
       >
-        <Box marginY="70px">
+        <Box marginTop="55px" marginX="32px">
           <Flex width="full" marginBottom="20px">
             <Flex width="100px">
               <Text fontFamily="montserrat" fontWeight="bold">
@@ -141,7 +141,19 @@ export default function SettingsPage() {
                 >
                   <SliderFilledTrack backgroundColor="yellow.300" />
                 </SliderTrack>
-                <SliderThumb />
+                <SliderThumb
+                  height="24px"
+                  width="24px"
+                  borderRadius="3px"
+                  backgroundColor="#44403D"
+                >
+                  <Box
+                    height="10px"
+                    width="10px"
+                    backgroundColor="white"
+                    borderRadius="full"
+                  />
+                </SliderThumb>
               </Slider>
             </Box>
             <Box width="100px">

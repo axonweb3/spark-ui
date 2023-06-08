@@ -8,22 +8,34 @@ export interface IBadgeProps {
 export default function Badge(props: IBadgeProps) {
   const { status } = props;
 
-  const colorScheme = React.useMemo(() => {
+  const colors = React.useMemo(() => {
     switch (status) {
       case 'success':
-        return 'green';
+        return {
+          backgroundColor: '#CEF4D0',
+          color: '#224D24',
+        };
       case 'pending':
-        return 'yellow';
+        return {
+          backgroundColor: '#FDF1CA',
+          color: '#574A1D',
+        };
       case 'failed':
-        return 'red';
+        return {
+          backgroundColor: '#FFCAC7',
+          color: '#99322C',
+        };
       default:
-        return 'gray';
+        return {
+          backgroundColor: 'gray.200',
+          color: 'gray.700',
+        };
     }
   }, [status]);
 
   return (
     <ChakraBadge
-      colorScheme={colorScheme}
+      {...colors}
       paddingX="8px"
       paddingY="2px"
       borderRadius="2px"
