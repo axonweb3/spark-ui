@@ -13,30 +13,20 @@ import {
   StatNumber,
   SimpleGrid,
   Spacer,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useConnect } from '@spinal-ckb/react';
-import { MdFileCopy, MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
+import {
+  MdFileCopy,
+  MdHelp,
+  MdOutlineCheckBoxOutlineBlank,
+} from 'react-icons/md';
 import Button from '@/components/common/button';
 import SegmentedButton from '@/components/common/segmented-button';
 import Badge from '@/components/common/badge';
 import Table from '@/components/common/table';
 import Pagination from '@/components/common/pagination';
 import Dialog from '@/components/common/dialog';
-
-const MOCK_STATS = [
-  {
-    label: 'Unlocked Rewards',
-    value: 10000,
-  },
-  {
-    label: 'Locked Rewards',
-    value: 10000,
-  },
-  {
-    label: 'Total Staked/Delegated Amount',
-    value: 10000,
-  },
-];
 
 const MOCK_COLUMNS = [
   {
@@ -104,6 +94,26 @@ export default function RewardsPage() {
     );
   }, [address]);
 
+  const stats = useMemo(
+    () => [
+      {
+        label: 'Unlocked Rewards',
+        tooltip: 'Available for withdrawal and spending.',
+        value: 10000,
+      },
+      {
+        label: 'Locked Rewards',
+        tooltip: 'Available only after the locking period.',
+        value: 10000,
+      },
+      {
+        label: 'Total Staked or Delegated Amount',
+        value: 10000,
+      },
+    ],
+    [],
+  );
+
   const handleCopyAddress = useCallback(() => {
     onCopy();
     toast({
@@ -116,7 +126,7 @@ export default function RewardsPage() {
 
   return (
     <Layout>
-      <Card>
+      <Card size="lg">
         <Box paddingY="60px" paddingX="32px">
           <Box marginBottom="60px">
             <Flex justifyContent="space-between" alignItems="center">
@@ -141,7 +151,7 @@ export default function RewardsPage() {
             </Flex>
           </Box>
           <SimpleGrid columns={3} spacing="12px" marginBottom="60px">
-            {MOCK_STATS.map(({ label, value }) => (
+            {stats.map(({ label, tooltip, value }) => (
               <Box
                 key={label}
                 backgroundColor="white"
@@ -153,7 +163,23 @@ export default function RewardsPage() {
               >
                 <Stat>
                   <StatLabel fontFamily="montserrat" fontWeight="bold">
-                    {label}
+                    <Flex>
+                      {label}
+                      {tooltip && (
+                        <Tooltip
+                          label={tooltip}
+                          fontSize="sm"
+                          fontFamily="montserrat"
+                          padding="8px"
+                          placement="bottom-start"
+                          hasArrow
+                        >
+                          <Flex alignItems="center" marginLeft={2}>
+                            <Icon as={MdHelp} width="20px" height="20px" />
+                          </Flex>
+                        </Tooltip>
+                      )}
+                    </Flex>
                   </StatLabel>
                   <StatNumber
                     fontFamily="montserrat"
@@ -207,7 +233,7 @@ export default function RewardsPage() {
         </Box>
       </Card>
       <Box height="30px" />
-      <Card>
+      <Card size="lg">
         <Box paddingY="30px" paddingX="32px">
           <Flex justifyContent="center" marginBottom="30px">
             <Box width="420px">

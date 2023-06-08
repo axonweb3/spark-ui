@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Button from '@/components/common/button';
 import Navigation from '@/components/common/navigation';
-import navs from '@/navs';
+import allNavs from '@/navs';
 import { Container, Flex, Spacer } from '@chakra-ui/react';
 import { useConnect, useDisconnect } from '@spinal-ckb/react';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
@@ -18,17 +18,20 @@ export default function Header(props: IHeaderProps) {
   const { role } = useStakeRole();
   const { disconnect } = useDisconnect();
 
-  const navsByRole = useMemo(() => {
+  const navs = useMemo(() => {
     if (role === StakeRoleType.Delegator) {
-      return navs.filter(({ name }) => name !== 'Stake');
+      return allNavs.filter(({ name }) => name !== 'Stake');
     }
-    return navs;
-  }, [role]);
+    if (!connected) {
+      return allNavs.filter(({ name }) => name !== 'Rewards');
+    }
+    return allNavs;
+  }, [role, connected]);
 
   const active = React.useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));
     return nav?.name;
-  }, [router.pathname]);
+  }, [router.pathname, navs]);
 
   return (
     <header>
@@ -38,7 +41,7 @@ export default function Header(props: IHeaderProps) {
           <Spacer />
           {!props.logoOnly && (
             <>
-              <Navigation navs={navsByRole} active={active} />
+              <Navigation navs={navs} active={active} />
               <Spacer />
               {connected ? (
                 <Button

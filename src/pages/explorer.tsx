@@ -12,7 +12,7 @@ export default function ExplorerPage() {
     <Layout>
       <SimpleGrid
         width="100%"
-        maxWidth="1080px"
+        maxWidth="1280px"
         marginX="auto"
         columns={2}
         gap="30px"
@@ -25,12 +25,12 @@ export default function ExplorerPage() {
         </Box>
       </SimpleGrid>
       <Box marginTop="30px">
-        <Card>
+        <Card size="lg">
           <TopStakeAddresses />
         </Card>
       </Box>
       <Box marginTop="30px">
-        <Card>
+        <Card size="lg">
           <LatestTransactions />
         </Card>
       </Box>
