@@ -7,7 +7,7 @@ import { NextHandler } from 'next-connect';
 function isValidAddress(address: string) {
   try {
     config.initializeConfig(
-      process.env.NODE_ENV === 'production'
+      process.env.PRODUCTION_MODE
         ? config.predefined.LINA
         : config.predefined.AGGRON4,
     );
