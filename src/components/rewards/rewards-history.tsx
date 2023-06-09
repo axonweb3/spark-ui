@@ -1,28 +1,19 @@
-import { Text, Box } from '@chakra-ui/react';
-import Table from '../common/table';
+import { Box } from '@chakra-ui/react';
 import Pagination from '../common/pagination';
+import Table from '../common/table';
 import Badge from '../common/badge';
-import { useConnect } from '@spinal-ckb/react';
 import { useMemo, useState } from 'react';
+import { useConnect } from '@spinal-ckb/react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 
 const columns = [
   {
-    title: 'Event',
-    dataIndex: 'event',
-    sorter: true,
-    render: (event: string) => {
-      return <Text textTransform="capitalize">{event}</Text>;
-    },
+    title: 'Epoch',
+    dataIndex: 'epoch',
   },
   {
-    title: 'ID',
-    dataIndex: 'id',
-    sorter: true,
-  },
-  {
-    title: 'Amount',
+    title: 'Total Amount',
     dataIndex: 'amount',
     sorter: true,
     render: (amount: string) => {
@@ -30,25 +21,30 @@ const columns = [
     },
   },
   {
-    title: 'Status',
-    dataIndex: 'status',
-    sorter: true,
-    render: (status: string, data: any) => {
-      return <Badge key={data.id} status={status} />;
+    title: 'Rewards Status',
+    dataIndex: 'locked',
+    render: (locked: boolean, data: any) => {
+      return (
+        <Badge
+          key={data.id}
+          status={locked ? 'failed' : 'success'}
+          label={locked ? 'Locked' : 'Unlock'}
+        />
+      );
     },
   },
 ];
 
-export default function HistoryPanel() {
+export function RewardsHistory() {
   const { address } = useConnect();
   const [page, setPage] = useState(1);
   const { data, isFetching } = useQuery(
-    ['delegateHistory', address, page],
+    ['rewardsHistory', address, page],
     async () => {
       if (!address) {
         return undefined;
       }
-      const response = await axios.get('/api/delegate', {
+      const response = await axios.get('/api/reward', {
         params: {
           address,
           pageNumber: page,

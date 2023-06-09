@@ -3,10 +3,11 @@ import React from 'react';
 
 export interface IBadgeProps {
   status: 'succeed' | 'pending' | 'failed' | string;
+  label?: string;
 }
 
 export default function Badge(props: IBadgeProps) {
-  const { status } = props;
+  const { status, label } = props;
 
   const colors = React.useMemo(() => {
     switch (status) {
@@ -42,7 +43,7 @@ export default function Badge(props: IBadgeProps) {
       fontWeight="bold"
       textTransform="uppercase"
     >
-      <Text fontFamily="montserrat">{status}</Text>
+      <Text fontFamily="montserrat">{label ?? status}</Text>
     </ChakraBadge>
   );
 }

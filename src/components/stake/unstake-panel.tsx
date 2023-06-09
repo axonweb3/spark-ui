@@ -6,7 +6,7 @@ import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
+import { useBalanceQuery } from '@/hooks/useBalanceQuery';
 import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import { useNotification } from '@/hooks/useNotification';
 import axios from 'axios';
@@ -16,8 +16,8 @@ export default function UnstakePanel() {
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
   const { connected, address } = useConnect({});
   const disabled = useMemo(() => !connected, [connected]);
-  const { isLoading, stakeAmount } = useStakeAmountQuery(address);
-  const [amount, setAmount] = useState(stakeAmount);
+  const { isLoading, stakedAmount } = useBalanceQuery(address);
+  const [amount, setAmount] = useState(stakedAmount);
   const mutation = useSendTxMutation(
     (params: { address: string; amount: number }) => {
       return axios.post(`/api/stake/unstake`, params);
@@ -36,13 +36,13 @@ export default function UnstakePanel() {
   );
 
   React.useEffect(() => {
-    if (!stakeAmount.isZero()) {
-      setAmount(stakeAmount);
+    if (!stakedAmount.isZero()) {
+      setAmount(stakedAmount);
     }
     if (!connected) {
       setAmount(BI.from(0));
     }
-  }, [connected, stakeAmount, setAmount]);
+  }, [connected, stakedAmount, setAmount]);
 
   const startUnstakeTransaction = useCallback(() => {
     if (!address) return;
@@ -53,7 +53,7 @@ export default function UnstakePanel() {
     <Box width="756px" marginTop={10} marginX="auto">
       <AmountField
         label="Unstake Amount"
-        total={stakeAmount}
+        total={stakedAmount}
         amount={amount}
         onChange={setAmount}
         disabled={disabled}

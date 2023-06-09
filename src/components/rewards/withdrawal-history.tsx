@@ -1,25 +1,25 @@
-import { Text, Box } from '@chakra-ui/react';
-import Table from '../common/table';
+import { Box } from '@chakra-ui/react';
 import Pagination from '../common/pagination';
+import Table from '../common/table';
 import Badge from '../common/badge';
-import { useConnect } from '@spinal-ckb/react';
 import { useMemo, useState } from 'react';
+import { useConnect } from '@spinal-ckb/react';
 import { useQuery } from 'react-query';
+import format from 'date-fns/format';
 import axios from 'axios';
 
 const columns = [
   {
-    title: 'Event',
-    dataIndex: 'event',
-    sorter: true,
-    render: (event: string) => {
-      return <Text textTransform="capitalize">{event}</Text>;
-    },
+    title: 'Timestamp',
+    dataIndex: 'timestamp',
+    render: (timestamp: number) => format(new Date(timestamp), 'yyyy/MM/dd HH:mm:ss'),
   },
   {
-    title: 'ID',
-    dataIndex: 'id',
-    sorter: true,
+    title: 'Transaction Hash',
+    dataIndex: 'hash',
+    render: (hash: string) => {
+      return hash && hash.substring(0, 30) + '...';
+    }
   },
   {
     title: 'Amount',
@@ -39,16 +39,16 @@ const columns = [
   },
 ];
 
-export default function HistoryPanel() {
+export function WithdrawalHistory() {
   const { address } = useConnect();
   const [page, setPage] = useState(1);
   const { data, isFetching } = useQuery(
-    ['delegateHistory', address, page],
+    ['withdrawalHistory', address, page],
     async () => {
       if (!address) {
         return undefined;
       }
-      const response = await axios.get('/api/delegate', {
+      const response = await axios.get('/api/reward/withdrawal', {
         params: {
           address,
           pageNumber: page,

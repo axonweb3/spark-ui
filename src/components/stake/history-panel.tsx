@@ -44,16 +44,17 @@ export default function HistoryPanel() {
   const [page, setPage] = useState(1);
   const { data, isFetching } = useQuery(
     ['stakeHistory', address, page],
-    () => {
+    async () => {
       if (!address) {
         return undefined;
       }
-      return axios.get('/api/stake', {
+      const response = await axios.get('/api/stake', {
         params: {
           address,
           pageNumber: page,
         },
       });
+      return response.data;
     },
     { keepPreviousData: true },
   );

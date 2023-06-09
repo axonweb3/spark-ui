@@ -87,6 +87,39 @@
       }
     },
     {
+      "name": "getRewardState",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "state",
+        "schema": {
+          "type": "object",
+          "required": [
+            "unlock_amount",
+            "locked_amount"
+          ],
+          "properties": {
+            "unlock_amount": {
+              "type": "integer",
+              "minimum": 100000000000,
+              "maximum": 100000000000000
+            },
+            "locked_amount": {
+              "type": "integer",
+              "minimum": 10000000,
+              "maximum": 10000000000
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "getStakeHistory",
       "params": [
         {
@@ -109,75 +142,239 @@
         }
       ],
       "result": {
-        "name": "model",
+        "name": "stakeHistory",
         "schema": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "required": [
-              "id",
-              "address",
-              "timestamp",
-              "event",
-              "operation",
-              "tx_hash",
-              "amount",
-              "epoch",
-              "status"
-            ],
-            "properties": {
-              "id": {
-                "type": "integer",
-                "minimum": 0
+          "name": "total",
+          "type": "object",
+          "required": [
+            "total",
+            "data"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "address",
+                  "timestamp",
+                  "event",
+                  "operation",
+                  "tx_hash",
+                  "amount",
+                  "epoch",
+                  "status"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "address": {
+                    "type": "string",
+                    "pattern": "^(ckt)[\\d\\w]{97}$"
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "event": {
+                    "type": "string",
+                    "enum": [
+                      "add",
+                      "reedem",
+                      "withdraw"
+                    ]
+                  },
+                  "operation": {
+                    "type": "string",
+                    "enum": [
+                      "stake",
+                      "delegate"
+                    ]
+                  },
+                  "tx_hash": {
+                    "type": "string",
+                    "pattern": "^(0x)[\\d\\w]{64}$"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 100000000000,
+                    "maximum": 100000000000000
+                  },
+                  "epoch": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "success",
+                      "failed"
+                    ]
+                  }
+                }
               },
-              "address": {
-                "type": "string",
-                "pattern": "^(ckt)[\\d\\w]{97}$"
-              },
-              "timestamp": {
-                "type": "string",
-                "format": "date-time"
-              },
-              "event": {
-                "type": "string",
-                "enum": [
-                  "add",
-                  "reedem",
-                  "withdraw"
-                ]
-              },
-              "operation": {
-                "type": "string",
-                "enum": [
-                  "stake",
-                  "delegate"
-                ]
-              },
-              "tx_hash": {
-                "type": "string",
-                "pattern": "^(0x)[\\d\\w]{64}$"
-              },
-              "amount": {
-                "type": "integer",
-                "minimum": 100000000000,
-                "maximum": 100000000000000
-              },
-              "epoch": {
-                "type": "integer",
-                "minimum": 0
-              },
-              "status": {
-                "type": "string",
-                "enum": [
-                  "pending",
-                  "success",
-                  "failed"
-                ]
-              }
+              "minItems": 10,
+              "maxItems": 10
             }
-          },
-          "minItems": 10,
-          "maxItems": 10
+          }
+        }
+      }
+    },
+    {
+      "name": "getRewardHistory",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page_number",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "rewardHistory",
+        "schema": {
+          "name": "total",
+          "type": "object",
+          "required": [
+            "total",
+            "data"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2000
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "amount",
+                  "epoch",
+                  "locked"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 100000000000,
+                    "maximum": 100000000000000
+                  },
+                  "epoch": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "locked": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "minItems": 10,
+              "maxItems": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "getWithdrawalHistory",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page_number",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "withdrawalHistory",
+        "schema": {
+          "name": "total",
+          "type": "object",
+          "required": [
+            "total",
+            "data"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 2000
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "timestamp",
+                  "hash",
+                  "amount",
+                  "status"
+                ],
+                "properties": {
+                  "timestamp": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "hash": {
+                    "$ref": "#/components/schemas/Hash"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 100000000000,
+                    "maximum": 100000000000000
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "success",
+                      "failed"
+                    ]
+                  }
+                }
+              },
+              "minItems": 10,
+              "maxItems": 10
+            }
+          }
         }
       }
     },

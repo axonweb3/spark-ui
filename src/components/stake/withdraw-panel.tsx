@@ -16,7 +16,7 @@ import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
 import { useConnect } from '@spinal-ckb/react';
-import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
+import { useBalanceQuery } from '@/hooks/useBalanceQuery';
 import { useMemo, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';
 
@@ -78,7 +78,7 @@ export default function WithdrawPanel() {
   const { address } = useConnect();
   const showDialog = useDialog();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const { withdrawableAmount } = useStakeAmountQuery(address);
+  const { withdrawableAmount } = useBalanceQuery(address);
   const displayAmount = useMemo(
     () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
     [withdrawableAmount],

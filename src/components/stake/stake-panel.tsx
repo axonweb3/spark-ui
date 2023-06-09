@@ -3,7 +3,7 @@ import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
 import { useConnect } from '@spinal-ckb/react';
 import { BI } from '@ckb-lumos/lumos';
-import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
+import { useBalanceQuery } from '@/hooks/useBalanceQuery';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
 import { useNotification } from '@/hooks/useNotification';
@@ -16,7 +16,7 @@ export default function StakePanel() {
   const showDialog = useDialog();
   const { connected, address } = useConnect();
   const disabled = useMemo(() => !connected, [connected]);
-  const { isLoading, availableAmount } = useStakeAmountQuery(address);
+  const { isLoading, availableAmount } = useBalanceQuery(address);
   const [amount, setAmount] = useState(availableAmount);
   const mutation = useSendTxMutation(
     (params: { address: string; amount: number }) => {

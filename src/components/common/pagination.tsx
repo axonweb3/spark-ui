@@ -7,8 +7,10 @@ export interface IPaginationProps {
   defaultCurrent?: number;
   defaultPageSize?: number;
   current?: number;
+  pageSize?: number;
   showQuickJumper?: boolean;
   onChange?(page: number): void;
+  onPageSizeChange?(pageSize: number): void;
 }
 
 const PAGE_NUM_STYLE = {
@@ -29,8 +31,10 @@ export default function Pagination(props: IPaginationProps) {
     defaultCurrent = 1,
     defaultPageSize = 10,
     current,
+    pageSize: currentPageSize,
     showQuickJumper = false,
     onChange,
+    onPageSizeChange,
   } = props;
   const [page, setPage] = React.useState(current ?? defaultCurrent);
   const [pageSize, setPageSize] = React.useState(defaultPageSize);
@@ -61,6 +65,12 @@ export default function Pagination(props: IPaginationProps) {
   }, [page, totalPage]);
 
   useEffect(() => {
+    if (currentPageSize) {
+      setPageSize(currentPageSize);
+    }
+  }, [currentPageSize])
+
+  useEffect(() => {
     if (current !== undefined) {
       setPage(current);
     }
@@ -69,6 +79,10 @@ export default function Pagination(props: IPaginationProps) {
   useEffect(() => {
     onChange?.(page);
   }, [page, onChange])
+
+  useEffect(() => {
+    onPageSizeChange?.(pageSize);
+  }, [pageSize, onPageSizeChange])
 
   return (
     <Box>

@@ -7,7 +7,7 @@ import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 import EpochField from '../epoch-field';
-import { useStakeAmountQuery } from '@/hooks/useStakeAmountQuery';
+import { useBalanceQuery } from '@/hooks/useBalanceQuery';
 import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
 import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import axios from 'axios';
@@ -18,7 +18,7 @@ export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
   const { connected, address } = useConnect();
-  const { isLoading, availableAmount } = useStakeAmountQuery(address);
+  const { isLoading, availableAmount } = useBalanceQuery(address);
   const [delegateAddress, setDelegateAddress] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const { stakeRate, error, isFetching } = useStakeRateQuery(delegateAddress, {

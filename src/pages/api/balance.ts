@@ -10,11 +10,25 @@ router
   .use(addressMiddleware)
   .get(async (req: NextApiRequest, res: NextApiResponse) => {
     const { address } = req.query;
-    const { data } = await axios.post(process.env.SPARK_RPC_URL!, {
+    const stakeStateRequest = axios.post(process.env.SPARK_RPC_URL!, {
       method: 'getStakeState',
       params: [address],
     });
-    res.json(data.result);
+    const rewardStateRequest = axios.post(process.env.SPARK_RPC_URL!, {
+      method: 'getRewardState',
+      params: [address],
+    });
+    const [stakeState, rewardState] = await Promise.all([stakeStateRequest, rewardStateRequest]);
+    const { amount, stake_amount, delegate_amount, withdrawable_amount } = stakeState.data.result;
+    const { unlock_amount, locked_amount } = rewardState.data.result;
+    res.json({
+      amount,
+      stake_amount,
+      delegate_amount,
+      withdrawable_amount,
+      unlock_amount,
+      locked_amount,
+    });
   });
 
 export default router.handler({
