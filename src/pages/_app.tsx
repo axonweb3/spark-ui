@@ -6,7 +6,7 @@ import {
   MetaMaskConnector,
   SpinalConfigProvider,
   chains,
-} from '@spinal-ckb/react';
+} from 'ckb-hooks';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Montserrat } from 'next/font/google';
 

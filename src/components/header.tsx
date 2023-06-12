@@ -5,7 +5,7 @@ import Button from '@/components/common/button';
 import Navigation from '@/components/common/navigation';
 import allNavs from '@/navs';
 import { Container, Flex, Spacer } from '@chakra-ui/react';
-import { useConnect, useDisconnect } from '@spinal-ckb/react';
+import { useConnect, useDisconnect } from 'ckb-hooks';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
 
 export interface IHeaderProps {

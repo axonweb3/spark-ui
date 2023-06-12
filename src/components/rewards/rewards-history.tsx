@@ -3,7 +3,7 @@ import Pagination from '../common/pagination';
 import Table from '../common/table';
 import Badge from '../common/badge';
 import { useMemo, useState } from 'react';
-import { useConnect } from '@spinal-ckb/react';
+import { useConnect } from 'ckb-hooks';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 

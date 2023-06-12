@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
-import { useConnect } from '@spinal-ckb/react';
+import { useConnect } from 'ckb-hooks';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';

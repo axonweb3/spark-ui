@@ -1,6 +1,6 @@
 import * as cookie from 'cookie';
 import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
-import { useConnect } from '@spinal-ckb/react';
+import { useConnect } from 'ckb-hooks';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Box,

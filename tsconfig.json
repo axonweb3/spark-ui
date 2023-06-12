@@ -15,7 +15,8 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "ckb-hooks": ["./packages/ckb-hooks"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

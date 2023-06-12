@@ -1,5 +1,5 @@
 // import { helpers } from '@ckb-lumos/lumos';
-// import { signTransaction } from '@spinal-ckb/react';
+// import { signTransaction } from 'ckb-hooks';
 import { AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 

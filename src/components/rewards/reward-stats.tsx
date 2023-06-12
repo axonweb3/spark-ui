@@ -20,7 +20,7 @@ import {
 } from 'react-icons/md';
 import Card from '../common/card';
 import Dialog from '../common/dialog';
-import { useConnect } from '@spinal-ckb/react';
+import { useConnect } from 'ckb-hooks';
 import { useCallback, useMemo } from 'react';
 import { useBalanceQuery } from '@/hooks/useBalanceQuery';
 

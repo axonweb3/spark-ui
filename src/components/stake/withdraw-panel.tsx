@@ -15,7 +15,7 @@ import Button from '../common/button';
 import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useConnect } from '@spinal-ckb/react';
+import { useConnect } from 'ckb-hooks';
 import { useBalanceQuery } from '@/hooks/useBalanceQuery';
 import { useMemo, useState } from 'react';
 import { useDialog } from '@/hooks/useDialog';

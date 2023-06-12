@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -8,11 +9,16 @@ const nextConfig = {
     config.resolve.fallback = {
       ...config.resolve.fallback,
       crypto: require.resolve('crypto-browserify'),
-      buffer: require.resolve('buffer/'),
+      buffer: require.resolve('buffer'),
       encoding: false,
       path: false,
       fs: false,
       stream: false,
+    };
+
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'ckb-hooks': path.resolve(__dirname, 'packages/ckb-hooks'),
     };
 
     config.plugins = [
