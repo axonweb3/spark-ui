@@ -2,10 +2,10 @@ import { Text, Box } from '@chakra-ui/react';
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useConnect } from 'ckb-hooks';
 import { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { useConnect } from '@/hooks/useConnect';
 
 const columns = [
   {

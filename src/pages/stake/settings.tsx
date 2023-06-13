@@ -1,6 +1,5 @@
 import * as cookie from 'cookie';
-import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
-import { useConnect } from 'ckb-hooks';
+import { useStakeRateQuery } from '@/hooks/query/useStakeRateQuery';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Box,
@@ -25,6 +24,7 @@ import TextField from '@/components/common/text-field';
 import { useRouter } from 'next/router';
 import { STAKE_ROLE_KEY } from '@/consts';
 import InputField from '@/components/input-filed';
+import { useConnect } from '@/hooks/useConnect';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
@@ -53,8 +53,7 @@ export function getServerSideProps(context: NextPageContext) {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { address, connected } = useConnect();
-  const disabled = useMemo(() => !connected, [connected]);
+  const { address, isConnected, isDisconnected } = useConnect();
   const [isDialogOpen, setIsDialogOpen] = React.useState(true);
   const { stakeRate, minimumAmount, isSuccess, isLoading } =
     useStakeRateQuery(address);
@@ -123,13 +122,13 @@ export default function SettingsPage() {
                   setRate(Math.min(parseInt(val || '0', 10), 100));
                 }}
                 rightAddon={inputAddon}
-                disabled={disabled}
+                disabled={isDisconnected}
               />
             </Box>
             <Box flexGrow="1">
               <Slider
                 value={rate}
-                onChange={(val) => connected && setRate(val)}
+                onChange={(val) => isConnected && setRate(val)}
                 focusThumbOnChange={false}
               >
                 <SliderTrack
@@ -165,7 +164,7 @@ export default function SettingsPage() {
                   setRate(100 - Math.min(parseInt(val || '0', 10), 100));
                 }}
                 rightAddon={inputAddon}
-                disabled={disabled}
+                disabled={isDisconnected}
               />
             </Box>
           </Flex>
@@ -176,7 +175,7 @@ export default function SettingsPage() {
             value={minAmount}
             onChange={handleMiniumnAmountChange}
             rightAddon={
-              !disabled && (
+              !isDisconnected && (
                 <Flex
                   width={16}
                   height="full"
@@ -195,7 +194,7 @@ export default function SettingsPage() {
         <Flex justifyContent="center" paddingTop="60px" marginBottom={10}>
           <Button
             size="lg"
-            disabled={disabled}
+            disabled={isDisconnected}
             onClick={() => router.push('/stake')}
           >
             Submit

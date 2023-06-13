@@ -2,23 +2,25 @@ import type { AppProps } from 'next/app';
 import theme from '@/theme';
 import { ChakraProvider } from '@chakra-ui/react';
 import { Provider as JotaiProvider, createStore } from 'jotai';
-import {
-  MetaMaskConnector,
-  SpinalConfigProvider,
-  chains,
-} from 'ckb-hooks';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Montserrat } from 'next/font/google';
+import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi';
+import { publicProvider } from 'wagmi/providers/public';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
 const queryClient = new QueryClient();
 
-const config = {
+const { publicClient, webSocketPublicClient } = configureChains(
+  [mainnet],
+  [publicProvider()],
+);
+
+const config = createConfig({
   autoConnect: true,
-  chains: [chains.testnet],
-  connectors: [new MetaMaskConnector()],
-};
+  publicClient,
+  webSocketPublicClient,
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   const store = createStore();
@@ -26,14 +28,14 @@ export default function App({ Component, pageProps }: AppProps) {
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
         <JotaiProvider store={store}>
-          <SpinalConfigProvider config={config}>
+          <WagmiConfig config={config}>
             <style jsx global>{`
               :root {
                 --montserrat-font: ${montserrat.style.fontFamily};
               }
             `}</style>
             <Component {...pageProps} />
-          </SpinalConfigProvider>
+          </WagmiConfig>
         </JotaiProvider>
       </QueryClientProvider>
     </ChakraProvider>

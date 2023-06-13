@@ -15,10 +15,10 @@ import Button from '../common/button';
 import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useConnect } from 'ckb-hooks';
-import { useBalanceQuery } from '@/hooks/useBalanceQuery';
+import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useMemo, useState } from 'react';
-import { useDialog } from '@/hooks/useDialog';
+import { useDialog } from '@/hooks/ui/useDialog';
+import { useConnect } from '@/hooks/useConnect';
 
 const MOCK_COLUMNS = [
   {

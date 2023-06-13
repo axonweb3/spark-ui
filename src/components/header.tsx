@@ -5,8 +5,8 @@ import Button from '@/components/common/button';
 import Navigation from '@/components/common/navigation';
 import allNavs from '@/navs';
 import { Container, Flex, Spacer } from '@chakra-ui/react';
-import { useConnect, useDisconnect } from 'ckb-hooks';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
+import { useConnect } from '@/hooks/useConnect';
 
 export interface IHeaderProps {
   logoOnly?: boolean;
@@ -14,19 +14,18 @@ export interface IHeaderProps {
 
 export default function Header(props: IHeaderProps) {
   const router = useRouter();
-  const { connect, connected, address } = useConnect({});
+  const { connect, isConnected, address } = useConnect();
   const { role } = useStakeRole();
-  const { disconnect } = useDisconnect();
 
   const navs = useMemo(() => {
     if (role === StakeRoleType.Delegator) {
       return allNavs.filter(({ name }) => name !== 'Stake');
     }
-    if (!connected) {
+    if (!isConnected) {
       return allNavs.filter(({ name }) => name !== 'Rewards');
     }
     return allNavs;
-  }, [role, connected]);
+  }, [role, isConnected]);
 
   const active = React.useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));
@@ -43,13 +42,12 @@ export default function Header(props: IHeaderProps) {
             <>
               <Navigation navs={navs} active={active} />
               <Spacer />
-              {connected ? (
+              {isConnected ? (
                 <Button
                   width="50"
-                  variant="outlined"
-                  onClick={() => disconnect()}
+                  variant="hovertext"
                 >
-                  {address?.slice(0, 6) + '..' + address?.slice(-7)}
+                  {address?.slice(0, 10) + '...' + address?.slice(-10)}
                 </Button>
               ) : (
                 <Button width="50" onClick={() => connect()}>

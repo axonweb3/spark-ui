@@ -1,8 +1,8 @@
 import React from 'react';
 import Header from './header';
 import { Box, Container } from '@chakra-ui/react';
-import { NotificationProvider } from '@/hooks/useNotification';
-import { DialogProvider } from '@/hooks/useDialog';
+import { NotificationProvider } from '@/hooks/ui/useNotification';
+import { DialogProvider } from '@/hooks/ui/useDialog';
 
 export interface ILayoutProps {
   logoOnly?: boolean;

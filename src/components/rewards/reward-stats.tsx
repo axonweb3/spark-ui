@@ -20,13 +20,13 @@ import {
 } from 'react-icons/md';
 import Card from '../common/card';
 import Dialog from '../common/dialog';
-import { useConnect } from 'ckb-hooks';
 import { useCallback, useMemo } from 'react';
-import { useBalanceQuery } from '@/hooks/useBalanceQuery';
+import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
+import { useConnect } from '@/hooks/useConnect';
 
 export function RewardStats() {
   const toast = useToast();
-  const { address } = useConnect({});
+  const { address } = useConnect();
   const { unlockAmount, lockedAmount, stakedAmount, delegatedAmount } = useBalanceQuery(address);
   const { onCopy } = useClipboard(address ?? '');
 

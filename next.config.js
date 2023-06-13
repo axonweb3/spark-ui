@@ -16,11 +16,6 @@ const nextConfig = {
       stream: false,
     };
 
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      'ckb-hooks': path.resolve(__dirname, 'packages/ckb-hooks'),
-    };
-
     config.plugins = [
       ...config.plugins,
       new webpack.ProvidePlugin({ Buffer: ['buffer', 'Buffer'] }),

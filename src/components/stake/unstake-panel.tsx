@@ -1,21 +1,20 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
-import { useConnect } from 'ckb-hooks';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useBalanceQuery } from '@/hooks/useBalanceQuery';
-import { useSendTxMutation } from '@/hooks/useSendTxMutation';
-import { useNotification } from '@/hooks/useNotification';
+import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
+import { useSendTxMutation } from '@/hooks/query/useSendTxMutation';
+import { useNotification } from '@/hooks/ui/useNotification';
 import axios from 'axios';
+import { useConnect } from '@/hooks/useConnect';
 
 export default function UnstakePanel() {
   const notify = useNotification();
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
-  const { connected, address } = useConnect({});
-  const disabled = useMemo(() => !connected, [connected]);
+  const { isDisconnected, address } = useConnect();
   const { isLoading, stakedAmount } = useBalanceQuery(address);
   const [amount, setAmount] = useState(stakedAmount);
   const mutation = useSendTxMutation(
@@ -39,10 +38,10 @@ export default function UnstakePanel() {
     if (!stakedAmount.isZero()) {
       setAmount(stakedAmount);
     }
-    if (!connected) {
+    if (isDisconnected) {
       setAmount(BI.from(0));
     }
-  }, [connected, stakedAmount, setAmount]);
+  }, [isDisconnected, stakedAmount, setAmount]);
 
   const startUnstakeTransaction = useCallback(() => {
     if (!address) return;
@@ -56,14 +55,14 @@ export default function UnstakePanel() {
         total={stakedAmount}
         amount={amount}
         onChange={setAmount}
-        disabled={disabled}
+        disabled={isDisconnected}
         isLoading={isLoading}
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
         <Button
           size="lg"
-          disabled={disabled || amount.isZero()}
+          disabled={isDisconnected || amount.isZero()}
           isLoading={mutation.isLoading}
           onClick={startUnstakeTransaction}
         >
@@ -79,7 +78,4 @@ export default function UnstakePanel() {
       </Flex>
     </Box>
   );
-}
-function notify(arg0: { status: string; message: string }) {
-  throw new Error('Function not implemented.');
 }

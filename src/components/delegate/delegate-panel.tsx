@@ -1,23 +1,23 @@
 import React, { startTransition, useEffect, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Text, Box, Flex, Divider } from '@chakra-ui/react';
-import { useConnect } from 'ckb-hooks';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 import EpochField from '../epoch-field';
-import { useBalanceQuery } from '@/hooks/useBalanceQuery';
-import { useStakeRateQuery } from '@/hooks/useStakeRateQuery';
-import { useSendTxMutation } from '@/hooks/useSendTxMutation';
+import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
+import { useStakeRateQuery } from '@/hooks/query/useStakeRateQuery';
+import { useSendTxMutation } from '@/hooks/query/useSendTxMutation';
 import axios from 'axios';
-import { useNotification } from '@/hooks/useNotification';
-import { useDialog } from '@/hooks/useDialog';
+import { useNotification } from '@/hooks/ui/useNotification';
+import { useDialog } from '@/hooks/ui/useDialog';
+import { useConnect } from '@/hooks/useConnect';
 
 export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
-  const { connected, address } = useConnect();
+  const { isDisconnected, address } = useConnect();
   const { isLoading, availableAmount } = useBalanceQuery(address);
   const [delegateAddress, setDelegateAddress] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -27,8 +27,8 @@ export default function DelegatePanel() {
   const [amount, setAmount] = useState(availableAmount);
   const [message, setMessage] = useState('');
   const disabled = useMemo(
-    () => !connected || !delegateAddress || amount.isZero(),
-    [connected, delegateAddress, amount],
+    () => isDisconnected || !delegateAddress || amount.isZero(),
+    [isDisconnected, delegateAddress, amount],
   );
 
   const mutation = useSendTxMutation(
@@ -58,10 +58,10 @@ export default function DelegatePanel() {
     if (!availableAmount.isZero()) {
       setAmount(availableAmount);
     }
-    if (!connected) {
+    if (isDisconnected) {
       setAmount(BI.from(0));
     }
-  }, [connected, availableAmount, setAmount]);
+  }, [isDisconnected, availableAmount, setAmount]);
 
   useEffect(() => {
     startTransition(() => {
@@ -81,7 +81,7 @@ export default function DelegatePanel() {
         value={delegateAddress}
         onChange={setDelegateAddress}
         message={message}
-        disabled={!connected}
+        disabled={isDisconnected}
         status={message ? 'error' : 'none'}
       />
       <AmountField
@@ -89,7 +89,7 @@ export default function DelegatePanel() {
         total={availableAmount}
         amount={amount}
         onChange={setAmount}
-        disabled={!connected}
+        disabled={isDisconnected}
         isLoading={isLoading}
       />
       <EpochField epoch={2} />

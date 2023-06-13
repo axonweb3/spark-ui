@@ -1,21 +1,20 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
-import { useConnect } from 'ckb-hooks';
 import { BI } from '@ckb-lumos/lumos';
-import { useBalanceQuery } from '@/hooks/useBalanceQuery';
+import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useNotification } from '@/hooks/useNotification';
-import { useSendTxMutation } from '@/hooks/useSendTxMutation';
+import { useNotification } from '@/hooks/ui/useNotification';
+import { useSendTxMutation } from '@/hooks/query/useSendTxMutation';
 import axios from 'axios';
-import { useDialog } from '@/hooks/useDialog';
+import { useDialog } from '@/hooks/ui/useDialog';
+import { useConnect } from '@/hooks/useConnect';
 
 export default function StakePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
-  const { connected, address } = useConnect();
-  const disabled = useMemo(() => !connected, [connected]);
+  const { isDisconnected, address } = useConnect();
   const { isLoading, availableAmount } = useBalanceQuery(address);
   const [amount, setAmount] = useState(availableAmount);
   const mutation = useSendTxMutation(
@@ -43,10 +42,10 @@ export default function StakePanel() {
     if (!availableAmount.isZero()) {
       setAmount(availableAmount);
     }
-    if (!connected) {
+    if (isDisconnected) {
       setAmount(BI.from(0));
     }
-  }, [connected, availableAmount, setAmount]);
+  }, [isDisconnected, availableAmount, setAmount]);
 
   const startStakeTransaction = useCallback(() => {
     if (!address) return;
@@ -60,14 +59,14 @@ export default function StakePanel() {
         total={availableAmount}
         amount={amount}
         onChange={setAmount}
-        disabled={disabled}
+        disabled={isDisconnected}
         isLoading={isLoading}
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
         <Button
           size="lg"
-          disabled={disabled || amount.isZero()}
+          disabled={isDisconnected || amount.isZero()}
           isLoading={mutation.isLoading}
           onClick={startStakeTransaction}
         >

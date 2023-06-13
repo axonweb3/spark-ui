@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { ButtonProps as ChakraButtonProps, Button as ChakraButton } from '@chakra-ui/react';
 
 export interface IButtonProps extends React.PropsWithChildren {
-  variant?: 'contained' | 'outlined' | 'text';
+  variant?: 'contained' | 'outlined' | 'text' | 'hovertext';
   size?: 'sm' | 'md' | 'lg';
   disabled?: boolean;
   isLoading?: boolean;

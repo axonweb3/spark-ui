@@ -7,7 +7,7 @@ import {
   InputRightAddon,
   InputProps,
 } from '@chakra-ui/react';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useMemo } from 'react';
 
 export interface ITextFieldProps extends Omit<InputProps, 'onChange'> {
   value?: string | number;
@@ -56,6 +56,8 @@ export default function TextField(props: ITextFieldProps) {
     }
   }, [status]);
 
+  const borderWidth = useMemo(() => status === 'warning' || status === 'error' ? 2 : 1, [status]);
+
   return (
     <Box>
       <InputGroup size={size}>
@@ -64,7 +66,7 @@ export default function TextField(props: ITextFieldProps) {
             padding={0}
             backgroundColor="transparent"
             borderColor={statusColor}
-            borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
+            borderWidth={borderWidth}
             borderLeftRadius="6px"
           >
             {leftAddon}
@@ -77,7 +79,7 @@ export default function TextField(props: ITextFieldProps) {
           onChange={handleChange}
           type={type}
           borderColor={statusColor}
-          borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
+          borderWidth={borderWidth}
           backgroundColor="white"
           disabled={disabled}
           _focusVisible={{
@@ -92,7 +94,7 @@ export default function TextField(props: ITextFieldProps) {
             padding={0}
             backgroundColor="transparent"
             borderColor={statusColor}
-            borderWidth={status === 'warning' || status === 'error' ? 2 : 1}
+            borderWidth={borderWidth}
             borderRightRadius="6px"
           >
             {rightAddon}

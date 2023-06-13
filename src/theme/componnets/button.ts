@@ -69,6 +69,11 @@ const Button = defineStyleConfig({
         backgroundColor: 'yellow.200',
       },
     },
+    hovertext: {
+      color: 'yellow.800',
+      border: 'none',
+      backgroundColor: 'yellow.200',
+    },
     text_disabled: {
       color: 'grey.400',
       cursor: 'not-allowed',

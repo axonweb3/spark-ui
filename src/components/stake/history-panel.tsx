@@ -5,7 +5,7 @@ import Badge from '../common/badge';
 import { useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { useConnect } from 'ckb-hooks';
+import { useConnect } from '@/hooks/useConnect';
 
 const columns = [
   {
