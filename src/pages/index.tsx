@@ -43,7 +43,7 @@ export default function IndexPage() {
   const { beValidator, beDelegator } = useStakeRole();
 
   return (
-    <Layout logoOnly>
+    <Layout>
       <Flex justifyContent="center" marginBottom="100px">
         <Text fontSize="36px" fontFamily="alfarn-2" fontWeight="bold">
           New to Axon?

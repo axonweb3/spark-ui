@@ -4,19 +4,18 @@ import { NotificationProvider } from '@/hooks/ui/useNotification';
 import { DialogProvider } from '@/hooks/ui/useDialog';
 import { Sidebar } from './sidebar';
 import Header from './header';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
-export interface ILayoutProps {
-  logoOnly?: boolean;
-}
-
-export default function Layout(props: React.PropsWithChildren<ILayoutProps>) {
+export default function Layout(props: React.PropsWithChildren<{}>) {
+  const { isValidator } = useStakeRole();
   return (
     <DialogProvider>
-      <Box backgroundColor="secondary">
+      <Box backgroundColor={isValidator ? 'secondary' : 'primary'}>
         <Box
           backgroundImage="/img/background.png"
           backgroundSize="cover"
           backgroundRepeat="repeat"
+          minHeight="100vh"
         >
           <main>
             <Container maxWidth="1440px">

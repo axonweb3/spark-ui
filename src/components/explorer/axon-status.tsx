@@ -7,6 +7,8 @@ import {
   StatNumber,
 } from '@chakra-ui/react';
 import Card from '../common/card';
+import { useMemo } from 'react';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 const BOX_STYLES = {
   backgroundColor: 'white',
@@ -18,8 +20,14 @@ const BOX_STYLES = {
 };
 
 export function AxonStatus() {
+  const { isDelegator } = useStakeRole();
+  const backgroundColor = useMemo(
+    () => (isDelegator ? 'secondary' : 'primary'),
+    [isDelegator],
+  );
+
   return (
-    <Card>
+    <Card backgroundColor={backgroundColor}>
       <Box paddingBottom="10px">
         <Text
           fontFamily="alfarn-2"

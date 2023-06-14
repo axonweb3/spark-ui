@@ -47,6 +47,7 @@ const panels = {
 export default function DelegatePage() {
   const router = useRouter();
   const { role } = useStakeRole();
+  const { isDelegator } = useStakeRole();
   const tab = useMemo(
     () => (router.query.tab as string) ?? DelegateTabType.Delegate,
     [router.query.tab],
@@ -59,6 +60,7 @@ export default function DelegatePage() {
   return (
     <Layout>
       <Card
+        backgroundColor={isDelegator ? "secondary" : "primary"}
         title={
           <Flex alignItems="center">
             <Navigation navs={navs} active={tab} />

@@ -23,12 +23,15 @@ import Dialog from '../common/dialog';
 import { useCallback, useMemo } from 'react';
 import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useConnect } from '@/hooks/useConnect';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 export function RewardStats() {
   const toast = useToast();
   const { address } = useConnect();
-  const { unlockAmount, lockedAmount, stakedAmount, delegatedAmount } = useBalanceQuery(address);
+  const { unlockAmount, lockedAmount, stakedAmount, delegatedAmount } =
+    useBalanceQuery(address);
   const { onCopy } = useClipboard(address ?? '');
+  const { isDelegator } = useStakeRole();
 
   const displayAddress = useMemo(() => {
     return (
@@ -52,7 +55,9 @@ export function RewardStats() {
       },
       {
         label: 'Total Staked or Delegated Amount',
-        value: (stakedAmount.add(delegatedAmount).toNumber() / 10 ** 8).toFixed(2),
+        value: (stakedAmount.add(delegatedAmount).toNumber() / 10 ** 8).toFixed(
+          2,
+        ),
       },
     ],
     [unlockAmount, lockedAmount, stakedAmount, delegatedAmount],
@@ -68,7 +73,7 @@ export function RewardStats() {
     });
   }, [address, onCopy, toast]);
   return (
-    <Card size="lg">
+    <Card size="lg" backgroundColor={isDelegator ? 'secondary' : 'primary'}>
       <Box paddingY="60px" paddingX="32px">
         <Box marginBottom="60px">
           <Flex justifyContent="space-between" alignItems="center">

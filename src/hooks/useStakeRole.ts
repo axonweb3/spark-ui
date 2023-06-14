@@ -1,6 +1,6 @@
 import { STAKE_ROLE_KEY } from "@/consts";
 import { useRouter } from "next/router";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useCookie } from "react-use";
 
 export enum StakeRoleType {
@@ -11,6 +11,9 @@ export enum StakeRoleType {
 export function useStakeRole() {
   const router = useRouter();
   const [value, updateCookie] = useCookie(STAKE_ROLE_KEY);
+
+  const isValidator = useMemo(() => value === StakeRoleType.Validator, [value]);
+  const isDelegator = useMemo(() => value === StakeRoleType.Delegator, [value]);
 
   const beValidator = useCallback(() => {
     updateCookie(StakeRoleType.Validator);
@@ -24,6 +27,8 @@ export function useStakeRole() {
 
   return {
     role: value,
+    isValidator,
+    isDelegator,
     beValidator,
     beDelegator,
   };

@@ -1,4 +1,4 @@
-import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
+import { Box, Flex, Link, Spacer } from '@chakra-ui/react';
 import Image from 'next/image';
 import Navigation from './common/navigation';
 import { useRouter } from 'next/router';
@@ -43,9 +43,15 @@ export function Sidebar() {
         <Navigation direction="column" navs={navs} active={active} />
         <Spacer />
         <Box marginBottom="20px">
-          <Text fontFamily="alfarn-2" fontSize="lg" fontWeight="bold">
+          <Link
+            href="/?redirect=false"
+            fontFamily="alfarn-2"
+            fontSize="lg"
+            fontWeight="bold"
+            _hover={{ textDecoration: 'none' }}
+          >
             Switch Role
-          </Text>
+          </Link>
         </Box>
       </Flex>
     </Box>

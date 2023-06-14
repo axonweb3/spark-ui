@@ -23,7 +23,7 @@ import UnstakePanel from '@/components/stake/unstake-panel';
 import WithdrawPanel from '@/components/stake/withdraw-panel';
 import HistoryPanel from '@/components/stake/history-panel';
 import { NextPageContext } from 'next';
-import { StakeRoleType } from '@/hooks/useStakeRole';
+import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
 import { STAKE_ROLE_KEY } from '@/consts';
 
 export enum StakeTabType {
@@ -79,6 +79,7 @@ export default function StakePage() {
   return (
     <Layout>
       <Card
+        backgroundColor="primary"
         title={
           <Flex alignItems="center">
             <Navigation navs={navs} active={tab} />

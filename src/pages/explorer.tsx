@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Layout from '@/components/layout';
 import { Box, SimpleGrid } from '@chakra-ui/react';
 import { OverviewChart } from '@/components/explorer/overview-chart';
@@ -6,8 +6,12 @@ import { AxonStatus } from '@/components/explorer/axon-status';
 import Card from '@/components/common/card';
 import { TopStakeAddresses } from '@/components/explorer/top-stake-addresses';
 import { LatestTransactions } from '@/components/explorer/latest-transactions';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 export default function ExplorerPage() {
+  const { isDelegator } = useStakeRole();
+  const backgroundColor= useMemo(() => isDelegator ? "secondary" : "primary", [isDelegator]);
+
   return (
     <Layout>
       <SimpleGrid
@@ -25,12 +29,12 @@ export default function ExplorerPage() {
         </Box>
       </SimpleGrid>
       <Box marginTop="30px">
-        <Card size="lg">
+        <Card size="lg" backgroundColor={backgroundColor}>
           <TopStakeAddresses />
         </Card>
       </Box>
       <Box marginTop="30px">
-        <Card size="lg">
+        <Card size="lg" backgroundColor={backgroundColor}>
           <LatestTransactions />
         </Card>
       </Box>
