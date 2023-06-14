@@ -9,15 +9,17 @@ export interface INavigationItem {
 
 export interface INavigationProps {
   navs: INavigationItem[];
+  direction?: 'row' | 'column';
   active?: string;
 }
 
 export default function Navigation(props: INavigationProps) {
-  const { navs, active } = props;
+  const { navs, active, direction } = props;
 
   return (
     <Flex
       alignItems="center"
+      direction={direction ?? 'row'}
       sx={{
         '.active': {
           backgroundColor: 'brand',
@@ -34,6 +36,7 @@ export default function Navigation(props: INavigationProps) {
             paddingX="24px"
             paddingY="8px"
             marginRight={index !== navs.length - 1 ? '6px' : '0'}
+            marginBottom={direction === 'column' ? '20px' : '0'}
             className={name === active ? 'active' : undefined}
           >
             <Link

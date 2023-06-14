@@ -1,4 +1,4 @@
-import { commons, helpers } from '@ckb-lumos/lumos';
+import { commons, config, helpers } from '@ckb-lumos/lumos';
 import { useEffect, useMemo } from 'react';
 import { useAccount, useConnect as useWagmiConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
@@ -18,7 +18,11 @@ export function useConnect() {
     const omniLockScript = commons.omnilock.createOmnilockScript({
       auth: { flag: 'ETHEREUM', content: ethAddress },
     });
-    return helpers.encodeToAddress(omniLockScript);
+    return helpers.encodeToAddress(omniLockScript, {
+      config: process.env.PRODUCTION_MODE
+        ? config.predefined.LINA
+        : config.predefined.AGGRON4,
+    });
   }, [ethAddress]);
 
   useEffect(() => {

@@ -27,14 +27,12 @@ export const NotificationProvider = (props: React.PropsWithChildren<{}>) => {
       value={{ notificationProps, setNotificationProps }}
     >
       {notificationProps.message && (
-        <Box maxWidth="1080px" marginX="auto" marginBottom={4}>
-          <Notification
-            {...notificationProps}
-            onClose={() =>
-              setNotificationProps({ ...notificationProps, visible: false })
-            }
-          />
-        </Box>
+        <Notification
+          {...notificationProps}
+          onClose={() =>
+            setNotificationProps({ ...notificationProps, visible: false })
+          }
+        />
       )}
       {children}
     </NotificationContext.Provider>
