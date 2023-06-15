@@ -25,6 +25,7 @@ import HistoryPanel from '@/components/stake/history-panel';
 import { NextPageContext } from 'next';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
 import { STAKE_ROLE_KEY } from '@/consts';
+import { useConnect } from '@/hooks/useConnect';
 
 export enum StakeTabType {
   Stake = 'stake',
@@ -33,7 +34,7 @@ export enum StakeTabType {
   History = 'history',
 }
 
-const navs = [
+const NAVS = [
   StakeTabType.Stake,
   StakeTabType.Unstake,
   StakeTabType.Withdraw,
@@ -67,14 +68,22 @@ export function getServerSideProps(context: NextPageContext) {
 
 export default function StakePage() {
   const router = useRouter();
+  const { isDisconnected } = useConnect();
   const tab = useMemo(
     () => (router.query.tab as string) ?? StakeTabType.Stake,
     [router.query.tab],
   );
 
+  const navs = useMemo(() => {
+    if (isDisconnected) {
+      return NAVS.filter(({ name }) => name === StakeTabType.Stake);
+    }
+    return NAVS;
+  }, [isDisconnected]);
+
   const tabIndex = useMemo(() => {
     return navs.findIndex(({ name }) => name === tab) || 0;
-  }, [tab]);
+  }, [tab, navs]);
 
   return (
     <Layout>

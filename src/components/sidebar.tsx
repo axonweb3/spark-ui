@@ -9,18 +9,19 @@ import { useMemo } from 'react';
 
 export function Sidebar() {
   const router = useRouter();
-  const { isConnected } = useConnect();
+  const { isDisconnected } = useConnect();
   const { role } = useStakeRole();
 
   const navs = useMemo(() => {
+    let result = allNavs;
     if (role === StakeRoleType.Delegator) {
-      return allNavs.filter(({ name }) => name !== 'Stake');
+      result = result.filter(({ name }) => name !== 'Stake');
     }
-    if (!isConnected) {
-      return allNavs.filter(({ name }) => name !== 'Rewards');
+    if (isDisconnected) {
+      result = result.filter(({ name }) => name !== 'Rewards');
     }
-    return allNavs;
-  }, [role, isConnected]);
+    return result;
+  }, [role, isDisconnected]);
 
   const active = useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));

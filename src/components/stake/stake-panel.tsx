@@ -1,5 +1,4 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
 import { BI } from '@ckb-lumos/lumos';
 import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
@@ -10,6 +9,7 @@ import { useSendTxMutation } from '@/hooks/query/useSendTxMutation';
 import axios from 'axios';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
+import { ConnectButton } from '../connect-button';
 
 export default function StakePanel() {
   const notify = useNotification();
@@ -64,14 +64,14 @@ export default function StakePanel() {
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
-        <Button
+        <ConnectButton
           size="lg"
           disabled={isDisconnected || amount.isZero()}
           isLoading={mutation.isLoading}
           onClick={startStakeTransaction}
         >
           Submit
-        </Button>
+        </ConnectButton>
       </Flex>
     </Box>
   );

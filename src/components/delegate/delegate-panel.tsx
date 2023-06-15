@@ -13,11 +13,12 @@ import axios from 'axios';
 import { useNotification } from '@/hooks/ui/useNotification';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
+import { ConnectButton } from '../connect-button';
 
 export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
-  const { isDisconnected, address } = useConnect();
+  const { connect, isDisconnected, address } = useConnect();
   const { isLoading, availableAmount } = useBalanceQuery(address);
   const [delegateAddress, setDelegateAddress] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -130,13 +131,13 @@ export default function DelegatePanel() {
             })
           }
         >
-          <Button
+          <ConnectButton
             size="lg"
             disabled={disabled}
             onClick={() => setShowConfirmDialog(true)}
           >
             Submit
-          </Button>
+          </ConnectButton>
         </Dialog>
       </Flex>
     </Box>

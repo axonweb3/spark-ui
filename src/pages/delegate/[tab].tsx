@@ -22,6 +22,7 @@ import WithdrawPanel from '@/components/delegate/withdraw-panel';
 import HistoryPanel from '@/components/delegate/history-panel';
 import { MdSettings } from 'react-icons/md';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
+import { useConnect } from '@/hooks/useConnect';
 
 export enum DelegateTabType {
   Delegate = 'delegate',
@@ -30,7 +31,7 @@ export enum DelegateTabType {
   History = 'history',
 }
 
-const navs = [
+const NAVS = [
   DelegateTabType.Delegate,
   DelegateTabType.Undelegate,
   DelegateTabType.Withdraw,
@@ -47,15 +48,23 @@ const panels = {
 export default function DelegatePage() {
   const router = useRouter();
   const { role } = useStakeRole();
+  const { isDisconnected } = useConnect();
   const { isDelegator } = useStakeRole();
   const tab = useMemo(
     () => (router.query.tab as string) ?? DelegateTabType.Delegate,
     [router.query.tab],
   );
 
+  const navs = useMemo(() => {
+    if (isDisconnected) {
+      return NAVS.filter(({ name }) => name === DelegateTabType.Delegate);
+    }
+    return NAVS;
+  }, [isDisconnected]);
+
   const tabIndex = useMemo(() => {
     return navs.findIndex(({ name }) => name === tab) || 0;
-  }, [tab]);
+  }, [tab, navs]);
 
   return (
     <Layout>
