@@ -19,11 +19,7 @@
         "name": "rate",
         "schema": {
           "type": "object",
-          "required": [
-            "address",
-            "rate",
-            "minimumAmount"
-          ],
+          "required": ["address", "rate", "minimumAmount"],
           "properties": {
             "address": {
               "$ref": "#/components/schemas/Address"
@@ -56,11 +52,7 @@
         "name": "state",
         "schema": {
           "type": "object",
-          "required": [
-            "amount",
-            "stake_amount",
-            "delegate_amount"
-          ],
+          "required": ["amount", "stake_amount", "delegate_amount"],
           "properties": {
             "amount": {
               "type": "integer",
@@ -100,10 +92,7 @@
         "name": "state",
         "schema": {
           "type": "object",
-          "required": [
-            "unlock_amount",
-            "locked_amount"
-          ],
+          "required": ["unlock_amount", "locked_amount"],
           "properties": {
             "unlock_amount": {
               "type": "integer",
@@ -146,10 +135,7 @@
         "schema": {
           "name": "total",
           "type": "object",
-          "required": [
-            "total",
-            "data"
-          ],
+          "required": ["total", "data"],
           "properties": {
             "total": {
               "type": "integer",
@@ -185,18 +171,11 @@
                   },
                   "event": {
                     "type": "string",
-                    "enum": [
-                      "add",
-                      "reedem",
-                      "withdraw"
-                    ]
+                    "enum": ["add", "reedem", "withdraw"]
                   },
                   "operation": {
                     "type": "string",
-                    "enum": [
-                      "stake",
-                      "delegate"
-                    ]
+                    "enum": ["stake", "delegate"]
                   },
                   "tx_hash": {
                     "type": "string",
@@ -213,11 +192,7 @@
                   },
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "pending",
-                      "success",
-                      "failed"
-                    ]
+                    "enum": ["pending", "success", "failed"]
                   }
                 }
               },
@@ -255,10 +230,7 @@
         "schema": {
           "name": "total",
           "type": "object",
-          "required": [
-            "total",
-            "data"
-          ],
+          "required": ["total", "data"],
           "properties": {
             "total": {
               "type": "integer",
@@ -269,12 +241,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "required": [
-                  "id",
-                  "amount",
-                  "epoch",
-                  "locked"
-                ],
+                "required": ["id", "amount", "epoch", "locked"],
                 "properties": {
                   "id": {
                     "type": "integer",
@@ -328,10 +295,7 @@
         "schema": {
           "name": "total",
           "type": "object",
-          "required": [
-            "total",
-            "data"
-          ],
+          "required": ["total", "data"],
           "properties": {
             "total": {
               "type": "integer",
@@ -342,12 +306,7 @@
               "type": "array",
               "items": {
                 "type": "object",
-                "required": [
-                  "timestamp",
-                  "hash",
-                  "amount",
-                  "status"
-                ],
+                "required": ["timestamp", "hash", "amount", "status"],
                 "properties": {
                   "timestamp": {
                     "type": "string",
@@ -363,11 +322,151 @@
                   },
                   "status": {
                     "type": "string",
-                    "enum": [
-                      "pending",
-                      "success",
-                      "failed"
-                    ]
+                    "enum": ["pending", "success", "failed"]
+                  }
+                }
+              },
+              "minItems": 10,
+              "maxItems": 10
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "getStakeAmountByEpoch",
+      "params": [
+        {
+          "name": "type",
+          "schema": {
+            "type": "string",
+            "enum": ["stake", "delegate"]
+          }
+        },
+        {
+          "name": "page_number",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "stakeAmountByEpoch",
+        "schema": {
+          "name": "total",
+          "type": "object",
+          "required": ["total", "data"],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["amount", "epoch"],
+                "properties": {
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 100000000000000
+                  },
+                  "epoch": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "uniqueItems": true
+                  }
+                }
+              },
+              "minItems": 100,
+              "maxItems": 100
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "getChainState",
+      "params": [],
+      "result": {
+        "name": "chainState",
+        "schema": {
+          "type": "object",
+          "required": ["epoch", "period", "block_number", "total_state_amount"],
+          "properties": {
+            "epoch": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "period": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "block_number": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            },
+            "total_stake_amount": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 1000
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "getTopStakeAddresses",
+      "params": [
+        {
+          "name": "page_number",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "topStakeAddresses",
+        "schema": {
+          "name": "total",
+          "type": "object",
+          "required": ["total", "data"],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["amount", "address"],
+                "properties": {
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 1000,
+                    "maximum": 100000000000000
+                  },
+                  "address": {
+                    "type": "string",
+                    "pattern": "^(ckt)[\\d\\w]{97}$"
                   }
                 }
               },
@@ -469,21 +568,14 @@
       },
       "Script": {
         "type": "object",
-        "required": [
-          "codeHash",
-          "hashType",
-          "args"
-        ],
+        "required": ["codeHash", "hashType", "args"],
         "properties": {
           "codeHash": {
             "$ref": "#/components/schemas/Hash"
           },
           "hashType": {
             "type": "string",
-            "enum": [
-              "type",
-              "data"
-            ]
+            "enum": ["type", "data"]
           },
           "args": {
             "$ref": "#/components/schemas/Hex"
@@ -493,10 +585,7 @@
       "Transaction": {
         "title": "transaction",
         "type": "object",
-        "required": [
-          "inputs",
-          "outputs"
-        ],
+        "required": ["inputs", "outputs"],
         "properties": {
           "inputs": {
             "type": "array",
@@ -515,17 +604,11 @@
       "Input": {
         "title": "input",
         "type": "object",
-        "required": [
-          "previousOutput",
-          "since"
-        ],
+        "required": ["previousOutput", "since"],
         "properties": {
           "previousOutput": {
             "type": "object",
-            "required": [
-              "txHash",
-              "index"
-            ],
+            "required": ["txHash", "index"],
             "properties": {
               "txHash": {
                 "$ref": "#/components/schemas/Hash"
@@ -546,11 +629,7 @@
       "Output": {
         "title": "output",
         "type": "object",
-        "required": [
-          "capacity",
-          "lock",
-          "type"
-        ],
+        "required": ["capacity", "lock", "type"],
         "properties": {
           "capacity": {
             "$ref": "#/components/schemas/Hex"

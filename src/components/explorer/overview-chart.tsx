@@ -3,23 +3,15 @@ import * as Plot from '@observablehq/plot';
 import { Text, Box, Flex } from '@chakra-ui/react';
 import Card from '../common/card';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { IStakeAmountByEpoch } from '@/hooks/query/useStakeStatsQuery';
 
-const MOCK_DATA = [
-  ...Array.from({ length: 50 }).map((_, index) => ({
-    epoch: index + 1,
-    amount: 1000 * Math.random(),
-    type: 'stake',
-  })),
-  ...Array.from({ length: 50 }).map((_, index) => ({
-    epoch: index + 1,
-    amount: 1000 * Math.random(),
-    type: 'delegate',
-  })),
-];
+export interface IOverviewChartProps {
+  dataSource:IStakeAmountByEpoch[];
+}
 
-export function OverviewChart() {
+export function OverviewChart(props: IOverviewChartProps) {
+  const { dataSource } = props;
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const data = useMemo(() => MOCK_DATA, []);
   const { isDelegator } = useStakeRole();
   const backgroundColor = useMemo(
     () => (isDelegator ? 'secondary' : 'primary'),
@@ -27,7 +19,7 @@ export function OverviewChart() {
   );
 
   useEffect(() => {
-    if (data === undefined || containerRef.current === null) {
+    if (dataSource === undefined || containerRef.current === null) {
       return;
     }
     const plot = Plot.plot({
@@ -39,7 +31,7 @@ export function OverviewChart() {
       },
       marks: [
         Plot.areaY(
-          data,
+          dataSource,
           Plot.stackY(
             { offset: 'normalize', order: 'type', reverse: true },
             { x: 'epoch', y: 'amount', fill: 'type' },
@@ -50,32 +42,34 @@ export function OverviewChart() {
     });
     containerRef.current!.append(plot);
     return () => plot.remove();
-  }, [data]);
+  }, [dataSource]);
 
   return (
-    <Card backgroundColor={backgroundColor}>
-      <Flex direction="column" justifyContent="space-between">
-        <Text
-          fontFamily="alfarn-2"
-          fontSize="18px"
-          fontWeight="semibold"
-          marginX="-12px"
-          marginBottom="30px"
-        >
-          Staking & Delegation Overview
-        </Text>
-        <Box marginX="-35px">
-          <Box
-            ref={containerRef}
-            paddingY="18px"
-            sx={{
-              'svg[class^="plot-"] + div': {
-                marginLeft: '10px',
-              },
-            }}
-          />
-        </Box>
-      </Flex>
-    </Card>
+    <Box width="full">
+      <Card backgroundColor={backgroundColor}>
+        <Flex direction="column" justifyContent="space-between">
+          <Text
+            fontFamily="alfarn-2"
+            fontSize="18px"
+            fontWeight="semibold"
+            marginX="-12px"
+            marginBottom="30px"
+          >
+            Staking & Delegation Overview
+          </Text>
+          <Box marginX="-35px">
+            <Box
+              ref={containerRef}
+              paddingY="18px"
+              sx={{
+                'svg[class^="plot-"] + div': {
+                  marginLeft: '10px',
+                },
+              }}
+            />
+          </Box>
+        </Flex>
+      </Card>
+    </Box>
   );
 }

@@ -1,8 +1,9 @@
 import { Text, Box } from '@chakra-ui/react';
-import Pagination from '../common/pagination';
 import Table from '../common/table';
+import { ITopStakeAddress } from '@/hooks/query/useStakeStatsQuery';
+import { useMemo } from 'react';
 
-const MOCK_COLUMNS = [
+const columns = [
   {
     title: 'Rank',
     dataIndex: 'rank',
@@ -10,48 +11,32 @@ const MOCK_COLUMNS = [
   {
     title: 'Address',
     dataIndex: 'address',
+    render: (address: string) =>
+      address.slice(0, 20) + '...' + address.slice(-20),
   },
   {
     title: 'Stake Amount',
     dataIndex: 'amount',
-    sorter: true,
+    render: (amount: string) => {
+      return `${(parseInt(amount, 10) / 10 ** 8).toFixed(2)} AT`;
+    },
   },
 ];
 
-const MOCK_DATASOURCE = [
-  {
-    rank: 1,
-    address: 'ckb1qzda0cr08m85hc8jlnf...',
-    amount: 1000,
-  },
-  {
-    rank: 2,
-    address: 'ckb1qzda0cr08m85hc8jlnf...',
-    amount: 1000,
-  },
-  {
-    rank: 3,
-    address: 'ckb1qzda0cr08m85hc8jlnf...',
-    amount: 1000,
-  },
-  {
-    rank: 4,
-    address: 'ckb1qzda0cr08m85hc8jlnf...',
-    amount: 1000,
-  },
-  {
-    rank: 5,
-    address: 'ckb1qzda0cr08m85hc8jlnf...',
-    amount: 1000,
-  },
-  {
-    rank: 6,
-    address: 'ckb1qzda0cr08m85hc8jlnf...',
-    amount: 1000,
-  },
-];
+export interface ITopStakeAddressesProps {
+  dataSource: ITopStakeAddress[];
+}
 
-export function TopStakeAddresses() {
+export function TopStakeAddresses(props: ITopStakeAddressesProps) {
+  const dataSource = useMemo(() => {
+    return props.dataSource.map((item: ITopStakeAddress, index) => {
+      return {
+        ...item,
+        rank: index + 1,
+      };
+    });
+  }, [props.dataSource]);
+
   return (
     <Box marginX="-13px">
       <Box marginBottom="20px">
@@ -59,9 +44,8 @@ export function TopStakeAddresses() {
           Top Staking Addresses
         </Text>
       </Box>
-      <Table rowKey="rank" columns={MOCK_COLUMNS} dataSources={MOCK_DATASOURCE} />
-      <Box marginTop="30px">
-        <Pagination total={500} showQuickJumper />
+      <Box marginBottom="10px">
+        <Table rowKey="rank" columns={columns} dataSources={dataSource} />
       </Box>
     </Box>
   );
