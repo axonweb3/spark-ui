@@ -1,1 +1,1 @@
-export const STAKE_ROLE_KEY = 'spark-stake-role';
+export const STAKE_ROLE_KEY = 'spark.role';
