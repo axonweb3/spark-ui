@@ -16,7 +16,6 @@ export default function ExplorerPage() {
     <Layout>
       <SimpleGrid
         width="100%"
-        maxWidth="1280px"
         marginX="auto"
         columns={2}
         gap="30px"

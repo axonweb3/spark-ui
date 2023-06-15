@@ -1,6 +1,6 @@
 import { STAKE_ROLE_KEY } from "@/consts";
 import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useCookie } from "react-use";
 
 export enum StakeRoleType {

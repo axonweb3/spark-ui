@@ -1,10 +1,11 @@
 const webpack = require('webpack');
-const path = require('path');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   distDir: 'dist',
+  compiler: {
+    styledComponents: true,
+  },
   webpack: (config) => {
     config.resolve.fallback = {
       ...config.resolve.fallback,

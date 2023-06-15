@@ -4,8 +4,26 @@ import Navigation from './common/navigation';
 import { useRouter } from 'next/router';
 import { useConnect } from '@/hooks/useConnect';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
-import allNavs from '@/navs';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+const NAVS = [
+  {
+    name: 'Stake',
+    href: '/stake',
+  },
+  {
+    name: 'Delegate',
+    href: '/delegate',
+  },
+  {
+    name: 'Rewards',
+    href: '/rewards',
+  },
+  {
+    name: 'Explorer',
+    href: '/explorer',
+  },
+];
 
 export function Sidebar() {
   const router = useRouter();
@@ -13,14 +31,14 @@ export function Sidebar() {
   const { role } = useStakeRole();
 
   const navs = useMemo(() => {
-    let result = allNavs;
+    let finalNavs = NAVS;
     if (role === StakeRoleType.Delegator) {
-      result = result.filter(({ name }) => name !== 'Stake');
+      finalNavs = finalNavs.filter(({ name }) => name !== 'Stake');
     }
     if (isDisconnected) {
-      result = result.filter(({ name }) => name !== 'Rewards');
+      finalNavs = finalNavs.filter(({ name }) => name !== 'Rewards');
     }
-    return result;
+    return finalNavs;
   }, [role, isDisconnected]);
 
   const active = useMemo(() => {
