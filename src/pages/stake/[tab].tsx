@@ -23,7 +23,7 @@ import UnstakePanel from '@/components/stake/unstake-panel';
 import WithdrawPanel from '@/components/stake/withdraw-panel';
 import HistoryPanel from '@/components/stake/history-panel';
 import { NextPageContext } from 'next';
-import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
+import { StakeRoleType } from '@/hooks/useStakeRole';
 import { STAKE_ROLE_KEY } from '@/consts';
 import { useConnect } from '@/hooks/useConnect';
 
