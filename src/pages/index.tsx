@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import * as cookie from 'cookie';
 import { Text, Box, Flex, SimpleGrid } from '@chakra-ui/react';
 import Card from '@/components/common/card';
@@ -47,12 +48,14 @@ export default function IndexPage() {
     () => [
       {
         title: 'I want to be a validator',
-        description: 'A validator is a participant responsible for validating and confirming transactions, block packaging, and maintaining network security.',
+        description:
+          'A validator is a participant responsible for validating and confirming transactions, block packaging, and maintaining network security.',
         action: beValidator,
       },
       {
         title: 'I want to be a Delegator',
-        description: 'A delegator refers to an individual or entity in a decentralized network who entrusts their voting or staking power to a validator.',
+        description:
+          'A delegator refers to an individual or entity in a decentralized network who entrusts their voting or staking power to a validator.',
         action: beDelegator,
       },
     ],
@@ -61,6 +64,9 @@ export default function IndexPage() {
 
   return (
     <BaseLayout>
+      <Box paddingTop="8px" marginBottom="90px">
+        <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
+      </Box>
       <Box width="1080px" marginX="auto">
         <NotificationProvider>
           <Flex justifyContent="center" marginBottom="100px">

@@ -24,7 +24,7 @@ import WithdrawPanel from '@/components/stake/withdraw-panel';
 import HistoryPanel from '@/components/stake/history-panel';
 import { NextPageContext } from 'next';
 import { StakeRoleType } from '@/hooks/useStakeRole';
-import { STAKE_ROLE_KEY } from '@/consts';
+import { SPARK_ROLE_KEY } from '@/consts';
 import { useConnect } from '@/hooks/useConnect';
 
 export enum StakeTabType {
@@ -51,7 +51,7 @@ const panels = {
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
 
-  if (cookies[STAKE_ROLE_KEY] !== StakeRoleType.Validator) {
+  if (cookies[SPARK_ROLE_KEY] !== StakeRoleType.Validator) {
     return {
       redirect: {
         permanent: false,

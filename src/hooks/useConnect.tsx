@@ -1,29 +1,40 @@
 import { commons, config, helpers } from '@ckb-lumos/lumos';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { useAccount, useConnect as useWagmiConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useDialog } from './ui/useDialog';
+import { SPART_ADDRESS_KEY } from '@/consts';
+import { useCookie } from 'react-use';
 
-export function useConnect() {
+export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
   const showDialog = useDialog();
   const { connect, error, isLoading } = useWagmiConnect({
     connector: new InjectedConnector(),
+    ...params,
   });
   const { address: ethAddress, isConnected, isDisconnected } = useAccount();
+  const [address, setAddress] = useCookie(SPART_ADDRESS_KEY);
 
-  const address = useMemo(() => {
+  useEffect(() => {
+    if (isDisconnected && address) {
+      connect();
+    }
+  }, [address, isDisconnected, connect]);
+
+  useEffect(() => {
     if (ethAddress === undefined) {
       return undefined;
     }
     const omniLockScript = commons.omnilock.createOmnilockScript({
       auth: { flag: 'ETHEREUM', content: ethAddress },
     });
-    return helpers.encodeToAddress(omniLockScript, {
+    const addr = helpers.encodeToAddress(omniLockScript, {
       config: process.env.PRODUCTION_MODE
         ? config.predefined.LINA
         : config.predefined.AGGRON4,
     });
-  }, [ethAddress]);
+    setAddress(addr);
+  }, [ethAddress, setAddress]);
 
   useEffect(() => {
     if (error) {
@@ -41,7 +52,7 @@ export function useConnect() {
     isLoading,
     isDisconnected,
     error,
-    address,
+    address: address || undefined,
     ethAddress,
   };
 }

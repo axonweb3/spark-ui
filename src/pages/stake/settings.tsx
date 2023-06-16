@@ -22,9 +22,10 @@ import Dialog from '@/components/common/dialog';
 import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 import TextField from '@/components/common/text-field';
 import { useRouter } from 'next/router';
-import { STAKE_ROLE_KEY } from '@/consts';
+import { SPARK_ROLE_KEY } from '@/consts';
 import InputField from '@/components/input-filed';
 import { useConnect } from '@/hooks/useConnect';
+import { ConnectButton } from '@/components/connect-button';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
@@ -36,7 +37,7 @@ export function getServerSideProps(context: NextPageContext) {
     };
   }
 
-  if (cookies[STAKE_ROLE_KEY] !== StakeRoleType.Validator) {
+  if (cookies[SPARK_ROLE_KEY] !== StakeRoleType.Validator) {
     return {
       redirect: {
         permanent: false,
@@ -55,8 +56,7 @@ export default function SettingsPage() {
   const router = useRouter();
   const { address, isConnected, isDisconnected } = useConnect();
   const [isDialogOpen, setIsDialogOpen] = React.useState(true);
-  const { stakeRate, minimumAmount, isSuccess, isLoading } =
-    useStakeRateQuery(address);
+  const { stakeRate, minimumAmount, isSuccess, isLoading } = useStakeRateQuery(address);
   const [rate, setRate] = React.useState(stakeRate ?? 0);
   const [minAmount, setMinAmount] = React.useState(minimumAmount ?? '0');
 
@@ -192,13 +192,13 @@ export default function SettingsPage() {
           />
         </Box>
         <Flex justifyContent="center" paddingTop="60px" marginBottom={10}>
-          <Button
+          <ConnectButton
             size="lg"
             disabled={isDisconnected}
             onClick={() => router.push('/stake')}
           >
             Submit
-          </Button>
+          </ConnectButton>
         </Flex>
       </Card>
       <Dialog

@@ -4,7 +4,7 @@ import Navigation from './common/navigation';
 import { useRouter } from 'next/router';
 import { useConnect } from '@/hooks/useConnect';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 const NAVS = [
   {

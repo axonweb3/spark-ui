@@ -1,4 +1,4 @@
-import { STAKE_ROLE_KEY } from '@/consts';
+import { SPARK_ROLE_KEY } from '@/consts';
 import { useRouter } from 'next/router';
 import { useCallback, useMemo } from 'react';
 import { useCookie } from 'react-use';
@@ -10,23 +10,23 @@ export enum StakeRoleType {
 
 export function useStakeRole() {
   const router = useRouter();
-  const [value, updateCookie] = useCookie(STAKE_ROLE_KEY);
+  const [role, setRole] = useCookie(SPARK_ROLE_KEY);
 
-  const isValidator = useMemo(() => value === StakeRoleType.Validator, [value]);
-  const isDelegator = useMemo(() => value === StakeRoleType.Delegator, [value]);
+  const isValidator = useMemo(() => role === StakeRoleType.Validator, [role]);
+  const isDelegator = useMemo(() => role === StakeRoleType.Delegator, [role]);
 
   const beValidator = useCallback(() => {
-    updateCookie(StakeRoleType.Validator);
+    setRole(StakeRoleType.Validator);
     router.push('/stake/settings');
-  }, [router, updateCookie]);
+  }, [router, setRole]);
 
   const beDelegator = useCallback(() => {
-    updateCookie(StakeRoleType.Delegator);
+    setRole(StakeRoleType.Delegator);
     router.push('/delegate');
-  }, [router, updateCookie]);
+  }, [router, setRole]);
 
   return {
-    role: value,
+    role,
     isValidator,
     isDelegator,
     beValidator,
