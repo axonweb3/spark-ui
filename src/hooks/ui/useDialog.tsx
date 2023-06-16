@@ -11,7 +11,6 @@ import { usePrevious } from 'react-use';
 
 type DialogProps = IDialogProps & { timestamp?: number };
 
-
 export const DialogContext = createContext<
   | {
       dialogProps: DialogProps;
@@ -24,14 +23,17 @@ export const DialogProvider = (props: React.PropsWithChildren<{}>) => {
   const { children } = props;
   const [dialogProps, setDialogProps] = useState<DialogProps>({});
   const [open, setOpen] = useState(false);
-  const prevDialogTimestamp = usePrevious(dialogProps.timestamp);
+  const prevDialogProps = usePrevious(dialogProps);
 
   useEffect(() => {
-    if (dialogProps.timestamp !== prevDialogTimestamp) {
+    if (
+      dialogProps.title !== prevDialogProps?.title ||
+      dialogProps.description !== prevDialogProps?.description
+    ) {
       setDialogProps(dialogProps);
       setOpen(true);
     }
-  }, [dialogProps, prevDialogTimestamp]);
+  }, [dialogProps, prevDialogProps]);
 
   return (
     <DialogContext.Provider value={{ dialogProps, setDialogProps }}>

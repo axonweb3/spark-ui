@@ -19,13 +19,14 @@ import { NextPageContext } from 'next';
 import { StakeRoleType } from '@/hooks/useStakeRole';
 import Button from '@/components/common/button';
 import Dialog from '@/components/common/dialog';
-import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
+import { MdCheckBox, MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 import TextField from '@/components/common/text-field';
 import { useRouter } from 'next/router';
 import { SPARK_ROLE_KEY } from '@/consts';
 import InputField from '@/components/input-filed';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '@/components/connect-button';
+import { useShowAgain } from '@/hooks/useShowAgain';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
@@ -55,8 +56,11 @@ export function getServerSideProps(context: NextPageContext) {
 export default function SettingsPage() {
   const router = useRouter();
   const { address, isConnected, isDisconnected } = useConnect();
-  const [isDialogOpen, setIsDialogOpen] = React.useState(true);
-  const { stakeRate, minimumAmount, isSuccess, isLoading } = useStakeRateQuery(address);
+  const [showAgain, setShowAgain] = useShowAgain('settings');
+  const [dialogCheckbox, setDialogCheckbox] = React.useState(false);
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+  const { stakeRate, minimumAmount, isSuccess, isLoading } =
+    useStakeRateQuery(address);
   const [rate, setRate] = React.useState(stakeRate ?? 0);
   const [minAmount, setMinAmount] = React.useState(minimumAmount ?? '0');
 
@@ -65,6 +69,12 @@ export default function SettingsPage() {
       setRate(stakeRate ?? 0);
     }
   }, [isSuccess, stakeRate]);
+
+  useEffect(() => {
+    if (showAgain) {
+      setIsDialogOpen(true);
+    }
+  }, [showAgain, setShowAgain]);
 
   const inputAddon = useMemo(
     () => (
@@ -206,7 +216,11 @@ export default function SettingsPage() {
         description="Before you start, please set Commission Rate first."
         footer={
           <Flex width="full">
-            <Flex alignItems="center" cursor="pointer">
+            <Flex
+              alignItems="center"
+              cursor="pointer"
+              onClick={() => setDialogCheckbox(!dialogCheckbox)}
+            >
               <Flex
                 width={6}
                 height={6}
@@ -215,7 +229,9 @@ export default function SettingsPage() {
                 justifyContent="center"
               >
                 <Icon
-                  as={MdOutlineCheckBoxOutlineBlank}
+                  as={
+                    dialogCheckbox ? MdCheckBox : MdOutlineCheckBoxOutlineBlank
+                  }
                   width="18px"
                   height="18px"
                   fill="blue.400"
@@ -231,6 +247,7 @@ export default function SettingsPage() {
                 variant="contained"
                 size="sm"
                 onClick={() => {
+                  setShowAgain(!dialogCheckbox);
                   setIsDialogOpen(false);
                 }}
               >
