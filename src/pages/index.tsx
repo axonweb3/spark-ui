@@ -8,6 +8,7 @@ import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
 import { NextPageContext } from 'next';
 import { NotificationProvider } from '@/hooks/ui/useNotification';
 import BaseLayout from '@/components/base-layout';
+import { SPARK_ROLE_KEY } from '@/consts';
 
 export function getServerSideProps(context: NextPageContext) {
   if (context.query.redirect === 'false') {
@@ -17,7 +18,7 @@ export function getServerSideProps(context: NextPageContext) {
   }
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
 
-  switch (cookies.role) {
+  switch (cookies[SPARK_ROLE_KEY]) {
     case StakeRoleType.Validator:
       return {
         redirect: {

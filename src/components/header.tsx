@@ -1,12 +1,14 @@
 import React from 'react';
 import Button from '@/components/common/button';
-import { Text, Box, Flex, Spacer } from '@chakra-ui/react';
+import { Text, Box, Flex, Spacer, Tooltip } from '@chakra-ui/react';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { useAddressCopy } from '@/hooks/useAddressCopy';
 
 export default function Header() {
   const { connect, isConnected, address } = useConnect();
   const { role } = useStakeRole();
+  const { onCopy } = useAddressCopy();
 
   return (
     <header>
@@ -24,9 +26,13 @@ export default function Header() {
           </Box>
           <Spacer />
           {isConnected ? (
-            <Button width="50" variant="outlined">
-              {address?.slice(0, 10) + '...' + address?.slice(-10)}
-            </Button>
+            <Tooltip label="Copy to clipboard" hasArrow>
+              <Box>
+                <Button width="50" variant="outlined" onClick={onCopy}>
+                  {address?.slice(0, 10) + '...' + address?.slice(-10)}
+                </Button>
+              </Box>
+            </Tooltip>
           ) : (
             <Button width="50" onClick={() => connect()}>
               Connect Wallet

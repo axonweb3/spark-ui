@@ -10,8 +10,6 @@ import {
   StatNumber,
   Spacer,
   Button,
-  useToast,
-  useClipboard,
 } from '@chakra-ui/react';
 import {
   MdFileCopy,
@@ -20,17 +18,17 @@ import {
 } from 'react-icons/md';
 import Card from '../common/card';
 import Dialog from '../common/dialog';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { useAddressCopy } from '@/hooks/useAddressCopy';
 
 export function RewardStats() {
-  const toast = useToast();
   const { address } = useConnect();
   const { unlockAmount, lockedAmount, stakedAmount, delegatedAmount } =
     useBalanceQuery(address);
-  const { onCopy } = useClipboard(address ?? '');
+  const { onCopy } = useAddressCopy();
   const { isDelegator } = useStakeRole();
 
   const displayAddress = useMemo(() => {
@@ -63,15 +61,6 @@ export function RewardStats() {
     [unlockAmount, lockedAmount, stakedAmount, delegatedAmount],
   );
 
-  const handleCopyAddress = useCallback(() => {
-    onCopy();
-    toast({
-      title: 'Address Copied!',
-      description: address,
-      status: 'success',
-      isClosable: true,
-    });
-  }, [address, onCopy, toast]);
   return (
     <Card size="lg" backgroundColor={isDelegator ? 'secondary' : 'primary'}>
       <Box paddingY="60px" paddingX="32px">
@@ -93,7 +82,7 @@ export function RewardStats() {
               width="16px"
               height="16px"
               cursor="pointer"
-              onClick={handleCopyAddress}
+              onClick={onCopy}
             />
           </Flex>
         </Box>
