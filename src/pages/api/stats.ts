@@ -26,7 +26,10 @@ async function getChainState() {
   return response.data?.result ?? {};
 }
 
-async function getTopStakeAddresses(pageNumber: number = 1, pageSize: number = 10) {
+async function getTopStakeAddresses(
+  pageNumber: number = 1,
+  pageSize: number = 10,
+) {
   const response = await axios.post(process.env.SPARK_RPC_URL!, {
     method: 'getTopStakeAddresses',
     params: [pageNumber, pageSize],
@@ -35,20 +38,39 @@ async function getTopStakeAddresses(pageNumber: number = 1, pageSize: number = 1
   return data;
 }
 
+async function getLatestStakeTransactions(
+  pageNumber: number = 1,
+  pageSize: number = 10,
+) {
+  const response = await axios.post(process.env.SPARK_RPC_URL!, {
+    method: 'getLatestStakeTransactions',
+    params: [pageNumber, pageSize],
+  });
+  const { data = [] } = response.data?.result ?? {};
+  return data;
+}
+
 router.get(async (_: NextApiRequest, res: NextApiResponse) => {
-  const [stakeAmount, delegateAmount, chainState, topStakeAddresses] =
-    await Promise.all([
-      getStakeAmountByEpoch('stake'),
-      getStakeAmountByEpoch('delegate'),
-      getChainState(),
-      getTopStakeAddresses(),
-    ]);
+  const [
+    stakeAmount,
+    delegateAmount,
+    chainState,
+    topStakeAddresses,
+    latestStakeTransactions,
+  ] = await Promise.all([
+    getStakeAmountByEpoch('stake'),
+    getStakeAmountByEpoch('delegate'),
+    getChainState(),
+    getTopStakeAddresses(),
+    getLatestStakeTransactions(),
+  ]);
 
   const stakeAmountByEpoch = [...stakeAmount, ...delegateAmount];
   res.json({
     stakeAmountByEpoch,
     chainState,
     topStakeAddresses,
+    latestStakeTransactions,
   });
 });
 

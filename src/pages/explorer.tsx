@@ -16,8 +16,14 @@ export default function ExplorerPage() {
     [isDelegator],
   );
 
-  const { data } = useStakeStatsQuery();
-  const { stakeAmountByEpoch, chainState, topStakeAddresses } = data;
+  const {
+    data: {
+      stakeAmountByEpoch,
+      chainState,
+      topStakeAddresses,
+      latestStakeTransactions,
+    },
+  } = useStakeStatsQuery();
 
   return (
     <Layout>
@@ -32,7 +38,7 @@ export default function ExplorerPage() {
       </Box>
       <Box marginTop="30px">
         <Card size="lg" backgroundColor={backgroundColor}>
-          <LatestTransactions />
+          <LatestTransactions dataSource={latestStakeTransactions} />
         </Card>
       </Box>
     </Layout>

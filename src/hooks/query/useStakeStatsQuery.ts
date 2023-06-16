@@ -21,10 +21,18 @@ export interface ITopStakeAddress {
   address: string;
 }
 
+export interface ILatestStakeTransaction {
+  timestamp: string;
+  amount: number;
+  hash: string;
+  status: 'pending' | 'success' | 'failed';
+}
+
 interface IQueryData {
   stakeAmountByEpoch: IStakeAmountByEpoch[];
   chainState: IChainState;
   topStakeAddresses: ITopStakeAddress[];
+  latestStakeTransactions: ILatestStakeTransaction[];
 }
 
 export function useStakeStatsQuery(
@@ -65,6 +73,11 @@ export function useStakeStatsQuery(
     [data],
   );
 
+  const latestStakeTransactions = useMemo(
+    () => (data ? data.latestStakeTransactions : []),
+    [data],
+  );
+
   return {
     isLoading,
     isSuccess,
@@ -75,6 +88,7 @@ export function useStakeStatsQuery(
       stakeAmountByEpoch,
       chainState,
       topStakeAddresses,
+      latestStakeTransactions,
     },
   };
 }
