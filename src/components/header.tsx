@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Button from '@/components/common/button';
 import { Text, Box, Flex, Spacer, Tooltip } from '@chakra-ui/react';
 import { useConnect } from '@/hooks/useConnect';

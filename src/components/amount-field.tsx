@@ -23,7 +23,7 @@ export default function AmountField(props: IAmountFieldProps) {
     if (total.eq(0)) {
       return '0';
     }
-    return Math.ceil(amount.mul(100).div(total).toNumber());
+    return Math.ceil(amount.toNumber() * 100 / total.toNumber());
   }, [amount, total]);
 
   const handleOptionChange = useCallback(
@@ -73,6 +73,7 @@ export default function AmountField(props: IAmountFieldProps) {
           options={AMOUNT_OPTIONS}
           value={custom ? 'Custom' : `${percent}%`}
           onChange={handleOptionChange}
+          disabled={disabled}
         />
         <Box marginTop={4} width="full">
           <TextField

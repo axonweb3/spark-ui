@@ -28,7 +28,8 @@ export const DialogProvider = (props: React.PropsWithChildren<{}>) => {
   useEffect(() => {
     if (
       dialogProps.title !== prevDialogProps?.title ||
-      dialogProps.description !== prevDialogProps?.description
+      dialogProps.description !== prevDialogProps?.description ||
+      dialogProps.timestamp !== prevDialogProps?.timestamp
     ) {
       setDialogProps(dialogProps);
       setOpen(true);

@@ -129,15 +129,14 @@ export default function DelegatePanel() {
               amount: amount.toNumber(),
             })
           }
+        />
+        <ConnectButton
+          size="lg"
+          disabled={disabled}
+          onClick={() => setShowConfirmDialog(true)}
         >
-          <ConnectButton
-            size="lg"
-            disabled={disabled}
-            onClick={() => setShowConfirmDialog(true)}
-          >
-            Submit
-          </ConnectButton>
-        </Dialog>
+          Submit
+        </ConnectButton>
       </Flex>
     </Box>
   );
