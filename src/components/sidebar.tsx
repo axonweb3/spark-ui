@@ -4,7 +4,7 @@ import Navigation from './common/navigation';
 import { useRouter } from 'next/router';
 import { useConnect } from '@/hooks/useConnect';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
-import { useEffect, useMemo, useState } from 'react';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 
 const NAVS = [
   {
@@ -25,7 +25,7 @@ const NAVS = [
   },
 ];
 
-export default function Sidebar() {
+const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (_, ref) => {
   const router = useRouter();
   const { isConnected } = useConnect();
   const { role } = useStakeRole();
@@ -52,7 +52,7 @@ export default function Sidebar() {
   }, [router.pathname, navs]);
 
   return (
-    <Box height="100vh" width="240px">
+    <Box height="100vh" minWidth="200px" maxWidth="240px" ref={ref}>
       <Flex
         direction="column"
         alignItems="center"
@@ -81,3 +81,5 @@ export default function Sidebar() {
     </Box>
   );
 }
+
+export default forwardRef(Sidebar);

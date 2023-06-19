@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Button from '@/components/common/button';
 import { Text, Box, Flex, Spacer, Tooltip } from '@chakra-ui/react';
 import { useConnect } from '@/hooks/useConnect';
@@ -12,7 +12,7 @@ export default function Header() {
 
   return (
     <header>
-      <Box maxWidth="1080px" marginX="auto">
+      <Box maxWidth="1080px" paddingX={4} marginX="auto">
         <Flex
           backgroundColor="transparent"
           alignItems="center"

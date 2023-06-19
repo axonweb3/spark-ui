@@ -17,14 +17,13 @@ const { publicClient, webSocketPublicClient } = configureChains(
 );
 
 const config = createConfig({
-  autoConnect: true,
+  autoConnect: false,
   publicClient,
   webSocketPublicClient,
 });
 
 export default function App({ Component, pageProps }: AppProps) {
   const store = createStore();
-
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>

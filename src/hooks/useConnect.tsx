@@ -4,7 +4,7 @@ import { useAccount, useConnect as useWagmiConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useDialog } from './ui/useDialog';
 import { SPART_ADDRESS_KEY } from '@/consts';
-import { useCookie } from 'react-use';
+import { useCookie, useMount } from 'react-use';
 
 export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
   const showDialog = useDialog();
@@ -13,7 +13,11 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
     connector: new InjectedConnector(),
     ...params,
   });
-  const { address: ethAddress, isConnected, isDisconnected } = useAccount({
+  const {
+    address: ethAddress,
+    isConnected,
+    isDisconnected,
+  } = useAccount({
     onConnect({ address }) {
       const omniLockScript = commons.omnilock.createOmnilockScript({
         auth: { flag: 'ETHEREUM', content: address! },
@@ -26,15 +30,17 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
       setAddress(addr);
     },
     onDisconnect() {
+      console.log('onDisconnect');
       delAddress();
-    }
+    },
   });
 
-  // useEffect(() => {
-  //   if (isDisconnected && address) {
-  //     connect();
-  //   }
-  // }, [address, isDisconnected, connect]);
+  useMount(() => {
+    console.log('mount');
+    if (address && isDisconnected) {
+      connect();
+    }
+  });
 
   useEffect(() => {
     if (error) {
