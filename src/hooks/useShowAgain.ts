@@ -23,6 +23,5 @@ const showAgainAtomWithPersistence = atomFamily((name: string) =>
 
 export function useShowAgain(name: string) {
   const [showAgain, setShowAgain] = useAtom(showAgainAtomWithPersistence(name));
-  console.log(typeof showAgain);
   return [showAgain === 'true' || showAgain === true, setShowAgain] as const;
 }

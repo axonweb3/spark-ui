@@ -12,7 +12,7 @@ import {
   Tabs,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
@@ -48,19 +48,19 @@ const panels = {
 export default function DelegatePage() {
   const router = useRouter();
   const { role } = useStakeRole();
-  const { isDisconnected } = useConnect();
+  const { isConnected } = useConnect();
   const { isDelegator } = useStakeRole();
+  const [navs, setNavs] = useState<typeof NAVS>(NAVS.filter(({ name }) => name === DelegateTabType.Delegate));
   const tab = useMemo(
     () => (router.query.tab as string) ?? DelegateTabType.Delegate,
     [router.query.tab],
   );
 
-  const navs = useMemo(() => {
-    if (isDisconnected) {
-      return NAVS.filter(({ name }) => name === DelegateTabType.Delegate);
+  useEffect(() => {
+    if (isConnected) {
+      setNavs(NAVS);
     }
-    return NAVS;
-  }, [isDisconnected]);
+  }, [isConnected]);
 
   const tabIndex = useMemo(() => {
     return navs.findIndex(({ name }) => name === tab) || 0;

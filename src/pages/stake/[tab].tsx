@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import * as cookie from 'cookie';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
@@ -68,18 +68,18 @@ export function getServerSideProps(context: NextPageContext) {
 
 export default function StakePage() {
   const router = useRouter();
-  const { isDisconnected } = useConnect();
+  const { isConnected } = useConnect();
+  const [navs, setNavs] = useState<typeof NAVS>(NAVS.filter(({ name }) => name === StakeTabType.Stake));
   const tab = useMemo(
     () => (router.query.tab as string) ?? StakeTabType.Stake,
     [router.query.tab],
   );
 
-  const navs = useMemo(() => {
-    if (isDisconnected) {
-      return NAVS.filter(({ name }) => name === StakeTabType.Stake);
+  useEffect(() => {
+    if (isConnected) {
+      setNavs(NAVS);
     }
-    return NAVS;
-  }, [isDisconnected]);
+  }, [isConnected]);
 
   const tabIndex = useMemo(() => {
     return navs.findIndex(({ name }) => name === tab) || 0;

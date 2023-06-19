@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Flex } from '@chakra-ui/react';
 import { NotificationProvider } from '@/hooks/ui/useNotification';
-import { Sidebar } from './sidebar';
-import Header from './header';
 import BaseLayout from './base-layout';
+import Sidebar from './sidebar';
+import Header from './header';
 
 export default function Layout(props: React.PropsWithChildren<{}>) {
   return (

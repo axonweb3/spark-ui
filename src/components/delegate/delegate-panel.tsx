@@ -1,5 +1,4 @@
 import React, { startTransition, useEffect, useMemo, useState } from 'react';
-import Button from '@/components/common/button';
 import { Text, Box, Flex, Divider } from '@chakra-ui/react';
 import { BI } from '@ckb-lumos/lumos';
 import Dialog from '../common/dialog';
@@ -18,7 +17,7 @@ import { ConnectButton } from '../connect-button';
 export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
-  const { connect, isDisconnected, address } = useConnect();
+  const { isConnected, address } = useConnect();
   const { isLoading, availableAmount } = useBalanceQuery(address);
   const [delegateAddress, setDelegateAddress] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
@@ -28,8 +27,8 @@ export default function DelegatePanel() {
   const [amount, setAmount] = useState(availableAmount);
   const [message, setMessage] = useState('');
   const disabled = useMemo(
-    () => isDisconnected || !delegateAddress || amount.isZero(),
-    [isDisconnected, delegateAddress, amount],
+    () => !isConnected || !delegateAddress || amount.isZero(),
+    [isConnected, delegateAddress, amount],
   );
 
   const mutation = useSendTxMutation(
@@ -59,10 +58,10 @@ export default function DelegatePanel() {
     if (!availableAmount.isZero()) {
       setAmount(availableAmount);
     }
-    if (isDisconnected) {
+    if (!isConnected) {
       setAmount(BI.from(0));
     }
-  }, [isDisconnected, availableAmount, setAmount]);
+  }, [isConnected, availableAmount, setAmount]);
 
   useEffect(() => {
     startTransition(() => {
@@ -82,7 +81,7 @@ export default function DelegatePanel() {
         value={delegateAddress}
         onChange={setDelegateAddress}
         message={message}
-        disabled={isDisconnected}
+        disabled={!isConnected}
         status={message ? 'error' : 'none'}
       />
       <AmountField
@@ -90,7 +89,7 @@ export default function DelegatePanel() {
         total={availableAmount}
         amount={amount}
         onChange={setAmount}
-        disabled={isDisconnected}
+        disabled={!isConnected}
         isLoading={isLoading}
       />
       <EpochField epoch={2} />

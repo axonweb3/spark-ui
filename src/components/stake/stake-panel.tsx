@@ -14,7 +14,8 @@ import { ConnectButton } from '../connect-button';
 export default function StakePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
-  const { isDisconnected, address } = useConnect();
+  const { isConnected, address } = useConnect();
+  const disabled = useMemo(() => !isConnected, [isConnected]);
   const { isLoading, availableAmount } = useBalanceQuery(address);
   const [amount, setAmount] = useState(availableAmount);
   const mutation = useSendTxMutation(
@@ -42,10 +43,10 @@ export default function StakePanel() {
     if (!availableAmount.isZero()) {
       setAmount(availableAmount);
     }
-    if (isDisconnected) {
+    if (disabled) {
       setAmount(BI.from(0));
     }
-  }, [isDisconnected, availableAmount, setAmount]);
+  }, [disabled, availableAmount, setAmount]);
 
   const startStakeTransaction = useCallback(() => {
     if (!address) return;
@@ -59,14 +60,14 @@ export default function StakePanel() {
         total={availableAmount}
         amount={amount}
         onChange={setAmount}
-        disabled={isDisconnected}
+        disabled={disabled}
         isLoading={isLoading}
       />
       <EpochField epoch={2} />
       <Flex justifyContent="center" marginBottom={10}>
         <ConnectButton
           size="lg"
-          disabled={isDisconnected || amount.isZero()}
+          disabled={disabled || amount.isZero()}
           isLoading={mutation.isLoading}
           onClick={startStakeTransaction}
         >

@@ -4,8 +4,8 @@ import Button, { IButtonProps } from './common/button';
 export interface IConnectButtonProps extends IButtonProps {}
 
 export function ConnectButton(props: IConnectButtonProps) {
-  const { isDisconnected, connect } = useConnect();
-  if (isDisconnected) {
+  const { isConnected, connect } = useConnect();
+  if (!isConnected) {
     const { variant, size } = props;
     return (
       <Button

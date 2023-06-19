@@ -16,14 +16,14 @@ const { publicClient, webSocketPublicClient } = configureChains(
   [publicProvider()],
 );
 
+const config = createConfig({
+  autoConnect: true,
+  publicClient,
+  webSocketPublicClient,
+});
+
 export default function App({ Component, pageProps }: AppProps) {
   const store = createStore();
-
-  const config = createConfig({
-    autoConnect: true,
-    publicClient,
-    webSocketPublicClient,
-  });
 
   return (
     <ChakraProvider theme={theme}>
