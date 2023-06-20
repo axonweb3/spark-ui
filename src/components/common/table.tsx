@@ -4,6 +4,7 @@ import {
   Flex,
   Icon,
   LayoutProps,
+  Spinner,
   TableContainer,
   Tbody,
   Td,
@@ -47,7 +48,7 @@ export interface ITableProps<Data extends Record<string, any>> {
 export default function Table<Data extends Record<string, any>>(
   props: ITableProps<Data>,
 ) {
-  const { data = [] } = props;
+  const { data = [], isLoading } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = useMemo(() => createColumnHelper<Data>(), []);
   const columns: ColumnDef<Data, any>[] = useMemo(() => {
@@ -116,7 +117,22 @@ export default function Table<Data extends Record<string, any>>(
             </Tr>
           ))}
         </Thead>
-        <Tbody>
+        <Tbody position="relative" height={isLoading ? '200px' : 'auto'}>
+          {isLoading && (
+            <Flex
+              position="absolute"
+              width="100%"
+              height="100%"
+              backgroundColor="white"
+              opacity="70%"
+              justifyContent="center"
+              alignItems="center"
+              cursor="wait"
+            >
+              <Spinner color="brand" thickness="4px" size="xl" />
+            </Flex>
+          )}
+
           {table.getRowModel().rows.map((row) => (
             <Fragment key={row.id}>
               <Tr>
