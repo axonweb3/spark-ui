@@ -29,7 +29,7 @@ export default function Header() {
             <Tooltip label="Copy to clipboard" hasArrow>
               <Box>
                 <Button width="50" variant="outlined" onClick={onCopy}>
-                  {address?.slice(0, 10) + '...' + address?.slice(-10)}
+                  {address?.slice(0, 6) + '...' + address?.slice(-6)}
                 </Button>
               </Box>
             </Tooltip>

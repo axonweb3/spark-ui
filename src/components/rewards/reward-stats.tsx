@@ -33,9 +33,9 @@ export function RewardStats() {
 
   const displayAddress = useMemo(() => {
     return (
-      address?.substring(0, 30) +
+      address?.substring(0, 20) +
       '...' +
-      address?.substring(address.length - 30)
+      address?.substring(address.length - 20)
     );
   }, [address]);
 
@@ -66,24 +66,26 @@ export function RewardStats() {
       <Box paddingY="60px" paddingX="32px">
         <Box marginBottom="60px">
           <Flex justifyContent="space-between" alignItems="center">
+            <Text
+              fontFamily="alfarn-2"
+              fontSize="25px"
+              fontWeight="semibold"
+              marginRight="30px"
+            >
+              My Address
+            </Text>
+            <Spacer />
             <Flex alignItems="center">
-              <Text
-                fontFamily="alfarn-2"
-                fontSize="25px"
-                fontWeight="semibold"
-                marginRight="30px"
-              >
-                My Address
-              </Text>
               <Text fontFamily="montserrat">{displayAddress}</Text>
+              <Icon
+                as={MdFileCopy}
+                marginLeft={2}
+                width="16px"
+                height="16px"
+                cursor="pointer"
+                onClick={onCopy}
+              />
             </Flex>
-            <Icon
-              as={MdFileCopy}
-              width="16px"
-              height="16px"
-              cursor="pointer"
-              onClick={onCopy}
-            />
           </Flex>
         </Box>
         <SimpleGrid columns={3} spacing="12px" marginBottom="60px">

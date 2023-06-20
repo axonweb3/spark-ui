@@ -19,12 +19,14 @@ import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useMemo, useState } from 'react';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
-const MOCK_COLUMNS = [
+const columns = [
   {
-    title: 'ID',
-    dataIndex: 'id',
-    sorter: true,
+    title: 'Transaction Hash',
+    dataIndex: 'tx_hash',
+    render: (hash: string) => hash.slice(0, 20) + '...' + hash.slice(-20),
   },
   {
     title: 'Amount (AT)',
@@ -41,39 +43,6 @@ const MOCK_COLUMNS = [
   },
 ];
 
-const MOCK_DATASOURCE = [
-  {
-    id: '82659894393984111',
-    amount: 1000,
-    status: 'success',
-  },
-  {
-    id: '82659894393984222',
-    amount: 1000,
-    status: 'pending',
-  },
-  {
-    id: '82659894393984333',
-    amount: 1000,
-    status: 'failed',
-  },
-  {
-    id: '82659894393984444',
-    amount: 1000,
-    status: 'success',
-  },
-  {
-    id: '82659894393984555',
-    amount: 1000,
-    status: 'pending',
-  },
-  {
-    id: '82659894393984666',
-    amount: 1000,
-    status: 'failed',
-  },
-];
-
 export default function WithdrawPanel() {
   const { address } = useConnect();
   const showDialog = useDialog();
@@ -83,6 +52,27 @@ export default function WithdrawPanel() {
     () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
     [withdrawableAmount],
   );
+
+  const [page, setPage] = useState(1);
+  const { data, isFetching } = useQuery(
+    ['stakeHistory', address, page],
+    async () => {
+      if (!address) {
+        return undefined;
+      }
+      const response = await axios.get('/api/stake', {
+        params: {
+          address,
+          pageNumber: page,
+          event: 'withdraw',
+        },
+      });
+      return response.data;
+    },
+    { keepPreviousData: true },
+  );
+
+  const dataSources = useMemo(() => data?.data ?? [], [data]);
 
   const handleWithdraw = () => {
     setIsConfirmDialogOpen(false);
@@ -135,12 +125,13 @@ export default function WithdrawPanel() {
       </Box>
       <Box marginBottom="40px">
         <Table
-          rowKey="id"
-          columns={MOCK_COLUMNS}
-          dataSources={MOCK_DATASOURCE}
+          rowKey="tx_hash"
+          columns={columns}
+          dataSources={dataSources}
+          isLoading={isFetching}
         />
         <Box marginTop="30px">
-          <Pagination total={500} showQuickJumper />
+          <Pagination total={500} current={page} onChange={setPage} showQuickJumper />
         </Box>
       </Box>
       <Flex justifyContent="center">
