@@ -11,7 +11,7 @@ export default function DelegatedAmount(props: IDelegatedAmountProps) {
   const [editing, setEditing] = React.useState(false);
 
   return (
-    <Flex>
+    <Flex width="full">
       <Flex grow="1">
         {editing ? (
           <Input

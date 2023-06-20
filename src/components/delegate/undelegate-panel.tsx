@@ -12,7 +12,6 @@ const MOCK_COLUMNS = [
   {
     title: 'Delegated Amount',
     dataIndex: 'amount',
-    sorter: true,
     width: '50%',
     render: (amount: number) => <DelegatedAmount amount={amount} />,
   },
@@ -56,7 +55,7 @@ const MOCK_DATASOURCES = [
 export default function UndelegatePanel() {
   return (
     <Box>
-      <Table columns={MOCK_COLUMNS} dataSources={MOCK_DATASOURCES} />
+      <Table columns={MOCK_COLUMNS} data={MOCK_DATASOURCES} />
       <Box marginTop="30px">
         <Pagination total={500} showQuickJumper />
       </Box>

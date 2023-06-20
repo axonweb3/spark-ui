@@ -15,27 +15,24 @@ type Story = StoryObj<typeof Table>;
 
 export const Default: Story = {
   args: {
-    rowKey: 'id',
     columns: [
       {
         title: 'ID',
         dataIndex: 'id',
-        sorter: true,
       },
       {
         title: 'Amount (AT)',
         dataIndex: 'amount',
-        sorter: true,
       },
       {
         title: 'Status',
         dataIndex: 'status',
-        render: (status, data) => {
-          return <Badge key={data.id} status={status} />
-        }
+        render: (status) => {
+          return <Badge status={status} />;
+        },
       },
     ],
-    dataSources: [
+    data: [
       {
         id: '82659894393984111',
         amount: 1000,
@@ -55,30 +52,109 @@ export const Default: Story = {
   },
 };
 
+export const Expandable: Story = {
+  args: {
+    columns: [
+      {
+        title: 'ID',
+        dataIndex: 'id',
+      },
+      {
+        title: 'Amount (AT)',
+        dataIndex: 'amount',
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        render: (status) => {
+          return <Badge status={status} />;
+        },
+      },
+    ],
+    expandable: {
+      rowExpandable: (record) => record?.form,
+      expandedRowRender: (record) => {
+        return (
+          <Table
+            columns={[
+              {
+                title: 'Type',
+                dataIndex: 'type',
+              },
+              {
+                title: 'Amount (AT)',
+                dataIndex: 'amount',
+              },
+              {
+                title: 'Address',
+                dataIndex: 'address',
+              },
+            ]}
+            data={record?.form}
+          />
+        );
+      },
+    },
+    data: [
+      {
+        id: '82659894393984111',
+        amount: 1000,
+        status: 'succeed',
+        form: [
+          {
+            type: 'Stake',
+            amount: 1000,
+            address: '0xckt1234567890123456789012345678901234567890',
+          },
+          {
+            type: 'Delegate',
+            amount: 2000,
+            address: '0xckt1234567890123456789012345678901234567891',
+          },
+        ],
+      },
+      {
+        id: '82659894393984111',
+        amount: 1000,
+        status: 'pending',
+        form: [
+          {
+            type: 'Stake',
+            amount: 1000,
+            address: '0xckt1234567890123456789012345678901234567890',
+          },
+          {
+            type: 'Delegate',
+            amount: 2000,
+            address: '0xckt1234567890123456789012345678901234567891',
+          },
+        ],
+      },
+    ],
+  },
+};
+
 export const Loading: Story = {
   args: {
-    rowKey: 'id',
     isLoading: true,
     columns: [
       {
         title: 'ID',
         dataIndex: 'id',
-        sorter: true,
       },
       {
         title: 'Amount (AT)',
         dataIndex: 'amount',
-        sorter: true,
       },
       {
         title: 'Status',
         dataIndex: 'status',
-        render: (status, data) => {
-          return <Badge key={data.id} status={status} />
-        }
+        render: (status) => {
+          return <Badge status={status} />;
+        },
       },
     ],
-    dataSources: [
+    data: [
       {
         id: '82659894393984111',
         amount: 1000,

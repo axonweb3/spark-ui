@@ -45,7 +45,7 @@ export function TopStakeAddresses(props: ITopStakeAddressesProps) {
         </Text>
       </Box>
       <Box marginBottom="10px">
-        <Table rowKey="rank" columns={columns} dataSources={dataSource} />
+        <Table columns={columns} data={dataSource} />
       </Box>
     </Box>
   );

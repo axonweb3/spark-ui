@@ -1,150 +1,172 @@
 import {
-  Text,
+  Box,
   Table as ChakraTable,
   Flex,
+  Icon,
+  LayoutProps,
   TableContainer,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
-  Box,
-  Spacer,
-  LayoutProps,
-  Spinner,
 } from '@chakra-ui/react';
-import { useMemo, useState } from 'react';
+import {
+  CellContext,
+  ColumnDef,
+  DeepKeys,
+  Row,
+  SortingState,
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { Fragment, useCallback, useMemo, useState } from 'react';
+import { MdChevronRight, MdExpandMore } from 'react-icons/md';
 
-interface ColumnType {
+interface ColumnType<Data extends object> {
   title: string;
   dataIndex: string;
-  key?: string;
   width?: LayoutProps['width'];
-  sorter?: boolean | ((a: any, b: any) => number);
-  render?: (value: any, data: DataSourceType) => React.ReactNode;
+  render?: (value: any, data: Data[]) => React.ReactNode;
 }
 
-interface DataSourceType {
-  key?: string;
-  [key: string]: any;
-}
-
-export interface ITableProps {
-  rowKey?: string;
+export interface ITableProps<Data extends Record<string, any>> {
+  data: Data[];
+  columns: ColumnType<Data>[];
+  expandable?: {
+    expandedRowRender?(record: Data): React.ReactNode;
+    rowExpandable?(record: Data): boolean;
+  };
   isLoading?: boolean;
-  columns: ColumnType[];
-  dataSources: DataSourceType[];
 }
 
-export default function Table(props: ITableProps) {
-  const { rowKey = 'key', isLoading, dataSources } = props;
-  const [columns] = useState(props.columns);
+export default function Table<Data extends Record<string, any>>(
+  props: ITableProps<Data>,
+) {
+  const { data = [] } = props;
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const columnHelper = useMemo(() => createColumnHelper<Data>(), []);
+  const columns: ColumnDef<Data, any>[] = useMemo(() => {
+    return props.columns.map((column) => {
+      const columnDef: ColumnDef<Data, any> = columnHelper.accessor(
+        column.dataIndex as DeepKeys<Data>,
+        {
+          header: column.title,
+          cell: (i: CellContext<Data, string>) =>
+            column.render?.(i.getValue(), data) ?? i.getValue(),
+        },
+      );
+      return columnDef;
+    });
+  }, [props.columns, columnHelper, data]);
+  const getRowCanExpand = useCallback(
+    (row: Row<Data>) =>
+      props.expandable?.rowExpandable?.(row.original) ?? false,
+    [props.expandable],
+  );
+
+  const table = useReactTable({
+    columns,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+    onSortingChange: setSorting,
+    getRowCanExpand,
+    getSortedRowModel: getSortedRowModel(),
+    state: {
+      sorting,
+    },
+  });
 
   return (
-    <Box position="relative">
-      {isLoading && (
-        <Flex
-          position="absolute"
-          width="100%"
-          height="100%"
-          backgroundColor="white"
-          opacity="50%"
-          justifyContent="center"
-          alignItems="center"
-          cursor="wait"
+    <TableContainer
+      borderWidth="1px"
+      borderColor="gray.700"
+      borderRadius="16px"
+    >
+      <ChakraTable variant="simple">
+        <Thead
+          backgroundColor="secondary"
+          borderBottom="1px"
+          borderColor="gray.100"
         >
-          <Spinner color="brand" width={30} height={30} />
-        </Flex>
-      )}
-      <TableContainer
-        borderWidth="1px"
-        borderColor="gray.700"
-        borderRadius="16px"
-      >
-        <ChakraTable variant="simple">
-          <Thead
-            backgroundColor="secondary"
-            borderBottom="1px"
-            borderColor="gray.100"
-          >
-            <Tr>
-              {columns.map(({ title, key, dataIndex, sorter, ...rest }) => (
-                <Th
-                  key={`col_${key ?? dataIndex}`}
-                  textTransform="capitalize"
-                  padding="16px"
-                  width={rest.width}
-                >
-                  <Flex>
-                    <Text color="black" fontFamily="montserrat" fontSize="sm">
-                      {title}
-                    </Text>
-                    <Spacer />
-                    {sorter && <Sorter />}
-                  </Flex>
-                </Th>
-              ))}
+          {table.getHeaderGroups().map((headerGroup) => (
+            <Tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                const meta: any = header.column.columnDef.meta;
+                return (
+                  <Th
+                    key={header.id}
+                    isNumeric={meta?.isNumeric}
+                    textTransform="capitalize"
+                    padding="16px"
+                    color="black"
+                    fontFamily="montserrat"
+                    fontSize="sm"
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </Th>
+                );
+              })}
             </Tr>
-          </Thead>
-          <Tbody>
-            {dataSources.map((dataSource: DataSourceType, index: number) => {
-              const rkey = dataSource[rowKey];
-              return (
-                <Tr key={`${rkey}_${index}`}>
-                  {columns.map(({ dataIndex, key, render }) => {
-                    return (
-                      <Td
-                        key={`row_${rkey}_${key ?? dataIndex}`}
-                        padding="16px"
-                        fontFamily="montserrat"
-                        fontSize="14px"
-                        backgroundColor="white"
-                      >
-                        {render
-                          ? render(dataSource[dataIndex], dataSource)
-                          : dataSource[dataIndex]}
-                      </Td>
-                    );
-                  })}
+          ))}
+        </Thead>
+        <Tbody>
+          {table.getRowModel().rows.map((row) => (
+            <Fragment key={row.id}>
+              <Tr>
+                {row.getVisibleCells().map((cell, index) => {
+                  const meta: any = cell.column.columnDef.meta;
+                  return (
+                    <Td
+                      key={cell.id}
+                      isNumeric={meta?.isNumeric}
+                      padding="16px"
+                      fontFamily="montserrat"
+                      fontSize="14px"
+                      backgroundColor="white"
+                    >
+                      <Flex alignItems="center" gap={1}>
+                        {row.getCanExpand() &&
+                          index === 0 &&
+                          props.expandable && (
+                            <Icon
+                              as={
+                                row.getIsExpanded()
+                                  ? MdExpandMore
+                                  : MdChevronRight
+                              }
+                              width="24px"
+                              height="24px"
+                              cursor="pointer"
+                              onClick={row.getToggleExpandedHandler()}
+                            />
+                          )}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Flex>
+                    </Td>
+                  );
+                })}
+              </Tr>
+              {row.getIsExpanded() && props.expandable?.expandedRowRender && (
+                <Tr>
+                  <Td colSpan={row.getVisibleCells().length} padding={0}>
+                    {props.expandable.expandedRowRender(row.original)}
+                  </Td>
                 </Tr>
-              );
-            })}
-          </Tbody>
-        </ChakraTable>
-      </TableContainer>
-    </Box>
-  );
-}
-
-const sorterCaretPaths = {
-  up: 'M8.6921 5.63879L4.72356 1.03702C4.60997 0.905302 4.39124 0.905302 4.27644 1.03702L0.307898 5.63879C0.160467 5.81039 0.293396 6.06174 0.53146 6.06174H8.46854C8.7066 6.06174 8.83953 5.81039 8.6921 5.63879Z',
-  down: 'M8.46854 0.938232H0.53146C0.293396 0.938232 0.160467 1.18959 0.307898 1.36119L4.27644 5.96295C4.39003 6.09468 4.60876 6.09468 4.72356 5.96295L8.6921 1.36119C8.83953 1.18959 8.7066 0.938232 8.46854 0.938232Z',
-};
-
-function Sorter() {
-  const svgProps = useMemo(
-    () => ({
-      width: '9',
-      height: '7',
-      viewBox: '0 0 9 7',
-      fill: 'none',
-      xmlns: 'http://www.w3.org/2000/svg',
-    }),
-    [],
-  );
-
-  return (
-    <Flex direction="column">
-      <Box cursor="pointer">
-        <svg {...svgProps}>
-          <path d={sorterCaretPaths.up} fill="#7B7973" />
-        </svg>
-      </Box>
-      <Box cursor="pointer">
-        <svg {...svgProps}>
-          <path d={sorterCaretPaths.down} fill="#7B7973" />
-        </svg>
-      </Box>
-    </Flex>
+              )}
+            </Fragment>
+          ))}
+        </Tbody>
+      </ChakraTable>
+    </TableContainer>
   );
 }

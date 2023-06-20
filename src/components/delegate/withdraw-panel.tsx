@@ -67,7 +67,7 @@ export default function WithdrawPanel() {
     { keepPreviousData: true },
   );
 
-  const dataSources = useMemo(() => data?.data ?? [], [data]);
+  const dataSource = useMemo(() => data?.data ?? [], [data]);
 
   const displayAmount = useMemo(
     () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
@@ -124,9 +124,8 @@ export default function WithdrawPanel() {
       </Box>
       <Box marginBottom="40px">
         <Table
-          rowKey="tx_hash"
           columns={columns}
-          dataSources={dataSources}
+          data={dataSource}
           isLoading={isFetching}
         />
         <Box marginTop="30px">

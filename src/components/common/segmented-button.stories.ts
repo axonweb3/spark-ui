@@ -19,3 +19,9 @@ type Story = StoryObj<typeof SegmentedButton>;
 export const Default: Story = {
   args: {},
 };
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+  },
+};

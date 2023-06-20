@@ -25,6 +25,7 @@
     "@hapi/boom": "^10.0.1",
     "@observablehq/plot": "^0.6.7",
     "@tanstack/query-core": "^4.29.11",
+    "@tanstack/react-table": "^8.9.2",
     "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "cookie": "^0.5.0",

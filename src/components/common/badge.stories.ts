@@ -20,9 +20,9 @@ export const Default: Story = {
   },
 };
 
-export const Succeed: Story = {
+export const Success: Story = {
   args: {
-    status: 'succeed',
+    status: 'success',
   },
 };
 

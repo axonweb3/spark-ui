@@ -1,13 +1,6 @@
 import React from 'react';
 import { MdDone } from 'react-icons/md';
-import {
-  Text,
-  Button,
-  ButtonGroup,
-  Box,
-  SimpleGrid,
-  useToken,
-} from '@chakra-ui/react';
+import { Text, Button, ButtonGroup, Box, SimpleGrid } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 export interface ISegmentedButtonProps {
@@ -19,7 +12,6 @@ export interface ISegmentedButtonProps {
 }
 
 export default function SegmentedButton(props: ISegmentedButtonProps) {
-  const [yellow300] = useToken('colors', ['yellow.300']);
   const { options, value, onChange, defaultValue, disabled } = props;
   const [active, setActive] = React.useState(
     value ?? defaultValue ?? options[0],

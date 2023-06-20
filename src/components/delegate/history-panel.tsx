@@ -11,7 +11,6 @@ const columns = [
   {
     title: 'Event',
     dataIndex: 'event',
-    sorter: true,
     render: (event: string) => {
       return <Text textTransform="capitalize">{event}</Text>;
     },
@@ -19,12 +18,10 @@ const columns = [
   {
     title: 'ID',
     dataIndex: 'id',
-    sorter: true,
   },
   {
     title: 'Amount',
     dataIndex: 'amount',
-    sorter: true,
     render: (amount: string) => {
       return `${(parseInt(amount, 10) / 10 ** 8).toFixed(2)} AT`;
     },
@@ -32,7 +29,6 @@ const columns = [
   {
     title: 'Status',
     dataIndex: 'status',
-    sorter: true,
     render: (status: string, data: any) => {
       return <Badge key={data.id} status={status} />;
     },
@@ -59,14 +55,14 @@ export default function HistoryPanel() {
     { keepPreviousData: true },
   );
 
-  const dataSources = useMemo(() => data?.data ?? [], [data]);
+  const dataSource = useMemo(() => data?.data ?? [], [data]);
   // const total = useMemo(() => Math.ceil((data?.total ?? 0) / pageSize), [data, pageSize]);
 
   return (
     <Box>
       <Table
         columns={columns}
-        dataSources={dataSources}
+        data={dataSource}
         isLoading={isFetching}
       />
       <Box marginTop="30px">

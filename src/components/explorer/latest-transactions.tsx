@@ -41,7 +41,7 @@ export function LatestTransactions(props: ILatestStakeTransactionsProps) {
         </Text>
       </Box>
       <Box marginBottom="10px">
-        <Table rowKey="timestamp" columns={columns} dataSources={dataSource} />
+        <Table columns={columns} data={dataSource} />
       </Box>
     </Box>
   );

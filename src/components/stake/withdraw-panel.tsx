@@ -31,12 +31,10 @@ const columns = [
   {
     title: 'Amount (AT)',
     dataIndex: 'amount',
-    sorter: true,
   },
   {
     title: 'Status',
     dataIndex: 'status',
-    sorter: true,
     render: (status: string, data: any) => {
       return <Badge key={data.id} status={status} />;
     },
@@ -72,7 +70,7 @@ export default function WithdrawPanel() {
     { keepPreviousData: true },
   );
 
-  const dataSources = useMemo(() => data?.data ?? [], [data]);
+  const dataSource = useMemo(() => data?.data ?? [], [data]);
 
   const handleWithdraw = () => {
     setIsConfirmDialogOpen(false);
@@ -125,9 +123,8 @@ export default function WithdrawPanel() {
       </Box>
       <Box marginBottom="40px">
         <Table
-          rowKey="tx_hash"
           columns={columns}
-          dataSources={dataSources}
+          data={dataSource}
           isLoading={isFetching}
         />
         <Box marginTop="30px">

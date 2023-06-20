@@ -15,7 +15,6 @@ const columns = [
   {
     title: 'Total Amount',
     dataIndex: 'amount',
-    sorter: true,
     render: (amount: string) => {
       return `${(parseInt(amount, 10) / 10 ** 8).toFixed(2)} AT`;
     },
@@ -55,14 +54,14 @@ export function RewardsHistory() {
     { keepPreviousData: true },
   );
 
-  const dataSources = useMemo(() => data?.data ?? [], [data]);
+  const dataSource = useMemo(() => data?.data ?? [], [data]);
   // const total = useMemo(() => Math.ceil((data?.total ?? 0) / pageSize), [data, pageSize]);
 
   return (
     <Box>
       <Table
         columns={columns}
-        dataSources={dataSources}
+        data={dataSource}
         isLoading={isFetching}
       />
       <Box marginTop="30px">
