@@ -23,6 +23,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { MdChevronRight, MdExpandMore } from 'react-icons/md';
 
@@ -63,8 +64,7 @@ export default function Table<Data extends Record<string, any>>(
     });
   }, [props.columns, columnHelper, data]);
   const getRowCanExpand = useCallback(
-    (row: Row<Data>) =>
-      props.expandable?.rowExpandable?.(row.original) ?? false,
+    (row: Row<Data>) => !!props.expandable?.rowExpandable?.(row.original),
     [props.expandable],
   );
 
@@ -156,13 +156,28 @@ export default function Table<Data extends Record<string, any>>(
                   );
                 })}
               </Tr>
-              {row.getIsExpanded() && props.expandable?.expandedRowRender && (
-                <Tr>
-                  <Td colSpan={row.getVisibleCells().length} padding={0}>
-                    {props.expandable.expandedRowRender(row.original)}
-                  </Td>
-                </Tr>
-              )}
+              <AnimatePresence initial={false}>
+                {row.getIsExpanded() && props.expandable?.expandedRowRender && (
+                  <Tr>
+                    <Td colSpan={row.getVisibleCells().length} padding={0}>
+                      <Box
+                        paddingLeft={5}
+                        backgroundColor="yellow.100"
+                        as={motion.div}
+                        initial="collapsed"
+                        animate="open"
+                        exit="collapsed"
+                        variants={{
+                          open: { opacity: 1, height: 'auto' },
+                          collapsed: { opacity: 0, height: 0 },
+                        }}
+                      >
+                        {props.expandable.expandedRowRender(row.original)}
+                      </Box>
+                    </Td>
+                  </Tr>
+                )}
+              </AnimatePresence>
             </Fragment>
           ))}
         </Tbody>

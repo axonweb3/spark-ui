@@ -41,6 +41,8 @@ export default function Badge(props: IBadgeProps) {
       paddingY="2px"
       borderRadius="2px"
       fontWeight="bold"
+      minWidth="75px"
+      textAlign="center"
       textTransform="uppercase"
     >
       <Text fontFamily="montserrat">{label ?? status}</Text>

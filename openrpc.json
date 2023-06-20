@@ -161,27 +161,22 @@
                 "type": "object",
                 "required": [
                   "id",
-                  "address",
-                  "timestamp",
                   "event",
-                  "operation",
-                  "tx_hash",
+                  "type",
                   "amount",
-                  "epoch",
-                  "status"
+                  "status",
+                  "transactions",
+                  "tx_hash"
                 ],
                 "properties": {
                   "id": {
                     "type": "integer",
                     "minimum": 0
                   },
-                  "address": {
-                    "type": "string",
-                    "pattern": "^(ckt)[\\d\\w]{97}$"
-                  },
-                  "timestamp": {
-                    "type": "string",
-                    "format": "date-time"
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 100000000000,
+                    "maximum": 100000000000000
                   },
                   "event": {
                     "type": "string",
@@ -191,25 +186,12 @@
                       "withdraw"
                     ]
                   },
-                  "operation": {
+                  "type": {
                     "type": "string",
                     "enum": [
                       "stake",
                       "delegate"
                     ]
-                  },
-                  "tx_hash": {
-                    "type": "string",
-                    "pattern": "^(0x)[\\d\\w]{64}$"
-                  },
-                  "amount": {
-                    "type": "integer",
-                    "minimum": 100000000000,
-                    "maximum": 100000000000000
-                  },
-                  "epoch": {
-                    "type": "integer",
-                    "minimum": 0
                   },
                   "status": {
                     "type": "string",
@@ -218,6 +200,43 @@
                       "success",
                       "failed"
                     ]
+                  },
+                  "tx_hash": {
+                    "$ref": "#/components/schemas/Hash"
+                  },
+                  "transactions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "hash",
+                        "status",
+                        "amount",
+                        "timestamp"
+                      ],
+                      "properties": {
+                        "hash": {
+                          "$ref": "#/components/schemas/Hash"
+                        },
+                        "status": {
+                          "type": "string",
+                          "enum": [
+                            "pending",
+                            "success",
+                            "failed"
+                          ]
+                        },
+                        "amount": {
+                          "type": "integer",
+                          "minimum": 100000000000,
+                          "maximum": 100000000000000
+                        },
+                        "timestamp": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    }
                   }
                 }
               },

@@ -17,6 +17,7 @@ export default function BaseLayout(props: React.PropsWithChildren<{}>) {
           backgroundImage="/img/background.png"
           backgroundSize="cover"
           backgroundRepeat="repeat"
+          backgroundAttachment="fixed"
           minHeight="100vh"
         >
           <main>

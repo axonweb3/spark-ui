@@ -1,11 +1,21 @@
-import { Text, Box } from '@chakra-ui/react';
+import {
+  Text,
+  Box,
+  Table as ChakraTable,
+  Thead,
+  Tr,
+  Tbody,
+  Th,
+  Td,
+} from '@chakra-ui/react';
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useConnect } from '@/hooks/useConnect';
+import { renderAmount, renderDateString, renderTransactionHash } from '@/utils';
 
 const columns = [
   {
@@ -58,11 +68,51 @@ export default function HistoryPanel() {
   const dataSource = useMemo(() => data?.data ?? [], [data]);
   // const total = useMemo(() => Math.ceil((data?.total ?? 0) / pageSize), [data, pageSize]);
 
+  const expandedRowRender = useCallback(
+    (row: any) => (
+      <ChakraTable fontFamily="montserrat" variant="unstyled">
+        <Thead color="black" fontWeight="bold">
+          <Tr>
+            <Th padding="16px" textTransform="capitalize">
+              Timestamp
+            </Th>
+            <Th padding="16px" textTransform="capitalize">
+              Transaction Hash
+            </Th>
+            <Th padding="16px" textTransform="capitalize">
+              Amount (AT)
+            </Th>
+            <Th padding="16px" textTransform="capitalize">
+              Status
+            </Th>
+          </Tr>
+        </Thead>
+        <Tbody fontSize="xs">
+          {row.transactions.map((tx: any) => (
+            <Tr key={tx.hash}>
+              <Td padding="16px">{renderDateString(tx.timestamp)}</Td>
+              <Td padding="16px">{renderTransactionHash(tx.hash)}</Td>
+              <Td padding="16px">{renderAmount(tx.amount)}</Td>
+              <Td padding="16px">
+                <Badge status={tx.status} />
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </ChakraTable>
+    ),
+    [],
+  );
+
   return (
     <Box>
       <Table
         columns={columns}
         data={dataSource}
+        expandable={{
+          expandedRowRender,
+          rowExpandable: (record: any) => record.transactions,
+        }}
         isLoading={isFetching}
       />
       <Box marginTop="30px">
