@@ -1,28 +1,26 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createRouter } from 'next-connect';
-import Boom from '@hapi/boom';
-import axios from '@/lib/axios';
+import * as RpcClient from '@/lib/rpc-client';
+import { withErrorHandle } from '@/lib/with-error';
+import { getRouter } from '@/lib/router';
 
-const router = createRouter<NextApiRequest, NextApiResponse>();
+const router = getRouter();
 
 async function getStakeAmountByEpoch(
   type: 'stake' | 'delegate',
   pageNumber: number = 1,
   pageSize: number = 100,
 ) {
-  const response = await axios.post(process.env.SPARK_RPC_URL!, {
-    method: 'getStakeAmountByEpoch',
-    params: [type, pageNumber, pageSize],
-  });
+  const response = await RpcClient.request('getStakeAmountByEpoch', [
+    type,
+    pageNumber,
+    pageSize,
+  ]);
   const { data = [] } = response.data?.result ?? {};
   return data.map((item: any) => ({ ...item, type }));
 }
 
 async function getChainState() {
-  const response = await axios.post(process.env.SPARK_RPC_URL!, {
-    method: 'getChainState',
-  });
-
+  const response = await RpcClient.request('getChainState');
   return response.data?.result ?? {};
 }
 
@@ -30,10 +28,10 @@ async function getTopStakeAddresses(
   pageNumber: number = 1,
   pageSize: number = 10,
 ) {
-  const response = await axios.post(process.env.SPARK_RPC_URL!, {
-    method: 'getTopStakeAddresses',
-    params: [pageNumber, pageSize],
-  });
+  const response = await RpcClient.request('getTopStakeAddresses', [
+    pageNumber,
+    pageSize,
+  ]);
   const { data = [] } = response.data?.result ?? {};
   return data;
 }
@@ -42,10 +40,10 @@ async function getLatestStakeTransactions(
   pageNumber: number = 1,
   pageSize: number = 10,
 ) {
-  const response = await axios.post(process.env.SPARK_RPC_URL!, {
-    method: 'getLatestStakeTransactions',
-    params: [pageNumber, pageSize],
-  });
+  const response = await RpcClient.request('getLatestStakeTransactions', [
+    pageNumber,
+    pageSize,
+  ]);
   const { data = [] } = response.data?.result ?? {};
   return data;
 }
@@ -74,13 +72,4 @@ router.get(async (_: NextApiRequest, res: NextApiResponse) => {
   });
 });
 
-export default router.handler({
-  onError: (err, _, res) => {
-    if ((err as Boom.Boom).isBoom) {
-      const { statusCode, payload } = (err as Boom.Boom).output;
-      res.status(statusCode).json(payload);
-    } else if (err instanceof Error) {
-      res.status(500).json({ message: err.message });
-    }
-  },
-});
+export default withErrorHandle(router);

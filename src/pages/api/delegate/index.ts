@@ -1,11 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { createRouter } from 'next-connect';
 import { addressMiddleware } from '@/middlewares/address';
-import Boom from '@hapi/boom';
-import axios from '@/lib/axios';
-import env from '@/lib/env';
+import * as RpcClient from '@/lib/rpc-client';
+import { withErrorHandle } from '@/lib/with-error';
+import { getRouter } from '@/lib/router';
 
-const router = createRouter<NextApiRequest, NextApiResponse>();
+const router = getRouter();
 
 router
   .use(addressMiddleware)
@@ -13,29 +12,19 @@ router
     const { address, event } = req.query;
     const pageNumber = req.query.pageNumber ? Number(req.query.pageNumber) : 1;
     const pageSize = req.query.pageSize ? Number(req.query.pageSize) : 10;
-    const { data } = await axios.post(env.SPARK_RPC_URL!, {
-      method: 'getStakeHistory',
-      params: [address, pageNumber, pageSize, event, 'delegate'],
-    });
+    const { data } = await RpcClient.request('getStakeHistory', [
+      address,
+      pageNumber,
+      pageSize,
+      event,
+      'delegate',
+    ]);
     res.json(data.result);
   })
   .post(async (req: NextApiRequest, res: NextApiResponse) => {
     const { address, amount, to } = req.body;
-    const { data } = await axios.post(env.SPARK_RPC_URL!, {
-      method: 'delegate',
-      params: [address, to, amount],
-    });
+    const { data } = await RpcClient.request('delegate', [address, to, amount]);
     res.json(data.result);
   });
 
-export default router.handler({
-  onError: (err, _, res) => {
-    if ((err as Boom.Boom).isBoom) {
-      const { statusCode, payload } = (err as Boom.Boom).output;
-      res.status(statusCode).json(payload);
-    } else if (err instanceof Error) {
-      res.status(500).json({ message: err.message });
-    }
-  },
-});
-
+export default withErrorHandle(router);

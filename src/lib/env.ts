@@ -1,11 +1,13 @@
 import { z } from 'zod';
 
 export interface IEnv {
-  SPARK_RPC_URL: number;
+  NEXT_PUBLIC_SPARK_RPC_URL: number;
+  NEXT_PROD_LOGGER_LEVEL?: string;
 }
 
 const schema = z.object({
-  SPARK_RPC_URL: z.string(),
+  NEXT_PUBLIC_SPARK_RPC_URL: z.string(),
+  NEXT_PROD_LOGGER_LEVEL: z.string().optional(),
 });
 
 export default schema.parse(process.env);
