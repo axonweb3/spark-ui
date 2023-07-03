@@ -21,6 +21,7 @@ import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { useQuery } from 'react-query';
 import axios from 'axios';
+import { useNotification } from '@/hooks/ui/useNotification';
 
 const columns = [
   {
@@ -42,6 +43,7 @@ const columns = [
 ];
 
 export default function WithdrawPanel() {
+  const notify = useNotification();
   const { address } = useConnect();
   const showDialog = useDialog();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -74,11 +76,17 @@ export default function WithdrawPanel() {
 
   const handleWithdraw = () => {
     setIsConfirmDialogOpen(false);
+    // TODO: send withdraw request
     showDialog({
       title: 'Withdrawal Requests Submitted',
       description:
         'Your request has been submitted. Check out History for details.',
       hideCancel: true,
+    });
+    // XXX: we need a api to get the withdraw status, and then show notification when the withdraw tx is done.
+    notify({
+      status: 'success',
+      message: 'Your withdrawal has been successful.',
     });
   };
 
