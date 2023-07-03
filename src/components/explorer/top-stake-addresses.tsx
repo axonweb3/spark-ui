@@ -45,7 +45,7 @@ export function TopStakeAddresses(props: ITopStakeAddressesProps) {
         </Text>
       </Box>
       <Box marginBottom="10px">
-        <Table columns={columns} data={dataSource} />
+        <Table columns={columns} data={dataSource} isLoading={dataSource.length === 0} />
       </Box>
     </Box>
   );
