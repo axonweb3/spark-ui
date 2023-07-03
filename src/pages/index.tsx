@@ -65,9 +65,11 @@ export default function IndexPage() {
 
   return (
     <BaseLayout>
-      <Box paddingTop="8px" marginBottom="90px">
-        <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
-      </Box>
+      <Flex justifyContent="center">
+        <Box width="1300px" paddingTop="8px" marginBottom="90px">
+          <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
+        </Box>
+      </Flex>
       <Box width="1080px" marginX="auto">
         <NotificationProvider>
           <Flex justifyContent="center" marginBottom="100px">
