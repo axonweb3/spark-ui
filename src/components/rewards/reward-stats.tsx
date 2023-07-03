@@ -12,22 +12,29 @@ import {
   Button,
 } from '@chakra-ui/react';
 import {
+  MdCheckBox,
   MdFileCopy,
   MdHelp,
   MdOutlineCheckBoxOutlineBlank,
 } from 'react-icons/md';
 import Card from '../common/card';
 import Dialog from '../common/dialog';
-import { useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import { useAddressCopy } from '@/hooks/useAddressCopy';
+import { useShowAgain } from '@/hooks/useShowAgain';
+import { useDialog } from '@/hooks/ui/useDialog';
 
 export function RewardStats() {
+  const showDialog = useDialog();
   const { address } = useConnect();
   const { unlockAmount, lockedAmount, stakedAmount, delegatedAmount } =
     useBalanceQuery(address);
+  const [showAgain, setShowAgain] = useShowAgain('rewards');
+  const [dialogCheckbox, setDialogCheckbox] = useState(false);
+  const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const { onCopy } = useAddressCopy();
   const { isDelegator } = useStakeRole();
 
@@ -38,6 +45,22 @@ export function RewardStats() {
       address?.substring(address.length - 20)
     );
   }, [address]);
+
+  const handleWithdraw = useCallback(
+    (alert = true) => {
+      if (alert) {
+        setIsAlertDialogOpen(true);
+      } else {
+        // TODO: send withdraw request
+        showDialog({
+          title: 'Withdraw Request Submitted',
+          description: 'Your request has been submitted.',
+          hideCancel: true,
+        });
+      }
+    },
+    [showDialog],
+  );
 
   const stats = useMemo(
     () => [
@@ -134,11 +157,19 @@ export function RewardStats() {
           ))}
         </SimpleGrid>
         <Flex justifyContent="center">
+          <Button size="lg" onClick={() => handleWithdraw(showAgain)}>
+            Withdraw Unlocked Rewards
+          </Button>
           <Dialog
+            open={isAlertDialogOpen}
             description="All of your unlocked rewards will be withdrawn in a single operation. The remaining balance will be zero afterwards."
             footer={
               <Flex width="full">
-                <Flex alignItems="center">
+                <Flex
+                  alignItems="center"
+                  cursor="pointer"
+                  onClick={() => setDialogCheckbox(!dialogCheckbox)}
+                >
                   <Flex
                     width={6}
                     height={6}
@@ -146,7 +177,16 @@ export function RewardStats() {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <MdOutlineCheckBoxOutlineBlank />
+                    <Icon
+                      as={
+                        dialogCheckbox
+                          ? MdCheckBox
+                          : MdOutlineCheckBoxOutlineBlank
+                      }
+                      width="18px"
+                      height="18px"
+                      fill="blue.400"
+                    />
                   </Flex>
                   <Text fontSize="sm" color="blue.400">
                     Do not show again
@@ -154,19 +194,21 @@ export function RewardStats() {
                 </Flex>
                 <Spacer />
                 <Flex>
-                  <Button variant="outlined" size="sm">
-                    Cancel
-                  </Button>
-                  <Box width={2} />
-                  <Button variant="contained" size="sm">
+                  <Button
+                    variant="contained"
+                    size="sm"
+                    onClick={() => {
+                      setShowAgain(!dialogCheckbox);
+                      setIsAlertDialogOpen(false);
+                      handleWithdraw(false);
+                    }}
+                  >
                     Got it
                   </Button>
                 </Flex>
               </Flex>
             }
-          >
-            <Button size="lg">Withdraw Unlocked Rewards</Button>
-          </Dialog>
+          />
         </Flex>
       </Box>
     </Card>

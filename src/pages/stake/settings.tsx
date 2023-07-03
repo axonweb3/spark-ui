@@ -131,7 +131,7 @@ export default function SettingsPage() {
                 onChange={(val) => {
                   setRate(Math.min(parseInt(val || '0', 10), 100));
                 }}
-                rightAddon={inputAddon}
+                rightAddon={isConnected && inputAddon}
                 disabled={isDisconnected}
               />
             </Box>
@@ -173,7 +173,7 @@ export default function SettingsPage() {
                 onChange={(val) => {
                   setRate(100 - Math.min(parseInt(val || '0', 10), 100));
                 }}
-                rightAddon={inputAddon}
+                rightAddon={isConnected && inputAddon}
                 disabled={isDisconnected}
               />
             </Box>
@@ -184,6 +184,7 @@ export default function SettingsPage() {
             type="number"
             value={minAmount}
             onChange={handleMiniumnAmountChange}
+            disabled={isDisconnected}
             rightAddon={
               !isDisconnected && (
                 <Flex

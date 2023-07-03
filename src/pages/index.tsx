@@ -80,12 +80,12 @@ export default function IndexPage() {
             maxWidth="800px"
             marginX="auto"
             columns={2}
-            gap="30px"
+            gap="55px"
           >
             {roles.map(({ title, description, action }) => (
               <Box width="full" height="210px" key={title}>
                 <Card>
-                  <Box marginX="-24px">
+                  <Box marginX="-24px" paddingY="4px">
                     <Text
                       fontSize="22px"
                       fontFamily="alfarn-2"

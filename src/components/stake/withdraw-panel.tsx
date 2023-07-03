@@ -77,7 +77,7 @@ export default function WithdrawPanel() {
     showDialog({
       title: 'Withdrawal Requests Submitted',
       description:
-        'Your request has been submitted. Check out staking history for details.',
+        'Your request has been submitted. Check out History for details.',
       hideCancel: true,
     });
   };
@@ -122,13 +122,14 @@ export default function WithdrawPanel() {
         </Stat>
       </Box>
       <Box marginBottom="40px">
-        <Table
-          columns={columns}
-          data={dataSource}
-          isLoading={isFetching}
-        />
+        <Table columns={columns} data={dataSource} isLoading={isFetching} />
         <Box marginTop="30px">
-          <Pagination total={500} current={page} onChange={setPage} showQuickJumper />
+          <Pagination
+            total={500}
+            current={page}
+            onChange={setPage}
+            showQuickJumper
+          />
         </Box>
       </Box>
       <Flex justifyContent="center">

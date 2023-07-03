@@ -57,7 +57,7 @@ export default function Dialog(props: IDialogProps) {
       {children && <Box onClick={() => !disabled && onOpen()}>{children}</Box>}
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
+        <ModalOverlay backgroundImage="/img/background.png" />
         <ModalContent
           backgroundColor="primary"
           borderRadius="2xl"
