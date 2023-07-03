@@ -3,6 +3,7 @@ const webpack = require('webpack');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   distDir: 'dist',
+  reactStrictMode: false,
   compiler: {
     styledComponents: true,
   },

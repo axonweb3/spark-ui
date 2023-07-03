@@ -32,7 +32,9 @@ const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (
   const router = useRouter();
   const { isConnected } = useConnect();
   const { isDelegator } = useStakeRole();
-  const getNavs = useCallback(() => {
+  const [navs, setNavs] = useState<typeof NAVS>([]);
+
+  useEffect(() => {
     let finalNavs = NAVS;
     if (isDelegator) {
       finalNavs = finalNavs.filter(({ name }) => name !== 'Stake');
@@ -40,13 +42,8 @@ const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (
     if (!isConnected) {
       finalNavs = finalNavs.filter(({ name }) => name !== 'Rewards');
     }
-    return finalNavs;
-  }, [isDelegator, isConnected]);
-  const [navs, setNavs] = useState(() => getNavs());
-
-  useEffect(() => {
-    setNavs(getNavs());
-  }, [getNavs]);
+    setNavs(finalNavs);
+  }, [isConnected, isDelegator]);
 
   const active = useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));
