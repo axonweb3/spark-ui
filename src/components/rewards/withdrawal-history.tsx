@@ -66,7 +66,7 @@ export function WithdrawalHistory() {
     <Box>
       <Table
         columns={columns}
-        dataSources={dataSources}
+        data={dataSources}
         isLoading={isFetching}
       />
       <Box marginTop="30px">
