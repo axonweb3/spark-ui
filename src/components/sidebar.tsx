@@ -3,8 +3,8 @@ import Image from 'next/image';
 import Navigation from './common/navigation';
 import { useRouter } from 'next/router';
 import { useConnect } from '@/hooks/useConnect';
-import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
-import { forwardRef, useEffect, useMemo, useState } from 'react';
+import { useStakeRole } from '@/hooks/useStakeRole';
+import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
 
 const NAVS = [
   {
@@ -25,26 +25,28 @@ const NAVS = [
   },
 ];
 
-const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (_, ref) => {
+const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (
+  _,
+  ref,
+) => {
   const router = useRouter();
   const { isConnected } = useConnect();
-  const { role } = useStakeRole();
-  const [navs, setNavs] = useState(() => {
+  const { isDelegator } = useStakeRole();
+  const getNavs = useCallback(() => {
     let finalNavs = NAVS;
-    if (role === StakeRoleType.Delegator) {
+    if (isDelegator) {
       finalNavs = finalNavs.filter(({ name }) => name !== 'Stake');
     }
     if (!isConnected) {
       finalNavs = finalNavs.filter(({ name }) => name !== 'Rewards');
     }
     return finalNavs;
-  })
+  }, [isDelegator, isConnected]);
+  const [navs, setNavs] = useState(() => getNavs());
 
   useEffect(() => {
-    if (isConnected) {
-      setNavs(NAVS);
-    }
-  }, [role, isConnected]);
+    setNavs(getNavs());
+  }, [getNavs]);
 
   const active = useMemo(() => {
     const nav = navs.find(({ href }) => router.pathname.startsWith(href));
@@ -80,6 +82,6 @@ const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (_, ref) => 
       </Flex>
     </Box>
   );
-}
+};
 
 export default forwardRef(Sidebar);
