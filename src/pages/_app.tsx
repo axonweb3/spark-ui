@@ -25,19 +25,21 @@ const config = createConfig({
 export default function App({ Component, pageProps }: AppProps) {
   const store = createStore();
   return (
-    <ChakraProvider theme={theme}>
+    <>
+      <style jsx global>{`
+        :root {
+          --montserrat-font: ${montserrat.style.fontFamily};
+        }
+      `}</style>
       <QueryClientProvider client={queryClient}>
         <JotaiProvider store={store}>
-          <WagmiConfig config={config}>
-            <style jsx global>{`
-              :root {
-                --montserrat-font: ${montserrat.style.fontFamily};
-              }
-            `}</style>
-            <Component {...pageProps} />
-          </WagmiConfig>
+          <ChakraProvider theme={theme}>
+            <WagmiConfig config={config}>
+              <Component {...pageProps} />
+            </WagmiConfig>
+          </ChakraProvider>
         </JotaiProvider>
       </QueryClientProvider>
-    </ChakraProvider>
+    </>
   );
 }
