@@ -1,5 +1,5 @@
 import { parseAddress } from '@ckb-lumos/helpers';
-import { config } from '@ckb-lumos/lumos';
+import config from '@ckb-lumos/config-manager';
 import * as Boom from '@hapi/boom';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextHandler } from 'next-connect';

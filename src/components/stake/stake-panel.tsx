@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { Box, Flex } from '@chakra-ui/react';
-import { BI } from '@ckb-lumos/lumos';
+import { BI } from '@ckb-lumos/bi';
 import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';

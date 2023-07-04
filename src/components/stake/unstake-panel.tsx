@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex } from '@chakra-ui/react';
-import { BI } from '@ckb-lumos/lumos';
+import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';

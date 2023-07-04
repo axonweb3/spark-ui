@@ -1,4 +1,4 @@
-import { BI } from '@ckb-lumos/lumos';
+import { BI } from '@ckb-lumos/bi';
 import axios from 'axios';
 import { useMemo } from 'react';
 import { useQuery } from 'react-query';

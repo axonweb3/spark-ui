@@ -1,7 +1,7 @@
 import { Text, Flex, Spacer, Box, Spinner } from '@chakra-ui/react';
 import SegmentedButton from './common/segmented-button';
 import TextField from './common/text-field';
-import { BI } from '@ckb-lumos/lumos';
+import { BI } from '@ckb-lumos/bi';
 import { useCallback, useMemo, useState } from 'react';
 
 const AMOUNT_OPTIONS = ['25%', '50%', '75%', '100%', 'Custom'];

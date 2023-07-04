@@ -1,9 +1,10 @@
-import { commons, config, helpers } from '@ckb-lumos/lumos';
 import { useAccount, useConnect as useWagmiConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useDialog } from './ui/useDialog';
 import { SPART_ADDRESS_KEY } from '@/consts';
 import { useCookie, useMount } from 'react-use';
+import { encodeToAddress } from '@ckb-lumos/helpers';
+import { predefined } from '@ckb-lumos/config-manager';
 
 export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
   const showDialog = useDialog();
@@ -25,14 +26,15 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
     isConnected,
     isDisconnected,
   } = useAccount({
-    onConnect({ address }) {
-      const omniLockScript = commons.omnilock.createOmnilockScript({
+    async onConnect({ address }) {
+      const omnilock = await import('@ckb-lumos/common-scripts').then((module) => module.omnilock);
+      const omniLockScript = omnilock.createOmnilockScript({
         auth: { flag: 'ETHEREUM', content: address! },
       });
-      const addr = helpers.encodeToAddress(omniLockScript, {
+      const addr = encodeToAddress(omniLockScript, {
         config: process.env.PRODUCTION_MODE
-          ? config.predefined.LINA
-          : config.predefined.AGGRON4,
+          ? predefined.LINA
+          : predefined.AGGRON4,
       });
       setAddress(addr);
     },

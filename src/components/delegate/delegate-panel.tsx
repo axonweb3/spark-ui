@@ -1,6 +1,6 @@
 import React, { startTransition, useEffect, useMemo, useState } from 'react';
 import { Text, Box, Flex, Divider } from '@chakra-ui/react';
-import { BI } from '@ckb-lumos/lumos';
+import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
