@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { Montserrat } from 'next/font/google';
 import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
+import { Global, css } from '@emotion/react';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
@@ -25,21 +26,21 @@ const config = createConfig({
 export default function App({ Component, pageProps }: AppProps) {
   const store = createStore();
   return (
-    <>
-      <style jsx global>{`
-        :root {
-          --montserrat-font: ${montserrat.style.fontFamily};
-        }
-      `}</style>
-      <QueryClientProvider client={queryClient}>
-        <JotaiProvider store={store}>
-          <ChakraProvider theme={theme}>
-            <WagmiConfig config={config}>
-              <Component {...pageProps} />
-            </WagmiConfig>
-          </ChakraProvider>
-        </JotaiProvider>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <JotaiProvider store={store}>
+        <ChakraProvider theme={theme}>
+          <WagmiConfig config={config}>
+            <Global
+              styles={css`
+                :root {
+                  --montserrat-font: ${montserrat.style.fontFamily};
+                }
+              `}
+            />
+            <Component {...pageProps} />
+          </WagmiConfig>
+        </ChakraProvider>
+      </JotaiProvider>
+    </QueryClientProvider>
   );
 }

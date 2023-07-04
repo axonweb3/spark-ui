@@ -3,9 +3,8 @@ import { Box, Flex } from '@chakra-ui/react';
 import { NotificationProvider } from '@/hooks/ui/useNotification';
 import BaseLayout from './base-layout';
 import { motion } from 'framer-motion';
-
-const Header = React.lazy(() => import('./header'));
-const Sidebar = React.lazy(() => import('./sidebar'));
+import Sidebar from './sidebar';
+import Header from './header';
 
 export default function Layout(props: React.PropsWithChildren<{}>) {
   const sidebarRef = useRef<HTMLDivElement>(null);

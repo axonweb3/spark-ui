@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 
 const NAVS = [
   {
@@ -63,19 +64,30 @@ const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (
         <Box marginBottom="90px">
           <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
         </Box>
-        <Navigation direction="column" navs={navs} active={active} />
-        <Spacer />
-        <Box marginBottom="20px">
-          <Link
-            href="/?redirect=false"
-            fontFamily="alfarn-2"
-            fontSize="lg"
-            fontWeight="bold"
-            _hover={{ textDecoration: 'none' }}
-          >
-            Switch Role
-          </Link>
-        </Box>
+        <Flex
+          as={motion.div}
+          direction="column"
+          alignItems="center"
+          grow={1}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+        >
+          <Navigation direction="column" navs={navs} active={active} />
+          <Spacer />
+          {navs.length > 0 && (
+            <Box marginBottom="20px">
+              <Link
+                href="/?redirect=false"
+                fontFamily="alfarn-2"
+                fontSize="lg"
+                fontWeight="bold"
+                _hover={{ textDecoration: 'none' }}
+              >
+                Switch Role
+              </Link>
+            </Box>
+          )}
+        </Flex>
       </Flex>
     </Box>
   );
