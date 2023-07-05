@@ -248,6 +248,69 @@
       }
     },
     {
+      "name": "getDelegatedRecords",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "page_number",
+          "schema": {
+            "type": "integer"
+          }
+        },
+        {
+          "name": "page_size",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "result": {
+        "name": "delegatedRecords",
+        "schema": {
+          "name": "total",
+          "type": "object",
+          "required": [
+            "total",
+            "data"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "delegated_to",
+                  "amount"
+                ],
+                "properties": {
+                  "delegated_to": {
+                    "type": "string",
+                    "pattern": "^(ckt)[\\d\\w]{97}$"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "minimum": 100000000000,
+                    "maximum": 100000000000000
+                  }
+                }
+              },
+              "minItems": 10,
+              "maxItems": 10
+            }
+          }
+        }
+      }
+    },
+    {
       "name": "getRewardHistory",
       "params": [
         {

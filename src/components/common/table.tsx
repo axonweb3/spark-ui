@@ -59,6 +59,9 @@ export default function Table<Data extends Record<string, any>>(
           header: column.title,
           cell: (i: CellContext<Data, string>) =>
             column.render?.(i.getValue(), data) ?? i.getValue(),
+          meta: {
+            width: column.width,
+          }
         },
       );
       return columnDef;
@@ -132,6 +135,7 @@ export default function Table<Data extends Record<string, any>>(
                         fontFamily="montserrat"
                         fontSize="14px"
                         backgroundColor="white"
+                        width={meta.width ?? 'auto'}
                       >
                         <Flex alignItems="center" gap={1}>
                           {row.getCanExpand() &&

@@ -7,6 +7,7 @@ import { Montserrat } from 'next/font/google';
 import { WagmiConfig, configureChains, createConfig, mainnet } from 'wagmi';
 import { publicProvider } from 'wagmi/providers/public';
 import { Global, css } from '@emotion/react';
+import Head from 'next/head';
 
 const montserrat = Montserrat({ subsets: ['latin'] });
 
@@ -37,6 +38,9 @@ export default function App({ Component, pageProps }: AppProps) {
                 }
               `}
             />
+            <Head>
+              <title>Spark</title>
+            </Head>
             <Component {...pageProps} />
           </WagmiConfig>
         </ChakraProvider>

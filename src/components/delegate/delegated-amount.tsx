@@ -12,10 +12,11 @@ export default function DelegatedAmount(props: IDelegatedAmountProps) {
 
   return (
     <Flex width="full">
-      <Flex grow="1">
+      <Flex grow="1" marginRight={4}>
         {editing ? (
           <Input
-            height="30px"
+            height="20px"
+            fontSize="16px"
             marginTop="-5px"
             marginRight={2}
             padding={0}
