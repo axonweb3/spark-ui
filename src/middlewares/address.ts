@@ -1,15 +1,15 @@
 import { parseAddress } from '@ckb-lumos/helpers';
-import config from '@ckb-lumos/config-manager';
+import { predefined, initializeConfig } from '@ckb-lumos/config-manager';
 import * as Boom from '@hapi/boom';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { NextHandler } from 'next-connect';
 
 function isValidAddress(address: string) {
   try {
-    config.initializeConfig(
+    initializeConfig(
       process.env.PRODUCTION_MODE
-        ? config.predefined.LINA
-        : config.predefined.AGGRON4,
+        ? predefined.LINA
+        : predefined.AGGRON4,
     );
 
     return parseAddress(address);
