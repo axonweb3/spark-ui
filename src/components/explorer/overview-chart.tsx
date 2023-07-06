@@ -3,23 +3,21 @@ import * as Plot from '@observablehq/plot';
 import { Text, Box, Flex } from '@chakra-ui/react';
 import Card from '../common/card';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { IStakeAmountByEpoch } from '@/hooks/query/useStakeStatsQuery';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { statsAmountByEpochAtom } from '@/state/query/stats';
 
-export interface IOverviewChartProps {
-  dataSource:IStakeAmountByEpoch[];
-}
-
-export function OverviewChart(props: IOverviewChartProps) {
-  const { dataSource } = props;
+export function OverviewChart() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { isDelegator } = useStakeRole();
   const backgroundColor = useMemo(
     () => (isDelegator ? 'secondary' : 'primary'),
     [isDelegator],
   );
+  const { data } = usePaginatedAtomQuery(statsAmountByEpochAtom);
+  console.log(data);
 
   useEffect(() => {
-    if (dataSource === undefined || containerRef.current === null) {
+    if (data === undefined || containerRef.current === null) {
       return;
     }
     const plot = Plot.plot({
@@ -31,7 +29,7 @@ export function OverviewChart(props: IOverviewChartProps) {
       },
       marks: [
         Plot.areaY(
-          dataSource,
+          data,
           Plot.stackY(
             { offset: 'normalize', order: 'type', reverse: true },
             { x: 'epoch', y: 'amount', fill: 'type' },
@@ -42,7 +40,7 @@ export function OverviewChart(props: IOverviewChartProps) {
     });
     containerRef.current!.append(plot);
     return () => plot.remove();
-  }, [dataSource]);
+  }, [data]);
 
   return (
     <Box width="full">

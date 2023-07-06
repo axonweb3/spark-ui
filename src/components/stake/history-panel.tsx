@@ -11,11 +11,11 @@ import {
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useCallback, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
-import axios from 'axios';
+import { useCallback } from 'react';
 import { useConnect } from '@/hooks/useConnect';
 import { renderAmount, renderDateString, renderTransactionHash } from '@/utils';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { stakeHistoryAtom } from '@/state/query/stake';
 
 const columns = [
   {
@@ -47,25 +47,9 @@ const columns = [
 
 export default function HistoryPanel() {
   const { address } = useConnect();
-  const [page, setPage] = useState(1);
-  const { data, isFetching } = useQuery(
-    ['stakeHistory', address, page],
-    async () => {
-      if (!address) {
-        return undefined;
-      }
-      const response = await axios.get('/api/stake', {
-        params: {
-          address,
-          pageNumber: page,
-        },
-      });
-      return response.data;
-    },
-    { keepPreviousData: true },
-  );
+  const { pageNumber, data, isLoading, setPageNumber, setPageSize } =
+    usePaginatedAtomQuery(stakeHistoryAtom, address);
 
-  const dataSource = useMemo(() => data?.data ?? [], [data]);
   const expandedRowRender = useCallback(
     (row: any) => (
       <ChakraTable fontFamily="montserrat" variant="unstyled">
@@ -106,18 +90,19 @@ export default function HistoryPanel() {
     <Box>
       <Table
         columns={columns}
-        data={dataSource}
+        data={data}
         expandable={{
           expandedRowRender,
           rowExpandable: (record: any) => record.transactions,
         }}
-        isLoading={isFetching}
+        isLoading={isLoading}
       />
       <Box marginTop="30px">
         <Pagination
           total={500}
-          current={page}
-          onChange={setPage}
+          current={pageNumber}
+          onChange={setPageNumber}
+          onPageSizeChange={setPageSize}
           showQuickJumper
         />
       </Box>

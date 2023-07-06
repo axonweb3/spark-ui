@@ -15,13 +15,14 @@ import Button from '../common/button';
 import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useMemo, useState } from 'react';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 import { useNotification } from '@/hooks/ui/useNotification';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { stakeWithdrawalAtom } from '@/state/query/stake';
+import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { withdrawableAmountAtom } from '@/state/query/amount';
 
 const columns = [
   {
@@ -47,32 +48,16 @@ export default function WithdrawPanel() {
   const { address } = useConnect();
   const showDialog = useDialog();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const { withdrawableAmount } = useBalanceQuery(address);
+  const { amount: withdrawableAmount } = useAmountAtomQuery(
+    address,
+    withdrawableAmountAtom,
+  );
   const displayAmount = useMemo(
     () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
     [withdrawableAmount],
   );
-
-  const [page, setPage] = useState(1);
-  const { data, isFetching } = useQuery(
-    ['stakeHistory', address, page],
-    async () => {
-      if (!address) {
-        return undefined;
-      }
-      const response = await axios.get('/api/stake', {
-        params: {
-          address,
-          pageNumber: page,
-          event: 'withdraw',
-        },
-      });
-      return response.data;
-    },
-    { keepPreviousData: true },
-  );
-
-  const dataSource = useMemo(() => data?.data ?? [], [data]);
+  const { pageNumber, data, isLoading, setPageNumber, setPageSize } =
+    usePaginatedAtomQuery(stakeWithdrawalAtom, address);
 
   const handleWithdraw = () => {
     setIsConfirmDialogOpen(false);
@@ -130,12 +115,13 @@ export default function WithdrawPanel() {
         </Stat>
       </Box>
       <Box marginBottom="40px">
-        <Table columns={columns} data={dataSource} isLoading={isFetching} />
+        <Table columns={columns} data={data} isLoading={isLoading} />
         <Box marginTop="30px">
           <Pagination
             total={500}
-            current={page}
-            onChange={setPage}
+            current={pageNumber}
+            onChange={setPageNumber}
+            onPageSizeChange={setPageSize}
             showQuickJumper
           />
         </Box>

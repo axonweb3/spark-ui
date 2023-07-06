@@ -5,17 +5,18 @@ import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
-import { useSendTxMutation } from '@/hooks/query/useSendTxMutation';
+import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import { useNotification } from '@/hooks/ui/useNotification';
 import axios from 'axios';
 import { useConnect } from '@/hooks/useConnect';
+import { stakedAmountAtom } from '@/state/query/amount';
+import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
 
 export default function UnstakePanel() {
   const notify = useNotification();
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
   const { isDisconnected, address } = useConnect();
-  const { isLoading, stakedAmount } = useBalanceQuery(address);
+  const { amount: stakedAmount, isLoading } = useAmountAtomQuery(address, stakedAmountAtom);
   const [amount, setAmount] = useState(stakedAmount);
   const mutation = useSendTxMutation(
     (params: { address: string; amount: number }) => {

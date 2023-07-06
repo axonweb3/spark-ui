@@ -5,25 +5,33 @@ import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 import EpochField from '../epoch-field';
-import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
-import { useStakeRateQuery } from '@/hooks/query/useStakeRateQuery';
-import { useSendTxMutation } from '@/hooks/query/useSendTxMutation';
+import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import axios from 'axios';
 import { useNotification } from '@/hooks/ui/useNotification';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '../connect-button';
+import { useAtomValue } from 'jotai';
+import { loadable } from 'jotai/utils';
+import { rateAtom } from '@/state/query/rate';
+import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { availableAmountAtom } from '@/state/query/amount';
 
 export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
   const { isConnected, address } = useConnect();
-  const { isLoading, availableAmount } = useBalanceQuery(address);
+  const { amount: availableAmount, isLoading } = useAmountAtomQuery(
+    address,
+    availableAmountAtom,
+  );
   const [delegateAddress, setDelegateAddress] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const { stakeRate, error, isFetching } = useStakeRateQuery(delegateAddress, {
-    retry: false,
-  });
+  const rateQuery = useAtomValue(loadable(rateAtom(address)));
+  const stakeRate = useMemo(
+    () => (rateQuery.state === 'hasData' ? rateQuery.data?.rate : 0),
+    [rateQuery],
+  );
   const [amount, setAmount] = useState(availableAmount);
   const [message, setMessage] = useState('');
   const disabled = useMemo(
@@ -65,13 +73,13 @@ export default function DelegatePanel() {
 
   useEffect(() => {
     startTransition(() => {
-      if (delegateAddress && error) {
-        setMessage(error.response.data.message);
-      } else if (!isFetching) {
+      if (delegateAddress && rateQuery.state === 'hasError') {
+        setMessage(rateQuery.error as string);
+      } else if (rateQuery.state === 'hasData') {
         setMessage('');
       }
     });
-  }, [delegateAddress, error, isFetching]);
+  }, [delegateAddress, rateQuery]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">

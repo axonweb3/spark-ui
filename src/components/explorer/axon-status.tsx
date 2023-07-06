@@ -9,7 +9,9 @@ import {
 import Card from '../common/card';
 import { useMemo } from 'react';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { IChainState } from '@/hooks/query/useStakeStatsQuery';
+import { useLoadableAtomQuery } from '@/hooks/useLoadableAtomQuery';
+import { statsChainAtom } from '@/state/query/stats';
+import { ChainState } from '@/server/api';
 
 const BOX_STYLES = {
   backgroundColor: 'white',
@@ -20,22 +22,20 @@ const BOX_STYLES = {
   borderRadius: '16px',
 };
 
-export interface IAxonStatusProps {
-  dataSource: IChainState;
-}
-
-export function AxonStatus(props: IAxonStatusProps) {
-  const {
-    epoch,
-    period,
-    block_number: blockNumber,
-    total_stake_amount: totalStakeAmount,
-  } = props.dataSource;
+export function AxonStatus() {
   const { isDelegator } = useStakeRole();
   const backgroundColor = useMemo(
     () => (isDelegator ? 'secondary' : 'primary'),
     [isDelegator],
   );
+  const { value: chainState = {} } =
+    useLoadableAtomQuery<ChainState>(statsChainAtom);
+  const {
+    epoch = 0,
+    period = 0,
+    block_number = 0,
+    total_stake_amount = 0,
+  } = chainState as ChainState;
 
   return (
     <Box width="full">
@@ -90,7 +90,7 @@ export function AxonStatus(props: IAxonStatusProps) {
                 fontWeight="semibold"
                 fontSize="36px"
               >
-                {blockNumber}
+                {block_number}
               </StatNumber>
             </Stat>
           </Box>
@@ -104,7 +104,7 @@ export function AxonStatus(props: IAxonStatusProps) {
                 fontWeight="semibold"
                 fontSize="36px"
               >
-                {totalStakeAmount}
+                {total_stake_amount}
               </StatNumber>
             </Stat>
           </Box>

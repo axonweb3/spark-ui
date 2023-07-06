@@ -2,10 +2,9 @@ import { Box } from '@chakra-ui/react';
 import Pagination from '../common/pagination';
 import Table from '../common/table';
 import Badge from '../common/badge';
-import { useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
-import axios from 'axios';
 import { useConnect } from '@/hooks/useConnect';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { rewardHistoryAtom } from '@/state/query/reward';
 
 const columns = [
   {
@@ -36,39 +35,18 @@ const columns = [
 
 export function RewardsHistory() {
   const { address } = useConnect();
-  const [page, setPage] = useState(1);
-  const { data, isFetching } = useQuery(
-    ['rewardsHistory', address, page],
-    async () => {
-      if (!address) {
-        return undefined;
-      }
-      const response = await axios.get('/api/reward', {
-        params: {
-          address,
-          pageNumber: page,
-        },
-      });
-      return response.data;
-    },
-    { keepPreviousData: true },
-  );
-
-  const dataSource = useMemo(() => data?.data ?? [], [data]);
-  // const total = useMemo(() => Math.ceil((data?.total ?? 0) / pageSize), [data, pageSize]);
+  const { pageNumber, setPageNumber, setPageSize, isLoading, data } =
+    usePaginatedAtomQuery(rewardHistoryAtom, address);
 
   return (
     <Box>
-      <Table
-        columns={columns}
-        data={dataSource}
-        isLoading={isFetching}
-      />
+      <Table columns={columns} data={data} isLoading={isLoading} />
       <Box marginTop="30px">
         <Pagination
           total={500}
-          current={page}
-          onChange={setPage}
+          current={pageNumber}
+          onChange={setPageNumber}
+          onPageSizeChange={setPageSize}
           showQuickJumper
         />
       </Box>

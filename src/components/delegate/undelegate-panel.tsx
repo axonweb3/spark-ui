@@ -1,13 +1,13 @@
-import React, { useMemo, useState } from 'react';
+import React from 'react';
 import { Box, Button, Flex } from '@chakra-ui/react';
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import DelegatedAmount from './delegated-amount';
 import { useConnect } from '@/hooks/useConnect';
-import { useQuery } from 'react-query';
-import axios from 'axios';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { delegatedRecordsAtom } from '@/state/query/delegate';
 
-const MOCK_COLUMNS = [
+const columns = [
   {
     title: 'Delegated To',
     dataIndex: 'delegated_to',
@@ -24,35 +24,18 @@ const MOCK_COLUMNS = [
 
 export default function UndelegatePanel() {
   const { address } = useConnect();
-  const [page, setPage] = useState(1);
-  const { data, isFetching } = useQuery(
-    ['delegateHistory', address, page],
-    async () => {
-      if (!address) {
-        return undefined;
-      }
-      const response = await axios.get('/api/delegate/records', {
-        params: {
-          address,
-          pageNumber: page,
-          event: 'withdraw',
-        },
-      });
-      return response.data;
-    },
-    { keepPreviousData: true },
-  );
-
-  const dataSource = useMemo(() => data?.data ?? [], [data]);
+  const { pageNumber, setPageNumber, setPageSize, isLoading, data } =
+    usePaginatedAtomQuery(delegatedRecordsAtom, address);
 
   return (
     <Box>
-      <Table columns={MOCK_COLUMNS} data={dataSource} isLoading={isFetching} />
+      <Table columns={columns} data={data} isLoading={isLoading} />
       <Box marginTop="30px">
         <Pagination
           total={500}
-          current={page}
-          onChange={setPage}
+          current={pageNumber}
+          onChange={setPageNumber}
+          onPageSizeChange={setPageSize}
           showQuickJumper
         />
       </Box>

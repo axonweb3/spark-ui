@@ -1,7 +1,7 @@
 import { Text, Box } from '@chakra-ui/react';
 import Table from '../common/table';
-import { ITopStakeAddress } from '@/hooks/query/useStakeStatsQuery';
-import { useMemo } from 'react';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { statsTopStakeAddressesAtom } from '@/state/query/stats';
 
 const columns = [
   {
@@ -23,19 +23,8 @@ const columns = [
   },
 ];
 
-export interface ITopStakeAddressesProps {
-  dataSource: ITopStakeAddress[];
-}
-
-export function TopStakeAddresses(props: ITopStakeAddressesProps) {
-  const dataSource = useMemo(() => {
-    return props.dataSource.map((item: ITopStakeAddress, index) => {
-      return {
-        ...item,
-        rank: index + 1,
-      };
-    });
-  }, [props.dataSource]);
+export function TopStakeAddresses() {
+  const { data, isLoading } = usePaginatedAtomQuery(statsTopStakeAddressesAtom);
 
   return (
     <Box marginX="-13px">
@@ -45,7 +34,7 @@ export function TopStakeAddresses(props: ITopStakeAddressesProps) {
         </Text>
       </Box>
       <Box marginBottom="10px">
-        <Table columns={columns} data={dataSource} isLoading={dataSource.length === 0} />
+        <Table columns={columns} data={data} isLoading={isLoading} />
       </Box>
     </Box>
   );

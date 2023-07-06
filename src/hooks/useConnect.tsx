@@ -1,14 +1,16 @@
 import { useAccount, useConnect as useWagmiConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useDialog } from './ui/useDialog';
-import { SPART_ADDRESS_KEY } from '@/consts';
-import { useCookie, useMount } from 'react-use';
+import { useMount } from 'react-use';
 import { encodeToAddress } from '@ckb-lumos/helpers';
 import { predefined } from '@ckb-lumos/config-manager';
+import { addressAtom } from '@/state/address';
+import { useAtom } from 'jotai';
+import { RESET } from 'jotai/utils';
 
 export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
   const showDialog = useDialog();
-  const [address, setAddress, delAddress] = useCookie(SPART_ADDRESS_KEY);
+  const [address, setAddress] = useAtom(addressAtom);
   const { connect, isLoading } = useWagmiConnect({
     connector: new InjectedConnector(),
     onError(error) {
@@ -39,7 +41,7 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
       setAddress(addr);
     },
     onDisconnect() {
-      delAddress();
+      setAddress(RESET);
     },
   });
 

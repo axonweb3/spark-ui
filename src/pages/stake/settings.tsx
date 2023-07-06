@@ -1,5 +1,4 @@
 import * as cookie from 'cookie';
-import { useStakeRateQuery } from '@/hooks/query/useStakeRateQuery';
 import React, { useCallback, useEffect, useMemo } from 'react';
 import {
   Box,
@@ -27,6 +26,9 @@ import InputField from '@/components/input-filed';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '@/components/connect-button';
 import { useShowAgain } from '@/hooks/useShowAgain';
+import { rateAtom } from '@/state/query/rate';
+import { useAtomValue } from 'jotai';
+import { loadable } from 'jotai/utils';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
@@ -59,16 +61,17 @@ export default function SettingsPage() {
   const [showAgain, setShowAgain] = useShowAgain('settings');
   const [dialogCheckbox, setDialogCheckbox] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const { stakeRate, minimumAmount, isSuccess, isLoading } =
-    useStakeRateQuery(address);
-  const [rate, setRate] = React.useState(stakeRate ?? 0);
-  const [minAmount, setMinAmount] = React.useState(minimumAmount ?? '0');
+  const rateQuery = useAtomValue(loadable(rateAtom(address)));
+  const isLoading = useMemo(() => rateQuery.state === 'loading', [rateQuery]);
+  const [rate, setRate] = React.useState(0);
+  const [minAmount, setMinAmount] = React.useState(0);
 
   useEffect(() => {
-    if (isSuccess) {
-      setRate(stakeRate ?? 0);
+    if (rateQuery.state === 'hasData') {
+      setRate(rateQuery.data?.rate ?? 0);
+      setMinAmount(rateQuery.data?.minimumAmount ?? 0);
     }
-  }, [isSuccess, stakeRate]);
+  }, [rateQuery]);
 
   useEffect(() => {
     if (showAgain) {

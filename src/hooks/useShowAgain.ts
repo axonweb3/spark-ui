@@ -1,11 +1,11 @@
-import { SPART_SHOW_AGAIN_KEY } from '@/consts';
+import { SPARK_ALERT_KEY } from '@/consts';
 import { atom, useAtom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 
 const showAgainAtom = atomFamily((name: string) =>
   atom(
     (typeof window !== 'undefined' &&
-      localStorage.getItem(`${SPART_SHOW_AGAIN_KEY}/${name}`)) ||
+      localStorage.getItem(`${SPARK_ALERT_KEY}/${name}`)) ||
       true,
   ),
 );
@@ -16,7 +16,7 @@ const showAgainAtomWithPersistence = atomFamily((name: string) =>
     (_, set, val: boolean) => {
       set(showAgainAtom(name), val);
       // @ts-ignore
-      localStorage.setItem(`${SPART_SHOW_AGAIN_KEY}/${name}`, val);
+      localStorage.setItem(`${SPARK_ALERT_KEY}/${name}`, val);
     },
   ),
 );

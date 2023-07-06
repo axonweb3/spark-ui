@@ -4295,6 +4295,16 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@trpc/client@^10.33.1":
+  version "10.33.1"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-10.33.1.tgz#7c46f35ca1851f6aaa1e9d8111d505c14e1d4e21"
+  integrity sha512-j1YKBl/VtjCK3nUQFacsouGpsk/DFVNiekp4sZf8Lryb6f1OIChlLJZNEipl+DUuHxsPVuaCQis4PGkrIb2ieg==
+
+"@trpc/server@^10.33.1":
+  version "10.33.1"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.33.1.tgz#2659921208c9222cde71e9ab0f366439551a1546"
+  integrity sha512-ObMzyEALXhQ7QTVQdSJ+IL1wYB7UdLLoIhqHraYzqKb9sTTsL3+U64kK084KPsRd4b8R3yH/bzBOnCn8Hbrxkw==
+
 "@tsconfig/node16@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.4.tgz#0b92dcc0cc1c81f6f306a381f28e31b1a56536e9"
@@ -9449,6 +9459,11 @@ jotai-tanstack-query@^0.7.1:
   resolved "https://registry.yarnpkg.com/jotai-tanstack-query/-/jotai-tanstack-query-0.7.1.tgz#3035d5e1d2393298a4f5c37a47eb90acb8534b00"
   integrity sha512-62PDt8s3c1fN/f3AmTMzAFUHZAstUIPUZMFdhERbmTRWiGznVAq6uJMt08FCI3JL53wZj5q5FhuA39LTL5zqRg==
 
+jotai-trpc@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/jotai-trpc/-/jotai-trpc-0.5.1.tgz#a35c97ddeaa22d0fe1fc614aa9bc4eb268c93400"
+  integrity sha512-aRr7HYatqOaeFqYCPJvX1LHGAV3SW+0YhN/YCJcAalmj8enh91n6Dcg9RVfgY4R7NI9CPesZKMcpzd8QlnAvKQ==
+
 jotai@^2.0.4:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/jotai/-/jotai-2.2.1.tgz#0a95b88c5f3ea4fd656b5f79af6f84e895f84f5a"
@@ -9463,6 +9478,11 @@ js-cookie@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-2.2.1.tgz#69e106dc5d5806894562902aa5baec3744e9b2b8"
   integrity sha512-HvdH2LzI/EAZcUwA8+0nKNtWHqS+ZmijLA30RwZA0bo7ToCckjK5MkGhjED9KoRcXO6BaGI3I9UIzSA1FKFPOQ==
+
+js-cookie@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/js-cookie/-/js-cookie-3.0.5.tgz#0b7e2fd0c01552c58ba86e0841f94dc2557dcdbc"
+  integrity sha512-cEiJEAEoIbWfCZYKWhVwFuvPX1gETRYPw6LlaTKoxD3s2AkXzkCjnp6h0V77ozyqj0jakteJ4YqDJT830+lVGw==
 
 js-message@1.0.5:
   version "1.0.5"

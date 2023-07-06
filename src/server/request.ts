@@ -24,7 +24,7 @@ axios.interceptors.response.use((response) => {
   return response;
 });
 
-export function request(method: string, params: any[] = []) {
+export default function request(method: string, params: any[] = []) {
   return axios.post(NEXT_PUBLIC_SPARK_RPC_URL, {
     jsonrpc: '2.0',
     method,

@@ -2,24 +2,24 @@ import { Box } from '@chakra-ui/react';
 import Pagination from '../common/pagination';
 import Table from '../common/table';
 import Badge from '../common/badge';
-import { useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
 import format from 'date-fns/format';
-import axios from 'axios';
 import { useConnect } from '@/hooks/useConnect';
+import { rewardWithdrawalAtom } from '@/state/query/reward';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
 
 const columns = [
   {
     title: 'Timestamp',
     dataIndex: 'timestamp',
-    render: (timestamp: number) => format(new Date(timestamp), 'yyyy/MM/dd HH:mm:ss'),
+    render: (timestamp: number) =>
+      format(new Date(timestamp), 'yyyy/MM/dd HH:mm:ss'),
   },
   {
     title: 'Transaction Hash',
     dataIndex: 'hash',
     render: (hash: string) => {
       return hash && hash.substring(0, 30) + '...';
-    }
+    },
   },
   {
     title: 'Amount',
@@ -41,39 +41,18 @@ const columns = [
 
 export function WithdrawalHistory() {
   const { address } = useConnect();
-  const [page, setPage] = useState(1);
-  const { data, isFetching } = useQuery(
-    ['withdrawalHistory', address, page],
-    async () => {
-      if (!address) {
-        return undefined;
-      }
-      const response = await axios.get('/api/reward/withdrawal', {
-        params: {
-          address,
-          pageNumber: page,
-        },
-      });
-      return response.data;
-    },
-    { keepPreviousData: true },
-  );
-
-  const dataSources = useMemo(() => data?.data ?? [], [data]);
-  // const total = useMemo(() => Math.ceil((data?.total ?? 0) / pageSize), [data, pageSize]);
+  const { pageNumber, setPageNumber, setPageSize, isLoading, data } =
+    usePaginatedAtomQuery(rewardWithdrawalAtom, address);
 
   return (
     <Box>
-      <Table
-        columns={columns}
-        data={dataSources}
-        isLoading={isFetching}
-      />
+      <Table columns={columns} data={data} isLoading={isLoading} />
       <Box marginTop="30px">
         <Pagination
           total={500}
-          current={page}
-          onChange={setPage}
+          current={pageNumber}
+          onChange={setPageNumber}
+          onPageSizeChange={setPageSize}
           showQuickJumper
         />
       </Box>

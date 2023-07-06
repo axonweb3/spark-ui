@@ -7,7 +7,6 @@ import Card from '@/components/common/card';
 import { TopStakeAddresses } from '@/components/explorer/top-stake-addresses';
 import { LatestTransactions } from '@/components/explorer/latest-transactions';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { useStakeStatsQuery } from '@/hooks/query/useStakeStatsQuery';
 
 export default function ExplorerPage() {
   const { isDelegator } = useStakeRole();
@@ -16,29 +15,20 @@ export default function ExplorerPage() {
     [isDelegator],
   );
 
-  const {
-    data: {
-      stakeAmountByEpoch,
-      chainState,
-      topStakeAddresses,
-      latestStakeTransactions,
-    },
-  } = useStakeStatsQuery();
-
   return (
     <Layout>
       <SimpleGrid width="100%" marginX="auto" columns={2} gap="30px">
-        <OverviewChart dataSource={stakeAmountByEpoch} />
-        <AxonStatus dataSource={chainState} />
+        <OverviewChart />
+        <AxonStatus />
       </SimpleGrid>
       <Box marginTop="30px">
         <Card size="lg" backgroundColor={backgroundColor}>
-          <TopStakeAddresses dataSource={topStakeAddresses} />
+          <TopStakeAddresses />
         </Card>
       </Box>
       <Box marginTop="30px">
         <Card size="lg" backgroundColor={backgroundColor}>
-          <LatestTransactions dataSource={latestStakeTransactions} />
+          <LatestTransactions />
         </Card>
       </Box>
     </Layout>

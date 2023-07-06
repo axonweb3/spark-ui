@@ -20,18 +20,22 @@ import {
 import Card from '../common/card';
 import Dialog from '../common/dialog';
 import { useCallback, useMemo, useState } from 'react';
-import { useBalanceQuery } from '@/hooks/query/useBalanceQuery';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import { useAddressCopy } from '@/hooks/useAddressCopy';
 import { useShowAgain } from '@/hooks/useShowAgain';
 import { useDialog } from '@/hooks/ui/useDialog';
+import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { delegatedAmountAtom, lockedAmountAtom, stakedAmountAtom, unlockAmountAtom } from '@/state/query/amount';
 
 export function RewardStats() {
   const showDialog = useDialog();
   const { address } = useConnect();
-  const { unlockAmount, lockedAmount, stakedAmount, delegatedAmount } =
-    useBalanceQuery(address);
+  const { amount: unlockAmount } = useAmountAtomQuery(address, unlockAmountAtom);
+  const { amount: lockedAmount } = useAmountAtomQuery(address, lockedAmountAtom);
+  const { amount: stakedAmount } = useAmountAtomQuery(address, stakedAmountAtom);
+  const { amount: delegatedAmount } = useAmountAtomQuery(address, delegatedAmountAtom);
+
   const [showAgain, setShowAgain] = useShowAgain('rewards');
   const [dialogCheckbox, setDialogCheckbox] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);

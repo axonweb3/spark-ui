@@ -1,7 +1,8 @@
 import { Text, Box } from '@chakra-ui/react';
 import Table from '../common/table';
 import Badge from '../common/badge';
-import { ILatestStakeTransaction } from '@/hooks/query/useStakeStatsQuery';
+import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { statsLatestStakeTransactionsAtom } from '@/state/query/stats';
 
 const columns = [
   {
@@ -26,12 +27,10 @@ const columns = [
   },
 ];
 
-export interface ILatestStakeTransactionsProps {
-  dataSource: ILatestStakeTransaction[];
-}
-
-export function LatestTransactions(props: ILatestStakeTransactionsProps) {
-  const { dataSource } = props;
+export function LatestTransactions() {
+  const { data, isLoading } = usePaginatedAtomQuery(
+    statsLatestStakeTransactionsAtom,
+  );
 
   return (
     <Box marginX="-13px">
@@ -41,7 +40,7 @@ export function LatestTransactions(props: ILatestStakeTransactionsProps) {
         </Text>
       </Box>
       <Box marginBottom="10px">
-        <Table columns={columns} data={dataSource} isLoading={dataSource.length === 0} />
+        <Table columns={columns} data={data} isLoading={isLoading} />
       </Box>
     </Box>
   );

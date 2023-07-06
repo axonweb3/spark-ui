@@ -464,16 +464,6 @@
       "name": "getStakeAmountByEpoch",
       "params": [
         {
-          "name": "type",
-          "schema": {
-            "type": "string",
-            "enum": [
-              "stake",
-              "delegate"
-            ]
-          }
-        },
-        {
           "name": "page_number",
           "schema": {
             "type": "integer"
@@ -506,7 +496,8 @@
                 "type": "object",
                 "required": [
                   "amount",
-                  "epoch"
+                  "epoch",
+                  "type"
                 ],
                 "properties": {
                   "amount": {
@@ -519,6 +510,13 @@
                     "minimum": 0,
                     "maximum": 100,
                     "uniqueItems": true
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "stake",
+                      "delegate"
+                    ]
                   }
                 }
               },
