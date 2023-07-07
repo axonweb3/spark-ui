@@ -23,10 +23,10 @@ import { useCallback, useMemo, useState } from 'react';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import { useAddressCopy } from '@/hooks/useAddressCopy';
-import { useShowAgain } from '@/hooks/useShowAgain';
 import { useDialog } from '@/hooks/ui/useDialog';
-import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 import { delegatedAmountAtom, lockedAmountAtom, stakedAmountAtom, unlockAmountAtom } from '@/state/query/amount';
+import { useAlert } from '@/hooks/ui/useAlert';
 
 export function RewardStats() {
   const showDialog = useDialog();
@@ -36,7 +36,7 @@ export function RewardStats() {
   const { amount: stakedAmount } = useAmountAtomQuery(address, stakedAmountAtom);
   const { amount: delegatedAmount } = useAmountAtomQuery(address, delegatedAmountAtom);
 
-  const [showAgain, setShowAgain] = useShowAgain('rewards');
+  const [showAlert, setShowAlert] = useAlert('rewards');
   const [dialogCheckbox, setDialogCheckbox] = useState(false);
   const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
   const { onCopy } = useAddressCopy();
@@ -161,7 +161,7 @@ export function RewardStats() {
           ))}
         </SimpleGrid>
         <Flex justifyContent="center">
-          <Button size="lg" onClick={() => handleWithdraw(showAgain)}>
+          <Button size="lg" onClick={() => handleWithdraw(showAlert)}>
             Withdraw Unlocked Rewards
           </Button>
           <Dialog
@@ -202,7 +202,7 @@ export function RewardStats() {
                     variant="contained"
                     size="sm"
                     onClick={() => {
-                      setShowAgain(!dialogCheckbox);
+                      setShowAlert(!dialogCheckbox);
                       setIsAlertDialogOpen(false);
                       handleWithdraw(false);
                     }}

@@ -14,7 +14,7 @@ import Badge from '../common/badge';
 import { useCallback } from 'react';
 import { useConnect } from '@/hooks/useConnect';
 import { renderAmount, renderDateString, renderTransactionHash } from '@/utils';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { stakeHistoryAtom } from '@/state/query/stake';
 
 const columns = [

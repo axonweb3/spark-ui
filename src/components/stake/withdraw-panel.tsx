@@ -19,9 +19,9 @@ import { useMemo, useState } from 'react';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { useNotification } from '@/hooks/ui/useNotification';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { stakeWithdrawalAtom } from '@/state/query/stake';
-import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 import { withdrawableAmountAtom } from '@/state/query/amount';
 
 const columns = [

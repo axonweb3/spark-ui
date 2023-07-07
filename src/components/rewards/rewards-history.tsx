@@ -3,7 +3,7 @@ import Pagination from '../common/pagination';
 import Table from '../common/table';
 import Badge from '../common/badge';
 import { useConnect } from '@/hooks/useConnect';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { rewardHistoryAtom } from '@/state/query/reward';
 
 const columns = [

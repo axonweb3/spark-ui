@@ -3,7 +3,7 @@ import * as Plot from '@observablehq/plot';
 import { Text, Box, Flex } from '@chakra-ui/react';
 import Card from '../common/card';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { statsAmountByEpochAtom } from '@/state/query/stats';
 
 export function OverviewChart() {

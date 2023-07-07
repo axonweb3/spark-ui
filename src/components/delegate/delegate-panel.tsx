@@ -14,7 +14,7 @@ import { ConnectButton } from '../connect-button';
 import { useAtomValue } from 'jotai';
 import { loadable } from 'jotai/utils';
 import { rateAtom } from '@/state/query/rate';
-import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 import { availableAmountAtom } from '@/state/query/amount';
 
 export default function DelegatePanel() {

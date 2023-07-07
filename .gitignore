@@ -40,3 +40,4 @@ data/
 storybook-static/
 dist/
 .yarn/
+.yarnrc.yml

@@ -3,29 +3,17 @@ import Notification, {
   INotificationProps,
 } from '@/components/common/notification';
 import { Box } from '@chakra-ui/react';
-
-export const NotificationContext = React.createContext<
-  | {
-      notificationProps: INotificationProps;
-      setNotificationProps: React.Dispatch<
-        React.SetStateAction<INotificationProps>
-      >;
-    }
-  | undefined
->(undefined);
+import { useAtom } from 'jotai';
+import { notificationPropsAtom } from '@/state/ui/notification';
 
 export const NotificationProvider = (props: React.PropsWithChildren<{}>) => {
   const { children } = props;
-  const [notificationProps, setNotificationProps] =
-    React.useState<INotificationProps>({
-      status: 'info',
-      message: '',
-      visible: true,
-    });
+  const [notificationProps, setNotificationProps] = useAtom(
+    notificationPropsAtom,
+  );
+
   return (
-    <NotificationContext.Provider
-      value={{ notificationProps, setNotificationProps }}
-    >
+    <>
       {notificationProps.message && (
         <Box marginBottom={6}>
           <Notification
@@ -37,18 +25,14 @@ export const NotificationProvider = (props: React.PropsWithChildren<{}>) => {
         </Box>
       )}
       {children}
-    </NotificationContext.Provider>
+    </>
   );
 };
 
 export const useNotification = () => {
-  const context = React.useContext(NotificationContext);
-  if (context === undefined) {
-    throw new Error(
-      'useNotification must be used within a NotificationProvider',
-    );
-  }
-  const { notificationProps, setNotificationProps } = context;
+  const [notificationProps, setNotificationProps] = useAtom(
+    notificationPropsAtom,
+  );
   const notify = useCallback(
     (props: INotificationProps) => {
       if (

@@ -1,43 +1,26 @@
 import Dialog from '@/components/common/dialog';
 import { IDialogProps } from '@/components/common/dialog';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { dialogOpenAtom, dialogPorpsAtom } from '@/state/ui/dialog';
+import { useAtom, useSetAtom } from 'jotai';
+import { useCallback, useEffect } from 'react';
 import { usePrevious } from 'react-use';
-
-type DialogProps = IDialogProps & { timestamp?: number };
-
-export const DialogContext = createContext<
-  | {
-      dialogProps: DialogProps;
-      setDialogProps: React.Dispatch<React.SetStateAction<DialogProps>>;
-    }
-  | undefined
->(undefined);
+import { isEmpty, isEqual } from 'lodash-es';
 
 export const DialogProvider = (props: React.PropsWithChildren<{}>) => {
   const { children } = props;
-  const [dialogProps, setDialogProps] = useState<DialogProps>({});
-  const [open, setOpen] = useState(false);
+  const [dialogProps, setDialogProps] = useAtom(dialogPorpsAtom);
+  const [open, setOpen] = useAtom(dialogOpenAtom);
   const prevDialogProps = usePrevious(dialogProps);
 
   useEffect(() => {
-    if (
-      dialogProps.title !== prevDialogProps?.title ||
-      dialogProps.description !== prevDialogProps?.description ||
-      dialogProps.timestamp !== prevDialogProps?.timestamp
-    ) {
+    if (!isEmpty(dialogProps) && !isEqual(dialogProps, prevDialogProps ?? {})) {
       setDialogProps(dialogProps);
       setOpen(true);
     }
-  }, [dialogProps, prevDialogProps]);
+  }, [dialogProps, prevDialogProps, setOpen, setDialogProps]);
 
   return (
-    <DialogContext.Provider value={{ dialogProps, setDialogProps }}>
+    <>
       {children}
       <Dialog
         open={open}
@@ -46,17 +29,16 @@ export const DialogProvider = (props: React.PropsWithChildren<{}>) => {
         onConfirm={() => setOpen(false)}
         {...dialogProps}
       />
-    </DialogContext.Provider>
+    </>
   );
 };
 
 export const useDialog = () => {
-  const context = useContext(DialogContext);
-  const { setDialogProps } = context ?? {};
+  const setDialogProps = useSetAtom(dialogPorpsAtom);
 
   const showDialog = useCallback(
     (props: IDialogProps) => {
-      setDialogProps?.({
+      setDialogProps({
         ...props,
         timestamp: Date.now(),
       });

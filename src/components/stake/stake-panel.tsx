@@ -10,7 +10,7 @@ import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '../connect-button';
 import { availableAmountAtom } from '@/state/query/amount';
-import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 
 export default function StakePanel() {
   const notify = useNotification();

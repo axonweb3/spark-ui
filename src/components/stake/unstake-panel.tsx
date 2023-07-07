@@ -10,7 +10,7 @@ import { useNotification } from '@/hooks/ui/useNotification';
 import axios from 'axios';
 import { useConnect } from '@/hooks/useConnect';
 import { stakedAmountAtom } from '@/state/query/amount';
-import { useAmountAtomQuery } from '@/hooks/useAmountAtomQuery';
+import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 
 export default function UnstakePanel() {
   const notify = useNotification();

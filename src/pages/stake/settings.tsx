@@ -25,10 +25,10 @@ import { SPARK_ROLE_KEY } from '@/consts';
 import InputField from '@/components/input-filed';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '@/components/connect-button';
-import { useShowAgain } from '@/hooks/useShowAgain';
 import { rateAtom } from '@/state/query/rate';
 import { useAtomValue } from 'jotai';
 import { loadable } from 'jotai/utils';
+import { useAlert } from '@/hooks/ui/useAlert';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
@@ -58,7 +58,7 @@ export function getServerSideProps(context: NextPageContext) {
 export default function SettingsPage() {
   const router = useRouter();
   const { address, isConnected, isDisconnected } = useConnect();
-  const [showAgain, setShowAgain] = useShowAgain('settings');
+  const [showAlert, setShowAlert] = useAlert('settings');
   const [dialogCheckbox, setDialogCheckbox] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
   const rateQuery = useAtomValue(loadable(rateAtom(address)));
@@ -74,10 +74,10 @@ export default function SettingsPage() {
   }, [rateQuery]);
 
   useEffect(() => {
-    if (showAgain) {
+    if (showAlert) {
       setIsDialogOpen(true);
     }
-  }, [showAgain, setShowAgain]);
+  }, [showAlert, setShowAlert]);
 
   const inputAddon = useMemo(
     () => (
@@ -99,7 +99,7 @@ export default function SettingsPage() {
   const handleMiniumnAmountChange = useCallback((amount: string) => {
     const [int, dec] = amount.split('.');
     const newAmount = `${int}${dec ? `.${dec}` : ''}`;
-    setMinAmount(newAmount);
+    setMinAmount(parseFloat(newAmount));
   }, []);
 
   return (
@@ -251,7 +251,7 @@ export default function SettingsPage() {
                 variant="contained"
                 size="sm"
                 onClick={() => {
-                  setShowAgain(!dialogCheckbox);
+                  setShowAlert(!dialogCheckbox);
                   setIsDialogOpen(false);
                 }}
               >

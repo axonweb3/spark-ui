@@ -9,7 +9,7 @@ import {
 import Card from '../common/card';
 import { useMemo } from 'react';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { useLoadableAtomQuery } from '@/hooks/useLoadableAtomQuery';
+import { useLoadableAtomQuery } from '@/hooks/query/useLoadableAtomQuery';
 import { statsChainAtom } from '@/state/query/stats';
 import { ChainState } from '@/server/api';
 

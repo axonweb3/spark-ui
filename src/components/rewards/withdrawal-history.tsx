@@ -5,7 +5,7 @@ import Badge from '../common/badge';
 import format from 'date-fns/format';
 import { useConnect } from '@/hooks/useConnect';
 import { rewardWithdrawalAtom } from '@/state/query/reward';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 
 const columns = [
   {

@@ -4,7 +4,7 @@ import Table from '../common/table';
 import Pagination from '../common/pagination';
 import DelegatedAmount from './delegated-amount';
 import { useConnect } from '@/hooks/useConnect';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { delegatedRecordsAtom } from '@/state/query/delegate';
 
 const columns = [

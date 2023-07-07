@@ -1,7 +1,7 @@
 import { Text, Box } from '@chakra-ui/react';
 import Table from '../common/table';
 import Badge from '../common/badge';
-import { usePaginatedAtomQuery } from '@/hooks/usePaginatedAtomQuery';
+import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { statsLatestStakeTransactionsAtom } from '@/state/query/stats';
 
 const columns = [
