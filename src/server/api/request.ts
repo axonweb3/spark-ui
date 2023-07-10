@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Boom from '@hapi/boom';
-import env from './env';
-import logger from './logger';
+import logger from '../logger';
+import env from '../env';
 
 const { NEXT_PUBLIC_SPARK_RPC_URL } = env;
 

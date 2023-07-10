@@ -1,6 +1,7 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
+import { OperateType, StakeEvent } from '../api/type';
 
 export const delegateRouter = router({
   delegated: addressProcedure
@@ -30,8 +31,8 @@ export const delegateRouter = router({
         address,
         pageNumber,
         pageSize,
-        api.StakeEvent.Withdraw,
-        api.OperateType.Delegate,
+        StakeEvent.Withdraw,
+        OperateType.Delegate,
       );
       return data;
     }),
@@ -50,8 +51,26 @@ export const delegateRouter = router({
         pageNumber,
         pageSize,
         undefined,
-        api.OperateType.Delegate,
+        OperateType.Delegate,
       );
+      return data;
+    }),
+  add: addressProcedure
+    .input(z.object({
+      delegateTo: z.string(),
+      amount: z.number(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const { address } = ctx;
+      const { delegateTo, amount } = input;
+      const data = await api.delegate(address, delegateTo, amount);
+      return data;
+    }),
+  // TODO: redeem method
+  withdraw: addressProcedure
+    .mutation(async ({ ctx }) => {
+      const { address } = ctx;
+      const data = await api.withdrawStake(address, 'delegate');
       return data;
     }),
 });

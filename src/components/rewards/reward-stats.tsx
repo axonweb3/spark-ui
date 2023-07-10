@@ -25,16 +25,37 @@ import { useStakeRole } from '@/hooks/useStakeRole';
 import { useAddressCopy } from '@/hooks/useAddressCopy';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
-import { delegatedAmountAtom, lockedAmountAtom, stakedAmountAtom, unlockAmountAtom } from '@/state/query/amount';
+import {
+  delegatedAmountAtom,
+  lockedAmountAtom,
+  stakedAmountAtom,
+  unlockAmountAtom,
+} from '@/state/query/amount';
 import { useAlert } from '@/hooks/ui/useAlert';
+import { useNotification } from '@/hooks/ui/useNotification';
+import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
+import { rewardWithdrawAtom } from '@/state/mutate/reward';
 
 export function RewardStats() {
   const showDialog = useDialog();
+  const notify = useNotification();
   const { address } = useConnect();
-  const { amount: unlockAmount } = useAmountAtomQuery(address, unlockAmountAtom);
-  const { amount: lockedAmount } = useAmountAtomQuery(address, lockedAmountAtom);
-  const { amount: stakedAmount } = useAmountAtomQuery(address, stakedAmountAtom);
-  const { amount: delegatedAmount } = useAmountAtomQuery(address, delegatedAmountAtom);
+  const { amount: unlockAmount } = useAmountAtomQuery(
+    address,
+    unlockAmountAtom,
+  );
+  const { amount: lockedAmount } = useAmountAtomQuery(
+    address,
+    lockedAmountAtom,
+  );
+  const { amount: stakedAmount } = useAmountAtomQuery(
+    address,
+    stakedAmountAtom,
+  );
+  const { amount: delegatedAmount } = useAmountAtomQuery(
+    address,
+    delegatedAmountAtom,
+  );
 
   const [showAlert, setShowAlert] = useAlert('rewards');
   const [dialogCheckbox, setDialogCheckbox] = useState(false);
@@ -50,20 +71,30 @@ export function RewardStats() {
     );
   }, [address]);
 
+  const withdrawMutation = useSendTransactionAtomMutate(rewardWithdrawAtom);
+
   const handleWithdraw = useCallback(
-    (alert = true) => {
-      if (alert) {
-        setIsAlertDialogOpen(true);
-      } else {
-        // TODO: send withdraw request
-        showDialog({
-          title: 'Withdraw Request Submitted',
-          description: 'Your request has been submitted.',
-          hideCancel: true,
+    async (alert = true) => {
+      try {
+        if (alert) {
+          setIsAlertDialogOpen(true);
+        } else {
+          await withdrawMutation.mutate([]);
+          showDialog({
+            title: 'Withdraw Request Submitted',
+            description: 'Your request has been submitted.',
+            hideCancel: true,
+          });
+        }
+      } catch (e) {
+        console.log(e);
+        notify({
+          status: 'error',
+          message: (e as Error).message,
         });
       }
     },
-    [showDialog],
+    [withdrawMutation, notify, showDialog],
   );
 
   const stats = useMemo(
@@ -161,7 +192,11 @@ export function RewardStats() {
           ))}
         </SimpleGrid>
         <Flex justifyContent="center">
-          <Button size="lg" onClick={() => handleWithdraw(showAlert)}>
+          <Button
+            size="lg"
+            onClick={() => handleWithdraw(showAlert)}
+            isLoading={withdrawMutation.isLoading}
+          >
             Withdraw Unlocked Rewards
           </Button>
           <Dialog
@@ -206,6 +241,7 @@ export function RewardStats() {
                       setIsAlertDialogOpen(false);
                       handleWithdraw(false);
                     }}
+                    isLoading={withdrawMutation.isLoading}
                   >
                     Got it
                   </Button>

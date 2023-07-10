@@ -33,4 +33,10 @@ export const rewardRouter = router({
       const data = await api.getRewardHistory(address, pageNumber, pageSize);
       return data;
     }),
+  withdraw: addressProcedure
+    .mutation(async ({ ctx }) => {
+      const { address } = ctx;
+      const data = await api.withdrawReward(address);
+      return data;
+    }),
 });

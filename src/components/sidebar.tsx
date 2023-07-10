@@ -64,14 +64,7 @@ const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (
         <Box marginBottom="90px">
           <Image src="/img/logo.webp" alt="spark" width={135} height={70} />
         </Box>
-        <Flex
-          as={motion.div}
-          direction="column"
-          alignItems="center"
-          grow={1}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-        >
+        <Flex direction="column" alignItems="center" grow={1}>
           <Navigation direction="column" navs={navs} active={active} />
           <Spacer />
           {navs.length > 0 && (

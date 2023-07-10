@@ -15,13 +15,16 @@ import Button from '../common/button';
 import Dialog from '../common/dialog';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { delegateWithdrawalAtom } from '@/state/query/delegate';
 import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 import { withdrawableAmountAtom } from '@/state/query/amount';
+import { delegateWithdrawAtom } from '@/state/mutate/delegate';
+import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
+import { useNotification } from '@/hooks/ui/useNotification';
 
 const columns = [
   {
@@ -45,8 +48,9 @@ const columns = [
 ];
 
 export default function WithdrawPanel() {
-  const { address } = useConnect();
+  const notify = useNotification();
   const showDialog = useDialog();
+  const { address } = useConnect();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { amount: withdrawableAmount } = useAmountAtomQuery(
     address,
@@ -60,15 +64,32 @@ export default function WithdrawPanel() {
     [withdrawableAmount],
   );
 
-  const handleWithdraw = () => {
+  const withdrawMutation = useSendTransactionAtomMutate(delegateWithdrawAtom);
+
+  const handleWithdraw = useCallback(async () => {
     setIsConfirmDialogOpen(false);
-    showDialog({
-      title: 'Withdrawal Requests Submitted',
-      description:
-        'Your request has been submitted. Check out staking history for details.',
-      hideCancel: true,
-    });
-  };
+
+    try {
+      await withdrawMutation.mutate([]);
+      showDialog({
+        title: 'Withdrawal Requests Submitted',
+        description:
+          'Your request has been submitted. Check out staking history for details.',
+        hideCancel: true,
+      });
+      // XXX: we need a api to get the withdraw status, and then show notification when the withdraw tx is done.
+      notify({
+        status: 'success',
+        message: 'Your withdrawal has been successful.',
+      });
+    } catch (e) {
+      console.log(e);
+      notify({
+        status: 'error',
+        message: (e as Error).message,
+      });
+    }
+  }, [withdrawMutation, notify, showDialog]);
 
   return (
     <Box>
@@ -160,6 +181,7 @@ export default function WithdrawPanel() {
           }
           confrmLabel="Withdraw"
           onConfirm={handleWithdraw}
+          confirming={withdrawMutation.isLoading}
         >
           <Button size="lg" onClick={() => setIsConfirmDialogOpen(true)}>
             Withdraw

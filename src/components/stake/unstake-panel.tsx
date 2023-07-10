@@ -5,12 +5,12 @@ import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
-import { useSendTxMutation } from '@/hooks/useSendTxMutation';
 import { useNotification } from '@/hooks/ui/useNotification';
-import axios from 'axios';
 import { useConnect } from '@/hooks/useConnect';
 import { stakedAmountAtom } from '@/state/query/amount';
 import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
+import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
+import { unstakeMutateAtom } from '@/state/mutate/stake';
 
 export default function UnstakePanel() {
   const notify = useNotification();
@@ -18,22 +18,7 @@ export default function UnstakePanel() {
   const { isDisconnected, address } = useConnect();
   const { amount: stakedAmount, isLoading } = useAmountAtomQuery(address, stakedAmountAtom);
   const [amount, setAmount] = useState(stakedAmount);
-  const mutation = useSendTxMutation(
-    (params: { address: string; amount: number }) => {
-      return axios.post(`/api/stake/unstake`, params);
-    },
-    {
-      onError: (err) => {
-        notify({
-          status: 'error',
-          message: (err as Error).message,
-        });
-      },
-      onSuccess: () => {
-        setIsOpenDialog(true);
-      },
-    },
-  );
+  const unstakeMutation = useSendTransactionAtomMutate(unstakeMutateAtom);
 
   React.useEffect(() => {
     if (!stakedAmount.isZero()) {
@@ -44,10 +29,18 @@ export default function UnstakePanel() {
     }
   }, [isDisconnected, stakedAmount, setAmount]);
 
-  const startUnstakeTransaction = useCallback(() => {
+  const startUnstakeTransaction = useCallback(async () => {
     if (!address) return;
-    mutation.mutate({ address, amount: amount.toNumber() });
-  }, [address, amount, mutation]);
+    try {
+      await unstakeMutation.mutate([{ amount: amount.toNumber() }]);
+      setIsOpenDialog(true);
+    } catch (e) {
+      notify({
+        status: 'error',
+        message: (e as Error).message,
+      });
+    }
+  }, [address, amount, unstakeMutation, notify]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
@@ -64,7 +57,7 @@ export default function UnstakePanel() {
         <Button
           size="lg"
           disabled={isDisconnected || amount.isZero()}
-          isLoading={mutation.isLoading}
+          isLoading={unstakeMutation.isLoading}
           onClick={startUnstakeTransaction}
         >
           Submit

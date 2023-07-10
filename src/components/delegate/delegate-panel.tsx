@@ -1,12 +1,16 @@
-import React, { startTransition, useEffect, useMemo, useState } from 'react';
+import React, {
+  startTransition,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { Text, Box, Flex, Divider } from '@chakra-ui/react';
 import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
 import InputField from '../input-filed';
 import EpochField from '../epoch-field';
-import { useSendTxMutation } from '@/hooks/useSendTxMutation';
-import axios from 'axios';
 import { useNotification } from '@/hooks/ui/useNotification';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
@@ -16,6 +20,8 @@ import { loadable } from 'jotai/utils';
 import { rateAtom } from '@/state/query/rate';
 import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 import { availableAmountAtom } from '@/state/query/amount';
+import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
+import { delegateMutateAtom } from '@/state/mutate/delegate';
 
 export default function DelegatePanel() {
   const notify = useNotification();
@@ -25,7 +31,7 @@ export default function DelegatePanel() {
     address,
     availableAmountAtom,
   );
-  const [delegateAddress, setDelegateAddress] = useState('');
+  const [delegateTo, setDelegateTo] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const rateQuery = useAtomValue(loadable(rateAtom(address)));
   const stakeRate = useMemo(
@@ -35,32 +41,11 @@ export default function DelegatePanel() {
   const [amount, setAmount] = useState(availableAmount);
   const [message, setMessage] = useState('');
   const disabled = useMemo(
-    () => !isConnected || !delegateAddress || amount.isZero(),
-    [isConnected, delegateAddress, amount],
+    () => !isConnected || !delegateTo || amount.isZero(),
+    [isConnected, delegateTo, amount],
   );
 
-  const mutation = useSendTxMutation(
-    (params: { address: string; to: string; amount: number }) => {
-      return axios.post(`/api/delegate`, params);
-    },
-    {
-      onError: (err) => {
-        notify({
-          status: 'error',
-          message: (err as Error).message,
-        });
-      },
-      onSuccess: () => {
-        setShowConfirmDialog(false);
-        showDialog({
-          title: 'Delegation Request Submitted',
-          description:
-            'Your request has been submitted. Check out Delegation history for details.',
-          hideCancel: true,
-        });
-      },
-    },
-  );
+  const delegateMutation = useSendTransactionAtomMutate(delegateMutateAtom);
 
   useEffect(() => {
     if (!availableAmount.isZero()) {
@@ -73,21 +58,44 @@ export default function DelegatePanel() {
 
   useEffect(() => {
     startTransition(() => {
-      if (delegateAddress && rateQuery.state === 'hasError') {
+      if (delegateTo && rateQuery.state === 'hasError') {
         setMessage(rateQuery.error as string);
       } else if (rateQuery.state === 'hasData') {
         setMessage('');
       }
     });
-  }, [delegateAddress, rateQuery]);
+  }, [delegateTo, rateQuery]);
+
+  const startDelegateTransaction = useCallback(async () => {
+    try {
+      await delegateMutation.mutate([
+        {
+          delegateTo,
+          amount: amount.toNumber(),
+        },
+      ]);
+      setShowConfirmDialog(false);
+      showDialog({
+        title: 'Delegation Request Submitted',
+        description:
+          'Your request has been submitted. Check out Delegation history for details.',
+        hideCancel: true,
+      });
+    } catch (e) {
+      notify({
+        status: 'error',
+        message: (e as Error).message,
+      });
+    }
+  }, [delegateTo, amount, delegateMutation, showDialog, notify]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
       <InputField
         label="Delegate To"
         placeholder="Please add your address here"
-        value={delegateAddress}
-        onChange={setDelegateAddress}
+        value={delegateTo}
+        onChange={setDelegateTo}
         message={message}
         disabled={!isConnected}
         status={message ? 'error' : 'none'}
@@ -111,7 +119,7 @@ export default function DelegatePanel() {
                 <Text fontWeight="medium" marginRight={2}>
                   Delegate Address:
                 </Text>
-                <Text fontWeight="normal">{delegateAddress}</Text>
+                <Text fontWeight="normal">{delegateTo}</Text>
               </Box>
               <Flex fontFamily="montserrat">
                 <Text fontWeight="medium" marginRight={2}>
@@ -129,14 +137,8 @@ export default function DelegatePanel() {
             </Box>
           }
           cancelLabel="Redelegate"
-          confirming={mutation.isLoading}
-          onConfirm={() =>
-            mutation.mutate({
-              address: address!,
-              to: delegateAddress!,
-              amount: amount.toNumber(),
-            })
-          }
+          confirming={delegateMutation.isLoading}
+          onConfirm={startDelegateTransaction}
         />
         <ConnectButton
           size="lg"

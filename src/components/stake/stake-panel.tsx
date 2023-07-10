@@ -4,45 +4,22 @@ import { BI } from '@ckb-lumos/bi';
 import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
 import { useNotification } from '@/hooks/ui/useNotification';
-import { useSendTxMutation } from '@/hooks/useSendTxMutation';
-import axios from 'axios';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '../connect-button';
 import { availableAmountAtom } from '@/state/query/amount';
 import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
+import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
+import { stakeMutateAtom } from '@/state/mutate/stake';
 
 export default function StakePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
   const { isConnected, address } = useConnect();
   const disabled = useMemo(() => !isConnected, [isConnected]);
-  const { amount: availableAmount, isLoading } = useAmountAtomQuery(
-    address,
-    availableAmountAtom,
-  );
   const [amount, setAmount] = useState(BI.from(0));
-  const mutation = useSendTxMutation(
-    (params: { address: string; amount: number }) => {
-      return axios.post(`/api/stake`, params);
-    },
-    {
-      onError: (err) => {
-        notify({
-          status: 'error',
-          message: (err as Error).message,
-        });
-      },
-      onSuccess: () => {
-        showDialog({
-          title: 'Staking Request Submitted',
-          description:
-            'Your request has been submitted. Check out staking history for details.',
-          hideCancel: true,
-        });
-      },
-    },
-  );
+  const { amount: availableAmount, isLoading } = useAmountAtomQuery(address, availableAmountAtom);
+  const stakeMutation = useSendTransactionAtomMutate(stakeMutateAtom);
 
   React.useEffect(() => {
     if (!availableAmount.isZero()) {
@@ -53,10 +30,23 @@ export default function StakePanel() {
     }
   }, [disabled, availableAmount, setAmount]);
 
-  const startStakeTransaction = useCallback(() => {
+  const startStakeTransaction = useCallback(async () => {
     if (!address) return;
-    mutation.mutate({ address, amount: amount.toNumber() });
-  }, [address, amount, mutation]);
+    try {
+      await stakeMutation.mutate([{ amount: amount.toNumber() }]);
+      showDialog({
+        title: 'Staking Request Submitted',
+        description:
+          'Your request has been submitted. Check out staking history for details.',
+        hideCancel: true,
+      });
+    } catch (e) {
+      notify({
+        status: 'error',
+        message: (e as Error).message,
+      });
+    }
+  }, [address, amount, stakeMutation, notify, showDialog]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
@@ -73,7 +63,7 @@ export default function StakePanel() {
         <ConnectButton
           size="lg"
           disabled={disabled || amount.isZero()}
-          isLoading={mutation.isLoading}
+          isLoading={stakeMutation.isLoading}
           onClick={startStakeTransaction}
         >
           Submit

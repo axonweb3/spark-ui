@@ -766,6 +766,50 @@
           "$ref": "#/components/schemas/Transaction"
         }
       }
+    },
+    {
+      "name": "withdrawStake",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "type",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "stake",
+              "delegate"
+            ]
+          }
+        }
+      ],
+      "result": {
+        "name": "transaction",
+        "schema": {
+          "$ref": "#/components/schemas/Transaction"
+        }
+      }
+    },
+    {
+      "name": "withdrawReward",
+      "params": [
+        {
+          "name": "address",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "result": {
+        "name": "transaction",
+        "schema": {
+          "$ref": "#/components/schemas/Transaction"
+        }
+      }
     }
   ],
   "components": {

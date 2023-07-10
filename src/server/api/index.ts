@@ -1,98 +1,19 @@
 import request from './request';
-
-export enum StakeEvent {
-  Add = 'add',
-  Redeem = 'redeem',
-  Withdraw = 'withdraw',
-}
-
-export enum OperateType {
-  Stake = 'stake',
-  Delegate = 'delegate',
-}
-
-export enum StakeStatus {
-  Success = 'success',
-  Pending = 'pending',
-  Failed = 'failed',
-}
-
-export type Paginated<T> = {
-  total: number;
-  data: T[];
-};
-
-export interface StakeRate {
-  rate: number;
-  minimumAmount: number;
-}
-
-export interface StakeAmount {
-  amount: number;
-  stake_amount: number;
-  delegate_amount: number;
-  withdrawable_amount: number;
-}
-
-export interface RewardAmount {
-  unlock_amount: number;
-  locked_amount: number;
-}
-
-export interface StakeRecord {
-  id: string;
-  amount: string;
-  event: StakeEvent;
-  type: OperateType;
-  status: StakeStatus;
-  transcations: {
-    hash: string;
-    status: StakeStatus;
-    timestamp: Date;
-  }[];
-}
-
-export interface DelegateRecord {
-  address: string;
-  amount: string;
-}
-
-export interface RewardRecord {
-  epoch: number;
-  amount: number;
-  locked: boolean;
-  from: {
-    type: 'stake' | 'delegate';
-    address: string;
-    amount: number;
-  }[];
-}
-
-export interface WithdrawRecord {
-  timestamp: Date;
-  hash: string;
-  amount: number;
-  status: StakeStatus;
-}
-
-export interface EpochAmountRecord {
-  epoch: number;
-  amount: number;
-}
-
-export interface ChainState {
-  epoch: number;
-  period: number;
-  block_number: number;
-  total_stake_amount: number;
-}
-
-export interface TransactionRecord {
-  timestamp: Date;
-  hash: string;
-  amount: number;
-  status: StakeStatus;
-}
+import {
+  ChainState,
+  DelegateRecord,
+  EpochAmountRecord,
+  OperateType,
+  Paginated,
+  RewardAmount,
+  RewardRecord,
+  StakeAmount,
+  StakeEvent,
+  StakeRate,
+  StakeRecord,
+  TransactionRecord,
+  WithdrawRecord,
+} from './type';
 
 export async function getStakeRate(address: string): Promise<StakeRate> {
   const { data } = await request('getStakeRate', [address]);
@@ -202,3 +123,29 @@ export async function getLatestStakeTransactions(
   ]);
   return data.result;
 }
+
+export async function stake(address: string, amount: number) {
+  const { data } = await request('stake', [address, amount]);
+  return data.result;
+}
+
+export async function unstake(address: string, amount: number) {
+  const { data } = await request('unstake', [address, amount]);
+  return data.result;
+}
+
+export async function delegate(address: string, delegateTo: string, amount: number) {
+  const { data } = await request('delegate', [address, delegateTo, amount]);
+  return data.result;
+}
+
+export async function withdrawStake(address: string, type: 'stake' | 'delegate') {
+  const { data } = await request('withdrawStake', [address, type]);
+  return data.result;
+}
+
+export async function withdrawReward(address: string) {
+  const { data } = await request('withdrawReward', [address]);
+  return data.result;
+}
+
