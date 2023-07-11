@@ -15,4 +15,4 @@ export const renderAmount = (amount: string): string => {
 
 export const renderDateString = (date: string): string => {
   return format(new Date(date), 'yyyy/MM/dd HH:mm:ss');
-}
+};

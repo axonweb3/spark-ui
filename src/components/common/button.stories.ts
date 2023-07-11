@@ -57,6 +57,6 @@ export const Disabled: Story = {
     variant: 'contained',
     size: 'md',
     children: 'Disabled',
-    disabled: true
+    disabled: true,
   },
 };

@@ -2,16 +2,16 @@ import React, { PropsWithChildren, useEffect } from 'react';
 import Button from './button';
 import {
   Box,
-  Text,
+  Flex,
   Modal,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
+  ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Text,
   useDisclosure,
-  ModalBody,
-  ModalFooter,
-  Flex,
-  ModalCloseButton,
 } from '@chakra-ui/react';
 
 export interface IDialogProps extends PropsWithChildren {
@@ -31,17 +31,7 @@ export interface IDialogProps extends PropsWithChildren {
 }
 
 export default function Dialog(props: IDialogProps) {
-  const {
-    title,
-    description,
-    children,
-    open,
-    onChange,
-    confirming,
-    hideCloseButton,
-    hideCancel,
-    disabled,
-  } = props;
+  const { title, description, children, open, onChange, confirming, hideCloseButton, hideCancel, disabled } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -79,12 +69,7 @@ export default function Dialog(props: IDialogProps) {
           {!hideCloseButton && <ModalCloseButton />}
           <ModalBody marginY={4} padding={0}>
             {typeof description === 'string' ? (
-              <Text
-                fontFamily="montserrat"
-                color="grey.900"
-                lineHeight={title ? 4 : 5}
-                fontSize={title ? 'sm' : 'md'}
-              >
+              <Text fontFamily="montserrat" color="grey.900" lineHeight={title ? 4 : 5} fontSize={title ? 'sm' : 'md'}>
                 {description}
               </Text>
             ) : (
@@ -108,12 +93,7 @@ export default function Dialog(props: IDialogProps) {
                   </Button>
                 )}
                 <Box width={3} />
-                <Button
-                  variant="contained"
-                  size="sm"
-                  isLoading={confirming}
-                  onClick={() => props.onConfirm?.()}
-                >
+                <Button variant="contained" size="sm" isLoading={confirming} onClick={() => props.onConfirm?.()}>
                   {props.confrmLabel ?? 'Got it'}
                 </Button>
               </Flex>

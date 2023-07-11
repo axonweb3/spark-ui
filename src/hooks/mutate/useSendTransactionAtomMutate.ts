@@ -1,19 +1,19 @@
-import { CellDep, commons, config, helpers } from '@ckb-lumos/lumos';
-import { blockchain } from '@ckb-lumos/base';
-import { bytes } from '@ckb-lumos/codec';
+import { CellDep, config } from '@ckb-lumos/lumos';
+// import { blockchain } from '@ckb-lumos/base';
+// import { bytes } from '@ckb-lumos/codec';
 import { WritableAtom, useSetAtom } from 'jotai';
 import { useCallback, useState } from 'react';
-import { signMessage } from '@wagmi/core';
+// import { signMessage } from '@wagmi/core';
 
 type ScriptName = keyof (typeof config.predefined.AGGRON4)['SCRIPTS'];
 
-const OMNILOCK_SIGNATURE_PLACEHOLDER = bytes.hexify(
-  new Uint8Array(
-    commons.omnilock.OmnilockWitnessLock.pack({
-      signature: new Uint8Array(65).buffer,
-    }).byteLength,
-  ),
-);
+// const OMNILOCK_SIGNATURE_PLACEHOLDER = bytes.hexify(
+//   new Uint8Array(
+//     commons.omnilock.OmnilockWitnessLock.pack({
+//       signature: new Uint8Array(65).buffer,
+//     }).byteLength,
+//   ),
+// );
 
 export function getScriptCellDep(name: ScriptName): CellDep {
   const script = config.predefined.AGGRON4['SCRIPTS'][name];

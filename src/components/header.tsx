@@ -1,6 +1,6 @@
 import React from 'react';
 import Button from '@/components/common/button';
-import { Text, Box, Flex, Spacer, Tooltip } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import { useAddressCopy } from '@/hooks/useAddressCopy';
@@ -13,12 +13,7 @@ export default function Header() {
   return (
     <header>
       <Box maxWidth="1080px" paddingX={4} marginX="auto">
-        <Flex
-          backgroundColor="transparent"
-          alignItems="center"
-          paddingTop="10px"
-          marginBottom="24px"
-        >
+        <Flex backgroundColor="transparent" alignItems="center" paddingTop="10px" marginBottom="24px">
           <Box>
             <Text fontSize="22px" fontFamily="alfarn-2" fontWeight="bold">
               {role === 'delegator' ? 'Delegator' : 'Validator'}

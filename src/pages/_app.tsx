@@ -13,10 +13,7 @@ const montserrat = Montserrat({ subsets: ['latin'] });
 
 const queryClient = new QueryClient();
 
-const { publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  [publicProvider()],
-);
+const { publicClient, webSocketPublicClient } = configureChains([mainnet], [publicProvider()]);
 
 const config = createConfig({
   autoConnect: false,

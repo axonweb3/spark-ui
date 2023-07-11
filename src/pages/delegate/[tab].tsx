@@ -51,10 +51,7 @@ export default function DelegatePage() {
   const { isConnected } = useConnect();
   const { isDelegator } = useStakeRole();
   const [navs, setNavs] = useState<typeof NAVS>(NAVS.filter(({ name }) => name === DelegateTabType.Delegate));
-  const tab = useMemo(
-    () => (router.query.tab as string) ?? DelegateTabType.Delegate,
-    [router.query.tab],
-  );
+  const tab = useMemo(() => (router.query.tab as string) ?? DelegateTabType.Delegate, [router.query.tab]);
 
   useEffect(() => {
     if (isConnected) {
@@ -69,7 +66,7 @@ export default function DelegatePage() {
   return (
     <Layout>
       <Card
-        backgroundColor={isDelegator ? "secondary" : "primary"}
+        backgroundColor={isDelegator ? 'secondary' : 'primary'}
         title={
           <Flex alignItems="center">
             <Navigation navs={navs} active={tab} />
@@ -81,9 +78,7 @@ export default function DelegatePage() {
                     <Icon as={MdSettings} width="20px" height="20px" />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem onClick={() => router.push('/?redirect=false')}>
-                      Switch Role
-                    </MenuItem>
+                    <MenuItem onClick={() => router.push('/?redirect=false')}>Switch Role</MenuItem>
                   </MenuList>
                 </Menu>
               </>

@@ -13,11 +13,7 @@ export const rewardRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { pageNumber, pageSize } = input;
-      const data = await api.getWithdrawalHistory(
-        address,
-        pageNumber,
-        pageSize,
-      );
+      const data = await api.getWithdrawalHistory(address, pageNumber, pageSize);
       return data;
     }),
   history: addressProcedure
@@ -33,10 +29,9 @@ export const rewardRouter = router({
       const data = await api.getRewardHistory(address, pageNumber, pageSize);
       return data;
     }),
-  withdraw: addressProcedure
-    .mutation(async ({ ctx }) => {
-      const { address } = ctx;
-      const data = await api.withdrawReward(address);
-      return data;
-    }),
+  withdraw: addressProcedure.mutation(async ({ ctx }) => {
+    const { address } = ctx;
+    const data = await api.withdrawReward(address);
+    return data;
+  }),
 });

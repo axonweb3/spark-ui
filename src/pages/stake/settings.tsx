@@ -139,11 +139,7 @@ export default function SettingsPage() {
               />
             </Box>
             <Box flexGrow="1">
-              <Slider
-                value={rate}
-                onChange={(val) => isConnected && setRate(val)}
-                focusThumbOnChange={false}
-              >
+              <Slider value={rate} onChange={(val) => isConnected && setRate(val)} focusThumbOnChange={false}>
                 <SliderTrack
                   backgroundColor="gray.300"
                   height="8px"
@@ -153,18 +149,8 @@ export default function SettingsPage() {
                 >
                   <SliderFilledTrack backgroundColor="yellow.300" />
                 </SliderTrack>
-                <SliderThumb
-                  height="24px"
-                  width="24px"
-                  borderRadius="3px"
-                  backgroundColor="#44403D"
-                >
-                  <Box
-                    height="10px"
-                    width="10px"
-                    backgroundColor="white"
-                    borderRadius="full"
-                  />
+                <SliderThumb height="24px" width="24px" borderRadius="3px" backgroundColor="#44403D">
+                  <Box height="10px" width="10px" backgroundColor="white" borderRadius="full" />
                 </SliderThumb>
               </Slider>
             </Box>
@@ -206,11 +192,7 @@ export default function SettingsPage() {
           />
         </Box>
         <Flex justifyContent="center" paddingTop="60px" marginBottom={10}>
-          <ConnectButton
-            size="lg"
-            disabled={isDisconnected}
-            onClick={() => router.push('/stake')}
-          >
+          <ConnectButton size="lg" disabled={isDisconnected} onClick={() => router.push('/stake')}>
             Submit
           </ConnectButton>
         </Flex>
@@ -220,22 +202,10 @@ export default function SettingsPage() {
         description="Before you start, please set Commission Rate first."
         footer={
           <Flex width="full">
-            <Flex
-              alignItems="center"
-              cursor="pointer"
-              onClick={() => setDialogCheckbox(!dialogCheckbox)}
-            >
-              <Flex
-                width={6}
-                height={6}
-                marginRight={1}
-                alignItems="center"
-                justifyContent="center"
-              >
+            <Flex alignItems="center" cursor="pointer" onClick={() => setDialogCheckbox(!dialogCheckbox)}>
+              <Flex width={6} height={6} marginRight={1} alignItems="center" justifyContent="center">
                 <Icon
-                  as={
-                    dialogCheckbox ? MdCheckBox : MdOutlineCheckBoxOutlineBlank
-                  }
+                  as={dialogCheckbox ? MdCheckBox : MdOutlineCheckBoxOutlineBlank}
                   width="18px"
                   height="18px"
                   fill="blue.400"

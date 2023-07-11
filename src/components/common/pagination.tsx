@@ -38,10 +38,7 @@ export default function Pagination(props: IPaginationProps) {
   } = props;
   const [page, setPage] = React.useState(current ?? defaultCurrent);
   const [pageSize, setPageSize] = React.useState(defaultPageSize);
-  const totalPage = useMemo(
-    () => Math.ceil(total / pageSize),
-    [total, pageSize],
-  );
+  const totalPage = useMemo(() => Math.ceil(total / pageSize), [total, pageSize]);
   const range = useMemo(() => {
     let start = page > 2 ? page - 2 : 1;
     let end = start + 4;
@@ -68,7 +65,7 @@ export default function Pagination(props: IPaginationProps) {
     if (currentPageSize) {
       setPageSize(currentPageSize);
     }
-  }, [currentPageSize])
+  }, [currentPageSize]);
 
   useEffect(() => {
     if (current !== undefined) {
@@ -78,11 +75,11 @@ export default function Pagination(props: IPaginationProps) {
 
   useEffect(() => {
     onChange?.(page);
-  }, [page, onChange])
+  }, [page, onChange]);
 
   useEffect(() => {
     onPageSizeChange?.(pageSize);
-  }, [pageSize, onPageSizeChange])
+  }, [pageSize, onPageSizeChange]);
 
   return (
     <Box>
@@ -96,12 +93,7 @@ export default function Pagination(props: IPaginationProps) {
             cursor={page === 1 ? 'not-allowed' : 'pointer'}
             onClick={() => page !== 1 && setPage(page - 1)}
           >
-            <Icon
-              as={MdKeyboardArrowLeft}
-              width="18px"
-              height="18px"
-              color={page === 1 ? 'gray.200' : 'black'}
-            />
+            <Icon as={MdKeyboardArrowLeft} width="18px" height="18px" color={page === 1 ? 'gray.200' : 'black'} />
           </Flex>
           {Array.from({ length: totalPage }).map((_, index) => {
             const pageNumber = index + 1;
@@ -129,16 +121,9 @@ export default function Pagination(props: IPaginationProps) {
               );
             }
 
-            if (
-              pageNumber === range.start - 1 ||
-              pageNumber === range.end + 1
-            ) {
+            if (pageNumber === range.start - 1 || pageNumber === range.end + 1) {
               return (
-                <Flex
-                  key={`page_${pageNumber}`}
-                  {...PAGE_NUM_STYLE}
-                  backgroundColor="transparent"
-                >
+                <Flex key={`page_${pageNumber}`} {...PAGE_NUM_STYLE} backgroundColor="transparent">
                   <Text fontSize="14px" opacity="25%">
                     •••
                   </Text>

@@ -3,12 +3,9 @@ import { Box, Container } from '@chakra-ui/react';
 import { DialogProvider } from '@/hooks/ui/useDialog';
 import { useStakeRole } from '@/hooks/useStakeRole';
 
-export default function BaseLayout(props: React.PropsWithChildren<{}>) {
+export default function BaseLayout(props: React.PropsWithChildren<object>) {
   const { isDelegator } = useStakeRole();
-  const backgroundColor = useMemo(
-    () => (isDelegator ? 'primary' : 'secondary'),
-    [isDelegator],
-  );
+  const backgroundColor = useMemo(() => (isDelegator ? 'primary' : 'secondary'), [isDelegator]);
 
   return (
     <DialogProvider>

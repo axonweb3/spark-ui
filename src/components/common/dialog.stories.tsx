@@ -3,7 +3,7 @@ import { MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 
 import Dialog from './dialog';
 import Button from './button';
-import { Text, Flex, Spacer, Box } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Dialog> = {
@@ -41,13 +41,7 @@ export const CustomFooter: Story = {
       footer={
         <Flex width="full">
           <Flex alignItems="center">
-            <Flex
-              width={6}
-              height={6}
-              marginRight={1}
-              alignItems="center"
-              justifyContent="center"
-            >
+            <Flex width={6} height={6} marginRight={1} alignItems="center" justifyContent="center">
               <MdOutlineCheckBoxOutlineBlank />
             </Flex>
             <Text fontSize="sm" color="blue.400">

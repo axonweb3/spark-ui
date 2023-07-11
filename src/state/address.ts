@@ -10,8 +10,4 @@ const cookieStorage = createJSONStorage<string | undefined>(() => {
   };
 });
 
-export const addressAtom = atomWithStorage<string | undefined>(
-  SPARK_ADDRESS_KEY,
-  undefined,
-  cookieStorage,
-);
+export const addressAtom = atomWithStorage<string | undefined>(SPARK_ADDRESS_KEY, undefined, cookieStorage);

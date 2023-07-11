@@ -1,6 +1,7 @@
 import {
   Box,
   Flex,
+  Icon,
   Menu,
   MenuButton,
   MenuItem,
@@ -16,7 +17,6 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Card from '@/components/common/card';
 import Navigation from '@/components/common/navigation';
 import Layout from '@/components/layout';
-import { Icon } from '@chakra-ui/react';
 import { MdSettings } from 'react-icons/md';
 import StakePanel from '@/components/stake/stake-panel';
 import UnstakePanel from '@/components/stake/unstake-panel';
@@ -34,12 +34,10 @@ export enum StakeTabType {
   History = 'history',
 }
 
-const NAVS = [
-  StakeTabType.Stake,
-  StakeTabType.Unstake,
-  StakeTabType.Withdraw,
-  StakeTabType.History,
-].map((name) => ({ name, href: `/stake/${name}` }));
+const NAVS = [StakeTabType.Stake, StakeTabType.Unstake, StakeTabType.Withdraw, StakeTabType.History].map((name) => ({
+  name,
+  href: `/stake/${name}`,
+}));
 
 const panels = {
   [StakeTabType.Stake]: StakePanel,
@@ -70,10 +68,7 @@ export default function StakePage() {
   const router = useRouter();
   const { isConnected } = useConnect();
   const [navs, setNavs] = useState<typeof NAVS>(NAVS.filter(({ name }) => name === StakeTabType.Stake));
-  const tab = useMemo(
-    () => (router.query.tab as string) ?? StakeTabType.Stake,
-    [router.query.tab],
-  );
+  const tab = useMemo(() => (router.query.tab as string) ?? StakeTabType.Stake, [router.query.tab]);
 
   useEffect(() => {
     if (isConnected) {
@@ -94,13 +89,7 @@ export default function StakePage() {
             <Navigation navs={navs} active={tab} />
             <Spacer />
             <Menu placement="bottom-end">
-              <MenuButton
-                as={Box}
-                cursor="pointer"
-                display="flex"
-                flexDirection="column"
-                justifyContent="center"
-              >
+              <MenuButton as={Box} cursor="pointer" display="flex" flexDirection="column" justifyContent="center">
                 <Icon as={MdSettings} width="20px" height="20px" />
               </MenuButton>
               <MenuList

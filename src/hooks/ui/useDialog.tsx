@@ -1,12 +1,11 @@
-import Dialog from '@/components/common/dialog';
-import { IDialogProps } from '@/components/common/dialog';
+import Dialog, { IDialogProps } from '@/components/common/dialog';
 import { dialogOpenAtom, dialogPorpsAtom } from '@/state/ui/dialog';
 import { useAtom, useSetAtom } from 'jotai';
 import { useCallback, useEffect } from 'react';
 import { usePrevious } from 'react-use';
 import { isEmpty, isEqual } from 'lodash-es';
 
-export const DialogProvider = (props: React.PropsWithChildren<{}>) => {
+export const DialogProvider = (props: React.PropsWithChildren<object>) => {
   const { children } = props;
   const [dialogProps, setDialogProps] = useAtom(dialogPorpsAtom);
   const [open, setOpen] = useAtom(dialogOpenAtom);

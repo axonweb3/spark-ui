@@ -1,4 +1,4 @@
-import { Text, Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import Table from '../common/table';
 import Badge from '../common/badge';
 import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
@@ -28,9 +28,7 @@ const columns = [
 ];
 
 export function LatestTransactions() {
-  const { data, isLoading } = usePaginatedAtomQuery(
-    statsLatestStakeTransactionsAtom,
-  );
+  const { data, isLoading } = usePaginatedAtomQuery(statsLatestStakeTransactionsAtom);
 
   return (
     <Box marginX="-13px">

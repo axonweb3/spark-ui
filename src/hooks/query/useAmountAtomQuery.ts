@@ -4,7 +4,10 @@ import { BI } from '@ckb-lumos/bi';
 import { useEffect, useMemo, useState } from 'react';
 import { AtomFamily } from 'jotai/vanilla/utils/atomFamily';
 
-export function useAmountAtomQuery(address: string | undefined, asyncAtom: AtomFamily<string | undefined, Atom<Promise<BI>>>) {
+export function useAmountAtomQuery(
+  address: string | undefined,
+  asyncAtom: AtomFamily<string | undefined, Atom<Promise<BI>>>,
+) {
   const queryResponse = useAtomValue(loadable(asyncAtom(address)));
   const [amount, setAmount] = useState(BI.from(0));
   const isLoading = useMemo(() => queryResponse.state === 'loading', [queryResponse]);

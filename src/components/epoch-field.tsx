@@ -1,4 +1,4 @@
-import { Text, Flex, Spacer, Icon, Tooltip } from '@chakra-ui/react';
+import { Flex, Icon, Spacer, Text, Tooltip } from '@chakra-ui/react';
 import { MdHelp } from 'react-icons/md';
 
 export interface IEpochFieldProps {

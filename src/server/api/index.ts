@@ -37,13 +37,7 @@ export async function getStakeHistory(
   event?: StakeEvent,
   type?: OperateType,
 ): Promise<Paginated<StakeRecord>> {
-  const { data } = await request('getStakeHistory', [
-    address,
-    pageNumber,
-    pageSize,
-    event,
-    type,
-  ]);
+  const { data } = await request('getStakeHistory', [address, pageNumber, pageSize, event, type]);
   return data.result;
 }
 
@@ -52,11 +46,7 @@ export async function getDelegatedRecords(
   pageNumber: number,
   pageSize: number,
 ): Promise<Paginated<DelegateRecord>> {
-  const { data } = await request('getDelegatedRecords', [
-    address,
-    pageNumber,
-    pageSize,
-  ]);
+  const { data } = await request('getDelegatedRecords', [address, pageNumber, pageSize]);
   return data.result;
 }
 
@@ -65,11 +55,7 @@ export async function getRewardHistory(
   pageNumber: number,
   pageSize: number,
 ): Promise<Paginated<RewardRecord>> {
-  const { data } = await request('getRewardHistory', [
-    address,
-    pageNumber,
-    pageSize,
-  ]);
+  const { data } = await request('getRewardHistory', [address, pageNumber, pageSize]);
   return data.result;
 }
 
@@ -78,11 +64,7 @@ export async function getWithdrawalHistory(
   pageNumber: number,
   pageSize: number,
 ): Promise<Paginated<WithdrawRecord>> {
-  const { data } = await request('getWithdrawalHistory', [
-    address,
-    pageNumber,
-    pageSize,
-  ]);
+  const { data } = await request('getWithdrawalHistory', [address, pageNumber, pageSize]);
   return data.result;
 }
 
@@ -90,10 +72,7 @@ export async function getStakeAmountByEpoch(
   pageNumber: number,
   pageSize: number,
 ): Promise<Paginated<EpochAmountRecord>> {
-  const { data } = await request('getStakeAmountByEpoch', [
-    pageNumber,
-    pageSize,
-  ]);
+  const { data } = await request('getStakeAmountByEpoch', [pageNumber, pageSize]);
   return data.result;
 }
 
@@ -106,10 +85,7 @@ export async function getTopStakeAddresses(
   pageNumber: number,
   pageSize: number,
 ): Promise<Paginated<{ address: string; amount: number }>> {
-  const { data } = await request('getTopStakeAddresses', [
-    pageNumber,
-    pageSize,
-  ]);
+  const { data } = await request('getTopStakeAddresses', [pageNumber, pageSize]);
   return data.result;
 }
 
@@ -117,10 +93,7 @@ export async function getLatestStakeTransactions(
   pageNumber: number,
   pageSize: number,
 ): Promise<Paginated<TransactionRecord>> {
-  const { data } = await request('getLatestStakeTransactions', [
-    pageNumber,
-    pageSize,
-  ]);
+  const { data } = await request('getLatestStakeTransactions', [pageNumber, pageSize]);
   return data.result;
 }
 
@@ -148,4 +121,3 @@ export async function withdrawReward(address: string) {
   const { data } = await request('withdrawReward', [address]);
   return data.result;
 }
-

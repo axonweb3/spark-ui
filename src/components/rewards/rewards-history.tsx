@@ -22,21 +22,14 @@ const columns = [
     title: 'Rewards Status',
     dataIndex: 'locked',
     render: (locked: boolean, data: any) => {
-      return (
-        <Badge
-          key={data.id}
-          status={locked ? 'failed' : 'success'}
-          label={locked ? 'Locked' : 'Unlock'}
-        />
-      );
+      return <Badge key={data.id} status={locked ? 'failed' : 'success'} label={locked ? 'Locked' : 'Unlock'} />;
     },
   },
 ];
 
 export function RewardsHistory() {
   const { address } = useConnect();
-  const { pageNumber, setPageNumber, setPageSize, isLoading, data } =
-    usePaginatedAtomQuery(rewardHistoryAtom, address);
+  const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(rewardHistoryAtom, address);
 
   return (
     <Box>

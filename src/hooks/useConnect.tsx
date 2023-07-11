@@ -34,9 +34,7 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
         auth: { flag: 'ETHEREUM', content: address! },
       });
       const addr = encodeToAddress(omniLockScript, {
-        config: process.env.PRODUCTION_MODE
-          ? predefined.LINA
-          : predefined.AGGRON4,
+        config: process.env.PRODUCTION_MODE ? predefined.LINA : predefined.AGGRON4,
       });
       setAddress(addr);
     },

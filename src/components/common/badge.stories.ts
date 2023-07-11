@@ -7,8 +7,7 @@ const meta: Meta<typeof Badge> = {
   title: 'SparkUI/Common/Badge',
   component: Badge,
   argTypes: {},
-  args: {
-  },
+  args: {},
 };
 
 export default meta;

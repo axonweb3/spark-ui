@@ -1,10 +1,4 @@
-import {
-  Box,
-  Alert as ChakraAlert,
-  CloseButton,
-  Spacer,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Alert as ChakraAlert, CloseButton, Spacer, Text } from '@chakra-ui/react';
 import React from 'react';
 
 export interface INotificationProps {
@@ -59,7 +53,9 @@ export default function Notification(props: INotificationProps) {
         className={status}
         sx={{ '--alert-bg': backgroundColor }}
       >
-        <Text fontFamily="montserrat" fontWeight="extrabold" color="white">{message}</Text>
+        <Text fontFamily="montserrat" fontWeight="extrabold" color="white">
+          {message}
+        </Text>
         <Spacer />
         <CloseButton onClick={handleClose} />
       </ChakraAlert>

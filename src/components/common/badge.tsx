@@ -1,4 +1,4 @@
-import { Text, Badge as ChakraBadge } from '@chakra-ui/react';
+import { Badge as ChakraBadge, Text } from '@chakra-ui/react';
 import React from 'react';
 
 export interface IBadgeProps {

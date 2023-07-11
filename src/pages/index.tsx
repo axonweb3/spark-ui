@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import Image from 'next/image';
 import * as cookie from 'cookie';
-import { Text, Box, Flex, SimpleGrid } from '@chakra-ui/react';
+import { Box, Flex, SimpleGrid, Text } from '@chakra-ui/react';
 import Card from '@/components/common/card';
 import Button from '@/components/common/button';
 import { StakeRoleType, useStakeRole } from '@/hooks/useStakeRole';
@@ -77,31 +77,15 @@ export default function IndexPage() {
               New to Axon Staking?
             </Text>
           </Flex>
-          <SimpleGrid
-            width="100%"
-            maxWidth="800px"
-            marginX="auto"
-            columns={2}
-            gap="55px"
-          >
+          <SimpleGrid width="100%" maxWidth="800px" marginX="auto" columns={2} gap="55px">
             {roles.map(({ title, description, action }) => (
               <Box width="full" height="210px" key={title}>
                 <Card>
                   <Box marginX="-24px" paddingY="4px">
-                    <Text
-                      fontSize="22px"
-                      fontFamily="alfarn-2"
-                      fontWeight="bold"
-                      marginBottom="24px"
-                    >
+                    <Text fontSize="22px" fontFamily="alfarn-2" fontWeight="bold" marginBottom="24px">
                       {title}
                     </Text>
-                    <Text
-                      fontSize="14px"
-                      fontFamily="montserrat"
-                      marginBottom="24px"
-                      lineHeight="shorter"
-                    >
+                    <Text fontSize="14px" fontFamily="montserrat" marginBottom="24px" lineHeight="shorter">
                       {description}
                     </Text>
                     <Flex justifyContent="center">

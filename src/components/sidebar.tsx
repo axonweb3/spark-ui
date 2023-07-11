@@ -4,8 +4,7 @@ import Navigation from './common/navigation';
 import { useRouter } from 'next/router';
 import { useConnect } from '@/hooks/useConnect';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react';
-import { motion } from 'framer-motion';
+import { forwardRef, useEffect, useMemo, useState } from 'react';
 
 const NAVS = [
   {
@@ -26,10 +25,7 @@ const NAVS = [
   },
 ];
 
-const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, {}> = (
-  _,
-  ref,
-) => {
+const Sidebar: React.ForwardRefRenderFunction<HTMLDivElement, object> = (_, ref) => {
   const router = useRouter();
   const { isConnected } = useConnect();
   const { isDelegator } = useStakeRole();

@@ -1,11 +1,5 @@
-import React, {
-  startTransition,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { Text, Box, Flex, Divider } from '@chakra-ui/react';
+import React, { startTransition, useCallback, useEffect, useMemo, useState } from 'react';
+import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
 import AmountField from '../amount-field';
@@ -27,23 +21,14 @@ export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
   const { isConnected, address } = useConnect();
-  const { amount: availableAmount, isLoading } = useAmountAtomQuery(
-    address,
-    availableAmountAtom,
-  );
+  const { amount: availableAmount, isLoading } = useAmountAtomQuery(address, availableAmountAtom);
   const [delegateTo, setDelegateTo] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const rateQuery = useAtomValue(loadable(rateAtom(address)));
-  const stakeRate = useMemo(
-    () => (rateQuery.state === 'hasData' ? rateQuery.data?.rate : 0),
-    [rateQuery],
-  );
+  const stakeRate = useMemo(() => (rateQuery.state === 'hasData' ? rateQuery.data?.rate : 0), [rateQuery]);
   const [amount, setAmount] = useState(availableAmount);
   const [message, setMessage] = useState('');
-  const disabled = useMemo(
-    () => !isConnected || !delegateTo || amount.isZero(),
-    [isConnected, delegateTo, amount],
-  );
+  const disabled = useMemo(() => !isConnected || !delegateTo || amount.isZero(), [isConnected, delegateTo, amount]);
 
   const delegateMutation = useSendTransactionAtomMutate(delegateMutateAtom);
 
@@ -77,8 +62,7 @@ export default function DelegatePanel() {
       setShowConfirmDialog(false);
       showDialog({
         title: 'Delegation Request Submitted',
-        description:
-          'Your request has been submitted. Check out Delegation history for details.',
+        description: 'Your request has been submitted. Check out Delegation history for details.',
         hideCancel: true,
       });
     } catch (e) {
@@ -140,11 +124,7 @@ export default function DelegatePanel() {
           confirming={delegateMutation.isLoading}
           onConfirm={startDelegateTransaction}
         />
-        <ConnectButton
-          size="lg"
-          disabled={disabled}
-          onClick={() => setShowConfirmDialog(true)}
-        >
+        <ConnectButton size="lg" disabled={disabled} onClick={() => setShowConfirmDialog(true)}>
           Submit
         </ConnectButton>
       </Flex>

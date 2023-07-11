@@ -1,6 +1,6 @@
 import { AppRouter } from '@/server/routers/_app';
 import { httpBatchLink } from '@trpc/client';
-import { createTRPCJotai } from 'jotai-trpc'
+import { createTRPCJotai } from 'jotai-trpc';
 
 function getBaseUrl() {
   if (typeof window !== 'undefined') {
@@ -18,4 +18,4 @@ export const trpc = createTRPCJotai<AppRouter>({
       url: `${getBaseUrl()}/api/trpc`,
     }),
   ],
-})
+});

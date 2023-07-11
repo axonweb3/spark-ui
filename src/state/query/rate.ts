@@ -2,9 +2,7 @@ import { atom } from 'jotai';
 import { trpc } from '../trpc';
 import { atomFamily } from 'jotai/utils';
 
-const rateQueryAtom = atomFamily((address: string) =>
-  trpc.rate.get.atomWithQuery(() => ({ address })),
-);
+const rateQueryAtom = atomFamily((address: string) => trpc.rate.get.atomWithQuery(() => ({ address })));
 
 export const rateAtom = atomFamily((address: string | undefined) =>
   atom(async (get) => {

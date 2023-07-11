@@ -3,9 +3,7 @@ import { trpc } from '../trpc';
 import { atomFamily } from 'jotai/utils';
 import { BI } from '@ckb-lumos/bi';
 
-const stakeAmountQueryAtom = atomFamily(() =>
-  trpc.amount.stake.atomWithQuery(),
-);
+const stakeAmountQueryAtom = atomFamily(() => trpc.amount.stake.atomWithQuery());
 
 export const stakeAmountAtom = atomFamily((address: string | undefined) =>
   atom(async (get) => {
@@ -66,9 +64,7 @@ export const withdrawableAmountAtom = atomFamily((address: string | undefined) =
   }),
 );
 
-const rewardAmountQueryAtom = atomFamily(() =>
-  trpc.amount.reward.atomWithQuery(),
-);
+const rewardAmountQueryAtom = atomFamily(() => trpc.amount.reward.atomWithQuery());
 
 export const rewardAmountAtom = atomFamily((address: string | undefined) =>
   atom(async (get) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { MdDone } from 'react-icons/md';
-import { Text, Button, ButtonGroup, Box, SimpleGrid } from '@chakra-ui/react';
+import { Box, Button, ButtonGroup, SimpleGrid, Text } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 
 export interface ISegmentedButtonProps {
@@ -13,9 +13,7 @@ export interface ISegmentedButtonProps {
 
 export default function SegmentedButton(props: ISegmentedButtonProps) {
   const { options, value, onChange, defaultValue, disabled } = props;
-  const [active, setActive] = React.useState(
-    value ?? defaultValue ?? options[0],
-  );
+  const [active, setActive] = React.useState(value ?? defaultValue ?? options[0]);
 
   React.useEffect(() => {
     if (value !== undefined && value !== active) {

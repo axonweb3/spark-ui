@@ -36,8 +36,7 @@ export default function StakePanel() {
       await stakeMutation.mutate([{ amount: amount.toNumber() }]);
       showDialog({
         title: 'Staking Request Submitted',
-        description:
-          'Your request has been submitted. Check out staking history for details.',
+        description: 'Your request has been submitted. Check out staking history for details.',
         hideCancel: true,
       });
     } catch (e) {

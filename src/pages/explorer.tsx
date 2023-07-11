@@ -10,10 +10,7 @@ import { useStakeRole } from '@/hooks/useStakeRole';
 
 export default function ExplorerPage() {
   const { isDelegator } = useStakeRole();
-  const backgroundColor = useMemo(
-    () => (isDelegator ? 'secondary' : 'primary'),
-    [isDelegator],
-  );
+  const backgroundColor = useMemo(() => (isDelegator ? 'secondary' : 'primary'), [isDelegator]);
 
   return (
     <Layout>

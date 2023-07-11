@@ -1,12 +1,4 @@
-import {
-  Text,
-  Box,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  InputRightAddon,
-  InputProps,
-} from '@chakra-ui/react';
+import { Box, Input, InputGroup, InputLeftAddon, InputProps, InputRightAddon, Text } from '@chakra-ui/react';
 import React, { ChangeEvent, useMemo } from 'react';
 
 export interface ITextFieldProps extends Omit<InputProps, 'onChange'> {
@@ -56,7 +48,7 @@ export default function TextField(props: ITextFieldProps) {
     }
   }, [status]);
 
-  const borderWidth = useMemo(() => status === 'warning' || status === 'error' ? 2 : 1, [status]);
+  const borderWidth = useMemo(() => (status === 'warning' || status === 'error' ? 2 : 1), [status]);
 
   return (
     <Box>

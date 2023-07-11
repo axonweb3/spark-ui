@@ -1,4 +1,4 @@
-import { Text, Input, Flex, Icon } from '@chakra-ui/react';
+import { Flex, Icon, Input, Text } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { MdCreate, MdDelete } from 'react-icons/md';
 
@@ -34,11 +34,7 @@ export default function DelegatedAmount(props: IDelegatedAmountProps) {
             onBlur={() => setEditing(false)}
           />
         ) : (
-          <Text
-            fontFamily="montserrat"
-            fontSize="14px"
-            onDoubleClick={() => setEditing(true)}
-          >
+          <Text fontFamily="montserrat" fontSize="14px" onDoubleClick={() => setEditing(true)}>
             {amount} AT
           </Text>
         )}

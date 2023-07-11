@@ -1,4 +1,4 @@
-import { Text, Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 import Table from '../common/table';
 import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { statsTopStakeAddressesAtom } from '@/state/query/stats';
@@ -11,8 +11,7 @@ const columns = [
   {
     title: 'Address',
     dataIndex: 'address',
-    render: (address: string) =>
-      address.slice(0, 20) + '...' + address.slice(-20),
+    render: (address: string) => address.slice(0, 20) + '...' + address.slice(-20),
   },
   {
     title: 'Stake Amount',

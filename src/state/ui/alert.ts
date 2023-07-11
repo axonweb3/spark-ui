@@ -3,11 +3,7 @@ import { atom } from 'jotai';
 import { atomFamily } from 'jotai/utils';
 
 const alterAtom = atomFamily((name: string) =>
-  atom(
-    (typeof window !== 'undefined' &&
-      localStorage.getItem(`${SPARK_ALERT_KEY}/${name}`)) ||
-      true,
-  ),
+  atom((typeof window !== 'undefined' && localStorage.getItem(`${SPARK_ALERT_KEY}/${name}`)) || true),
 );
 
 export const alertAtomWithPersistence = atomFamily((name: string) =>
@@ -15,8 +11,7 @@ export const alertAtomWithPersistence = atomFamily((name: string) =>
     (get) => get(alterAtom(name)),
     (_, set, val: boolean) => {
       set(alterAtom(name), val);
-      // @ts-ignore
-      localStorage.setItem(`${SPARK_ALERT_KEY}/${name}`, val);
+      localStorage.setItem(`${SPARK_ALERT_KEY}/${name}`, val.toString());
     },
   ),
 );

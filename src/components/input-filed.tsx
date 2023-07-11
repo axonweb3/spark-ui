@@ -1,4 +1,4 @@
-import { Text, Flex, Spacer, Box } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Text } from '@chakra-ui/react';
 import TextField, { ITextFieldProps } from './common/text-field';
 
 export interface IInputFieldProps extends ITextFieldProps {

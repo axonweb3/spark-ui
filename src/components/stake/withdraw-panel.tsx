@@ -1,14 +1,4 @@
-import {
-  Text,
-  Alert,
-  Box,
-  Icon,
-  Stat,
-  StatLabel,
-  StatNumber,
-  Flex,
-  AlertIcon,
-} from '@chakra-ui/react';
+import { Alert, AlertIcon, Box, Flex, Icon, Stat, StatLabel, StatNumber, Text } from '@chakra-ui/react';
 import { MdError } from 'react-icons/md';
 import Table from '../common/table';
 import Button from '../common/button';
@@ -50,16 +40,12 @@ export default function WithdrawPanel() {
   const showDialog = useDialog();
   const { address } = useConnect();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const { amount: withdrawableAmount } = useAmountAtomQuery(
+  const { amount: withdrawableAmount } = useAmountAtomQuery(address, withdrawableAmountAtom);
+  const displayAmount = useMemo(() => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2), [withdrawableAmount]);
+  const { pageNumber, data, isLoading, setPageNumber, setPageSize } = usePaginatedAtomQuery(
+    stakeWithdrawalAtom,
     address,
-    withdrawableAmountAtom,
   );
-  const displayAmount = useMemo(
-    () => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2),
-    [withdrawableAmount],
-  );
-  const { pageNumber, data, isLoading, setPageNumber, setPageSize } =
-    usePaginatedAtomQuery(stakeWithdrawalAtom, address);
   const withdrawMutation = useSendTransactionAtomMutate(stakeWithdrawAtom);
 
   const handleWithdraw = useCallback(async () => {
@@ -69,8 +55,7 @@ export default function WithdrawPanel() {
       await withdrawMutation.mutate([]);
       showDialog({
         title: 'Withdrawal Requests Submitted',
-        description:
-          'Your request has been submitted. Check out History for details.',
+        description: 'Your request has been submitted. Check out History for details.',
         hideCancel: true,
       });
       // XXX: we need a api to get the withdraw status, and then show notification when the withdraw tx is done.
@@ -91,16 +76,9 @@ export default function WithdrawPanel() {
     <Box>
       <Box marginBottom="40px">
         <Alert status="info" backgroundColor="blue.200" borderRadius="8px">
-          <Icon
-            as={MdError}
-            width="24px"
-            height="24px"
-            color="blue.400"
-            marginRight={2}
-          />
+          <Icon as={MdError} width="24px" height="24px" color="blue.400" marginRight={2} />
           <Text fontFamily="montserrat" fontWeight="medium">
-            Alternative: Unstaked tokens will be withdrawn in a single
-            operation.
+            Alternative: Unstaked tokens will be withdrawn in a single operation.
           </Text>
         </Alert>
       </Box>
@@ -145,30 +123,17 @@ export default function WithdrawPanel() {
           description={
             <Box>
               <Flex fontFamily="montserrat" marginBottom="20px">
-                <Text marginRight={1}>
-                  Your available withdrawal amount is:
-                </Text>
+                <Text marginRight={1}>Your available withdrawal amount is:</Text>
                 <Text fontWeight="extrabold">{displayAmount}AT</Text>
               </Flex>
               <Alert borderRadius="8px">
                 <Flex>
                   <AlertIcon marginTop="4px" />
                   <Box>
-                    <Text
-                      as="span"
-                      fontFamily="montserrat"
-                      fontSize="14px"
-                      marginRight={1}
-                    >
-                      To withdraw unstaked tokens, you must withdraw all of them
-                      at once.
+                    <Text as="span" fontFamily="montserrat" fontSize="14px" marginRight={1}>
+                      To withdraw unstaked tokens, you must withdraw all of them at once.
                     </Text>
-                    <Text
-                      as="span"
-                      fontFamily="montserrat"
-                      fontSize="14px"
-                      fontWeight="extrabold"
-                    >
+                    <Text as="span" fontFamily="montserrat" fontSize="14px" fontWeight="extrabold">
                       Withdrawal requests are subject to a processing period.
                     </Text>
                   </Box>

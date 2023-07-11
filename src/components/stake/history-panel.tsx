@@ -1,13 +1,4 @@
-import {
-  Text,
-  Box,
-  Table as ChakraTable,
-  Thead,
-  Tr,
-  Tbody,
-  Th,
-  Td,
-} from '@chakra-ui/react';
+import { Box, Table as ChakraTable, Tbody, Td, Text, Th, Thead, Tr } from '@chakra-ui/react';
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
@@ -47,8 +38,7 @@ const columns = [
 
 export default function HistoryPanel() {
   const { address } = useConnect();
-  const { pageNumber, data, isLoading, setPageNumber, setPageSize } =
-    usePaginatedAtomQuery(stakeHistoryAtom, address);
+  const { pageNumber, data, isLoading, setPageNumber, setPageSize } = usePaginatedAtomQuery(stakeHistoryAtom, address);
 
   const expandedRowRender = useCallback(
     (row: any) => (

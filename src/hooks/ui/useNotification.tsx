@@ -1,16 +1,12 @@
 import React, { useCallback } from 'react';
-import Notification, {
-  INotificationProps,
-} from '@/components/common/notification';
+import Notification, { INotificationProps } from '@/components/common/notification';
 import { Box } from '@chakra-ui/react';
 import { useAtom } from 'jotai';
 import { notificationPropsAtom } from '@/state/ui/notification';
 
-export const NotificationProvider = (props: React.PropsWithChildren<{}>) => {
+export const NotificationProvider = (props: React.PropsWithChildren<object>) => {
   const { children } = props;
-  const [notificationProps, setNotificationProps] = useAtom(
-    notificationPropsAtom,
-  );
+  const [notificationProps, setNotificationProps] = useAtom(notificationPropsAtom);
 
   return (
     <>
@@ -18,9 +14,7 @@ export const NotificationProvider = (props: React.PropsWithChildren<{}>) => {
         <Box marginBottom={6}>
           <Notification
             {...notificationProps}
-            onClose={() =>
-              setNotificationProps({ ...notificationProps, visible: false })
-            }
+            onClose={() => setNotificationProps({ ...notificationProps, visible: false })}
           />
         </Box>
       )}
@@ -30,14 +24,11 @@ export const NotificationProvider = (props: React.PropsWithChildren<{}>) => {
 };
 
 export const useNotification = () => {
-  const [notificationProps, setNotificationProps] = useAtom(
-    notificationPropsAtom,
-  );
+  const [notificationProps, setNotificationProps] = useAtom(notificationPropsAtom);
   const notify = useCallback(
     (props: INotificationProps) => {
       if (
-        (notificationProps.message !== props.message &&
-          notificationProps.status !== props.status) ||
+        (notificationProps.message !== props.message && notificationProps.status !== props.status) ||
         !notificationProps.visible
       ) {
         setNotificationProps({ ...notificationProps, ...props, visible: true });

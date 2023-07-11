@@ -45,25 +45,19 @@ export interface ITableProps<Data extends Record<string, any>> {
   isLoading?: boolean;
 }
 
-export default function Table<Data extends Record<string, any>>(
-  props: ITableProps<Data>,
-) {
+export default function Table<Data extends Record<string, any>>(props: ITableProps<Data>) {
   const { data = [], isLoading } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = useMemo(() => createColumnHelper<Data>(), []);
   const columns: ColumnDef<Data, any>[] = useMemo(() => {
     return props.columns.map((column) => {
-      const columnDef: ColumnDef<Data, any> = columnHelper.accessor(
-        column.dataIndex as DeepKeys<Data>,
-        {
-          header: column.title,
-          cell: (i: CellContext<Data, string>) =>
-            column.render?.(i.getValue(), data) ?? i.getValue(),
-          meta: {
-            width: column.width,
-          }
+      const columnDef: ColumnDef<Data, any> = columnHelper.accessor(column.dataIndex as DeepKeys<Data>, {
+        header: column.title,
+        cell: (i: CellContext<Data, string>) => column.render?.(i.getValue(), data) ?? i.getValue(),
+        meta: {
+          width: column.width,
         },
-      );
+      });
       return columnDef;
     });
   }, [props.columns, columnHelper, data]);
@@ -86,17 +80,9 @@ export default function Table<Data extends Record<string, any>>(
 
   return (
     <Box position="relative">
-      <TableContainer
-        borderWidth="1px"
-        borderColor="gray.700"
-        borderRadius="16px"
-      >
+      <TableContainer borderWidth="1px" borderColor="gray.700" borderRadius="16px">
         <ChakraTable variant="simple">
-          <Thead
-            backgroundColor="secondary"
-            borderBottom="1px"
-            borderColor="gray.100"
-          >
+          <Thead backgroundColor="secondary" borderBottom="1px" borderColor="gray.100">
             {table.getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -111,10 +97,7 @@ export default function Table<Data extends Record<string, any>>(
                       fontFamily="montserrat"
                       fontSize="sm"
                     >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                      {flexRender(header.column.columnDef.header, header.getContext())}
                     </Th>
                   );
                 })}
@@ -138,52 +121,42 @@ export default function Table<Data extends Record<string, any>>(
                         width={meta.width ?? 'auto'}
                       >
                         <Flex alignItems="center" gap={1}>
-                          {row.getCanExpand() &&
-                            index === 0 &&
-                            props.expandable && (
-                              <Icon
-                                as={
-                                  row.getIsExpanded()
-                                    ? MdExpandMore
-                                    : MdChevronRight
-                                }
-                                width="24px"
-                                height="24px"
-                                cursor="pointer"
-                                onClick={row.getToggleExpandedHandler()}
-                              />
-                            )}
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext(),
+                          {row.getCanExpand() && index === 0 && props.expandable && (
+                            <Icon
+                              as={row.getIsExpanded() ? MdExpandMore : MdChevronRight}
+                              width="24px"
+                              height="24px"
+                              cursor="pointer"
+                              onClick={row.getToggleExpandedHandler()}
+                            />
                           )}
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </Flex>
                       </Td>
                     );
                   })}
                 </Tr>
                 <AnimatePresence initial={false}>
-                  {row.getIsExpanded() &&
-                    props.expandable?.expandedRowRender && (
-                      <Tr>
-                        <Td colSpan={row.getVisibleCells().length} padding={0}>
-                          <Box
-                            paddingLeft={5}
-                            backgroundColor="yellow.100"
-                            as={motion.div}
-                            initial="collapsed"
-                            animate="open"
-                            exit="collapsed"
-                            variants={{
-                              open: { opacity: 1, height: 'auto' },
-                              collapsed: { opacity: 0, height: 0 },
-                            }}
-                          >
-                            {props.expandable.expandedRowRender(row.original)}
-                          </Box>
-                        </Td>
-                      </Tr>
-                    )}
+                  {row.getIsExpanded() && props.expandable?.expandedRowRender && (
+                    <Tr>
+                      <Td colSpan={row.getVisibleCells().length} padding={0}>
+                        <Box
+                          paddingLeft={5}
+                          backgroundColor="yellow.100"
+                          as={motion.div}
+                          initial="collapsed"
+                          animate="open"
+                          exit="collapsed"
+                          variants={{
+                            open: { opacity: 1, height: 'auto' },
+                            collapsed: { opacity: 0, height: 0 },
+                          }}
+                        >
+                          {props.expandable.expandedRowRender(row.original)}
+                        </Box>
+                      </Td>
+                    </Tr>
+                  )}
                 </AnimatePresence>
               </Fragment>
             ))}

@@ -14,13 +14,7 @@ export const stakeRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(
-        address,
-        pageNumber,
-        pageSize,
-        StakeEvent.Withdraw,
-        OperateType.Stake,
-      );
+      const data = await api.getStakeHistory(address, pageNumber, pageSize, StakeEvent.Withdraw, OperateType.Stake);
       return data;
     }),
   history: addressProcedure
@@ -33,19 +27,15 @@ export const stakeRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(
-        address,
-        pageNumber,
-        pageSize,
-        undefined,
-        OperateType.Stake,
-      );
+      const data = await api.getStakeHistory(address, pageNumber, pageSize, undefined, OperateType.Stake);
       return data;
     }),
   add: addressProcedure
-    .input(z.object({
-      amount: z.number(),
-    }))
+    .input(
+      z.object({
+        amount: z.number(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
       const { address } = ctx;
       const { amount } = input;
@@ -53,19 +43,20 @@ export const stakeRouter = router({
       return data;
     }),
   redeem: addressProcedure
-    .input(z.object({
-      amount: z.number(),
-    }))
+    .input(
+      z.object({
+        amount: z.number(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
       const { address } = ctx;
       const { amount } = input;
       const data = await api.unstake(address, amount);
       return data;
     }),
-  withdraw: addressProcedure
-    .mutation(async ({ ctx }) => {
-      const { address } = ctx;
-      const data = await api.withdrawStake(address, 'stake');
-      return data;
-    }),
+  withdraw: addressProcedure.mutation(async ({ ctx }) => {
+    const { address } = ctx;
+    const data = await api.withdrawStake(address, 'stake');
+    return data;
+  }),
 });

@@ -11,8 +11,7 @@ const columns = [
   {
     title: 'Delegated To',
     dataIndex: 'delegated_to',
-    render: (address: string) =>
-      address.slice(0, 20) + '...' + address.slice(-20),
+    render: (address: string) => address.slice(0, 20) + '...' + address.slice(-20),
   },
   {
     title: 'Delegated Amount',
@@ -24,8 +23,10 @@ const columns = [
 
 export default function UndelegatePanel() {
   const { address } = useConnect();
-  const { pageNumber, setPageNumber, setPageSize, isLoading, data } =
-    usePaginatedAtomQuery(delegatedRecordsAtom, address);
+  const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(
+    delegatedRecordsAtom,
+    address,
+  );
 
   return (
     <Box>

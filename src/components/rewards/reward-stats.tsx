@@ -1,22 +1,17 @@
 import {
-  Text,
   Box,
+  Button,
   Flex,
   Icon,
   SimpleGrid,
+  Spacer,
   Stat,
   StatLabel,
-  Tooltip,
   StatNumber,
-  Spacer,
-  Button,
+  Text,
+  Tooltip,
 } from '@chakra-ui/react';
-import {
-  MdCheckBox,
-  MdFileCopy,
-  MdHelp,
-  MdOutlineCheckBoxOutlineBlank,
-} from 'react-icons/md';
+import { MdCheckBox, MdFileCopy, MdHelp, MdOutlineCheckBoxOutlineBlank } from 'react-icons/md';
 import Card from '../common/card';
 import Dialog from '../common/dialog';
 import { useCallback, useMemo, useState } from 'react';
@@ -25,12 +20,7 @@ import { useStakeRole } from '@/hooks/useStakeRole';
 import { useAddressCopy } from '@/hooks/useAddressCopy';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
-import {
-  delegatedAmountAtom,
-  lockedAmountAtom,
-  stakedAmountAtom,
-  unlockAmountAtom,
-} from '@/state/query/amount';
+import { delegatedAmountAtom, lockedAmountAtom, stakedAmountAtom, unlockAmountAtom } from '@/state/query/amount';
 import { useAlert } from '@/hooks/ui/useAlert';
 import { useNotification } from '@/hooks/ui/useNotification';
 import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
@@ -40,22 +30,10 @@ export function RewardStats() {
   const showDialog = useDialog();
   const notify = useNotification();
   const { address } = useConnect();
-  const { amount: unlockAmount } = useAmountAtomQuery(
-    address,
-    unlockAmountAtom,
-  );
-  const { amount: lockedAmount } = useAmountAtomQuery(
-    address,
-    lockedAmountAtom,
-  );
-  const { amount: stakedAmount } = useAmountAtomQuery(
-    address,
-    stakedAmountAtom,
-  );
-  const { amount: delegatedAmount } = useAmountAtomQuery(
-    address,
-    delegatedAmountAtom,
-  );
+  const { amount: unlockAmount } = useAmountAtomQuery(address, unlockAmountAtom);
+  const { amount: lockedAmount } = useAmountAtomQuery(address, lockedAmountAtom);
+  const { amount: stakedAmount } = useAmountAtomQuery(address, stakedAmountAtom);
+  const { amount: delegatedAmount } = useAmountAtomQuery(address, delegatedAmountAtom);
 
   const [showAlert, setShowAlert] = useAlert('rewards');
   const [dialogCheckbox, setDialogCheckbox] = useState(false);
@@ -64,11 +42,7 @@ export function RewardStats() {
   const { isDelegator } = useStakeRole();
 
   const displayAddress = useMemo(() => {
-    return (
-      address?.substring(0, 20) +
-      '...' +
-      address?.substring(address.length - 20)
-    );
+    return address?.substring(0, 20) + '...' + address?.substring(address.length - 20);
   }, [address]);
 
   const withdrawMutation = useSendTransactionAtomMutate(rewardWithdrawAtom);
@@ -111,9 +85,7 @@ export function RewardStats() {
       },
       {
         label: 'Total Staked or Delegated Amount',
-        value: (stakedAmount.add(delegatedAmount).toNumber() / 10 ** 8).toFixed(
-          2,
-        ),
+        value: (stakedAmount.add(delegatedAmount).toNumber() / 10 ** 8).toFixed(2),
       },
     ],
     [unlockAmount, lockedAmount, stakedAmount, delegatedAmount],
@@ -124,25 +96,13 @@ export function RewardStats() {
       <Box paddingY="60px" paddingX="32px">
         <Box marginBottom="60px">
           <Flex justifyContent="space-between" alignItems="center">
-            <Text
-              fontFamily="alfarn-2"
-              fontSize="25px"
-              fontWeight="semibold"
-              marginRight="30px"
-            >
+            <Text fontFamily="alfarn-2" fontSize="25px" fontWeight="semibold" marginRight="30px">
               My Address
             </Text>
             <Spacer />
             <Flex alignItems="center">
               <Text fontFamily="montserrat">{displayAddress}</Text>
-              <Icon
-                as={MdFileCopy}
-                marginLeft={2}
-                width="16px"
-                height="16px"
-                cursor="pointer"
-                onClick={onCopy}
-              />
+              <Icon as={MdFileCopy} marginLeft={2} width="16px" height="16px" cursor="pointer" onClick={onCopy} />
             </Flex>
           </Flex>
         </Box>
@@ -177,11 +137,7 @@ export function RewardStats() {
                     )}
                   </Flex>
                 </StatLabel>
-                <StatNumber
-                  fontFamily="montserrat"
-                  display="flex"
-                  alignItems="baseline"
-                >
+                <StatNumber fontFamily="montserrat" display="flex" alignItems="baseline">
                   <Text fontSize="36px" marginRight={1}>
                     {value}
                   </Text>
@@ -192,11 +148,7 @@ export function RewardStats() {
           ))}
         </SimpleGrid>
         <Flex justifyContent="center">
-          <Button
-            size="lg"
-            onClick={() => handleWithdraw(showAlert)}
-            isLoading={withdrawMutation.isLoading}
-          >
+          <Button size="lg" onClick={() => handleWithdraw(showAlert)} isLoading={withdrawMutation.isLoading}>
             Withdraw Unlocked Rewards
           </Button>
           <Dialog
@@ -204,24 +156,10 @@ export function RewardStats() {
             description="All of your unlocked rewards will be withdrawn in a single operation. The remaining balance will be zero afterwards."
             footer={
               <Flex width="full">
-                <Flex
-                  alignItems="center"
-                  cursor="pointer"
-                  onClick={() => setDialogCheckbox(!dialogCheckbox)}
-                >
-                  <Flex
-                    width={6}
-                    height={6}
-                    marginRight={1}
-                    alignItems="center"
-                    justifyContent="center"
-                  >
+                <Flex alignItems="center" cursor="pointer" onClick={() => setDialogCheckbox(!dialogCheckbox)}>
+                  <Flex width={6} height={6} marginRight={1} alignItems="center" justifyContent="center">
                     <Icon
-                      as={
-                        dialogCheckbox
-                          ? MdCheckBox
-                          : MdOutlineCheckBoxOutlineBlank
-                      }
+                      as={dialogCheckbox ? MdCheckBox : MdOutlineCheckBoxOutlineBlank}
                       width="18px"
                       height="18px"
                       fill="blue.400"

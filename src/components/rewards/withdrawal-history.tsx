@@ -11,8 +11,7 @@ const columns = [
   {
     title: 'Timestamp',
     dataIndex: 'timestamp',
-    render: (timestamp: number) =>
-      format(new Date(timestamp), 'yyyy/MM/dd HH:mm:ss'),
+    render: (timestamp: number) => format(new Date(timestamp), 'yyyy/MM/dd HH:mm:ss'),
   },
   {
     title: 'Transaction Hash',
@@ -41,8 +40,10 @@ const columns = [
 
 export function WithdrawalHistory() {
   const { address } = useConnect();
-  const { pageNumber, setPageNumber, setPageSize, isLoading, data } =
-    usePaginatedAtomQuery(rewardWithdrawalAtom, address);
+  const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(
+    rewardWithdrawalAtom,
+    address,
+  );
 
   return (
     <Box>

@@ -27,13 +27,7 @@ export const delegateRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(
-        address,
-        pageNumber,
-        pageSize,
-        StakeEvent.Withdraw,
-        OperateType.Delegate,
-      );
+      const data = await api.getStakeHistory(address, pageNumber, pageSize, StakeEvent.Withdraw, OperateType.Delegate);
       return data;
     }),
   history: addressProcedure
@@ -46,20 +40,16 @@ export const delegateRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(
-        address,
-        pageNumber,
-        pageSize,
-        undefined,
-        OperateType.Delegate,
-      );
+      const data = await api.getStakeHistory(address, pageNumber, pageSize, undefined, OperateType.Delegate);
       return data;
     }),
   add: addressProcedure
-    .input(z.object({
-      delegateTo: z.string(),
-      amount: z.number(),
-    }))
+    .input(
+      z.object({
+        delegateTo: z.string(),
+        amount: z.number(),
+      }),
+    )
     .mutation(async ({ input, ctx }) => {
       const { address } = ctx;
       const { delegateTo, amount } = input;
@@ -67,10 +57,9 @@ export const delegateRouter = router({
       return data;
     }),
   // TODO: redeem method
-  withdraw: addressProcedure
-    .mutation(async ({ ctx }) => {
-      const { address } = ctx;
-      const data = await api.withdrawStake(address, 'delegate');
-      return data;
-    }),
+  withdraw: addressProcedure.mutation(async ({ ctx }) => {
+    const { address } = ctx;
+    const data = await api.withdrawStake(address, 'delegate');
+    return data;
+  }),
 });

@@ -1,4 +1,4 @@
-import { Text, Flex, Spacer, Box, Spinner } from '@chakra-ui/react';
+import { Box, Flex, Spacer, Spinner, Text } from '@chakra-ui/react';
 import SegmentedButton from './common/segmented-button';
 import TextField from './common/text-field';
 import { BI } from '@ckb-lumos/bi';
@@ -23,7 +23,7 @@ export default function AmountField(props: IAmountFieldProps) {
     if (total.eq(0)) {
       return '0';
     }
-    return Math.ceil(amount.toNumber() * 100 / total.toNumber());
+    return Math.ceil((amount.toNumber() * 100) / total.toNumber());
   }, [amount, total]);
 
   const handleOptionChange = useCallback(
@@ -35,10 +35,11 @@ export default function AmountField(props: IAmountFieldProps) {
             onChange(total);
           }
           break;
-        default:
+        default: {
           const [percent] = option.split('%');
           onChange(total.mul(percent).div(100));
           break;
+        }
       }
     },
     [total, amount, onChange],

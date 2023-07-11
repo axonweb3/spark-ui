@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import Sidebar from './sidebar';
 import Header from './header';
 
-export default function Layout(props: React.PropsWithChildren<{}>) {
+export default function Layout(props: React.PropsWithChildren<object>) {
   const sidebarRef = useRef<HTMLDivElement>(null);
   const [sidebarWidth, setSidebarWidth] = React.useState(0);
 
