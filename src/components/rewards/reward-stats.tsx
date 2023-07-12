@@ -84,7 +84,7 @@ export function RewardStats() {
         value: (lockedAmount.toNumber() / 10 ** 8).toFixed(2),
       },
       {
-        label: 'Total Staked or Delegated Amount',
+        label: 'Total Staked or Delegated',
         value: (stakedAmount.add(delegatedAmount).toNumber() / 10 ** 8).toFixed(2),
       },
     ],
