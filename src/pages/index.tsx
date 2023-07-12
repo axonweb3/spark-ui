@@ -74,7 +74,10 @@ export default function IndexPage() {
         <NotificationProvider>
           <Flex justifyContent="center" marginBottom="100px">
             <Text fontSize="36px" fontFamily="alfarn-2" fontWeight="bold">
-              New to Axon Staking?
+              New to Axon Staking
+            </Text>
+            <Text fontSize="36px" marginLeft={2} fontFamily="montserrat" fontWeight="bold">
+              ?
             </Text>
           </Flex>
           <SimpleGrid width="100%" maxWidth="800px" marginX="auto" columns={2} gap="55px">

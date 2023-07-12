@@ -7,6 +7,7 @@ import { useConnect } from '@/hooks/useConnect';
 import { renderAmount, renderDateString, renderTransactionHash } from '@/utils';
 import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { stakeHistoryAtom } from '@/state/query/stake';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 const columns = [
   {
@@ -38,6 +39,7 @@ const columns = [
 
 export default function HistoryPanel() {
   const { address } = useConnect();
+  const { isValidator } = useStakeRole();
   const { pageNumber, data, isLoading, setPageNumber, setPageSize } = usePaginatedAtomQuery(stakeHistoryAtom, address);
 
   const expandedRowRender = useCallback(
@@ -86,6 +88,7 @@ export default function HistoryPanel() {
           rowExpandable: (record: any) => record.transactions,
         }}
         isLoading={isLoading}
+        backgroundColor={isValidator ? 'secondary' : 'primary'}
       />
       <Box marginTop="30px">
         <Pagination

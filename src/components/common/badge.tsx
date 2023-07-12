@@ -1,4 +1,5 @@
 import { Badge as ChakraBadge, Text } from '@chakra-ui/react';
+import theme from '@/theme';
 import React from 'react';
 
 export interface IBadgeProps {
@@ -13,18 +14,18 @@ export default function Badge(props: IBadgeProps) {
     switch (status) {
       case 'success':
         return {
-          backgroundColor: '#CEF4D0',
-          color: '#224D24',
+          backgroundColor: theme.colors.green[200],
+          color: theme.colors.green[800],
         };
       case 'pending':
         return {
-          backgroundColor: '#FDF1CA',
-          color: '#574A1D',
+          backgroundColor: theme.colors.yellow[200],
+          color: theme.colors.yellow[700],
         };
       case 'failed':
         return {
-          backgroundColor: '#FFCAC7',
-          color: '#99322C',
+          backgroundColor: theme.colors.orange[200],
+          color: theme.colors.orange[700],
         };
       default:
         return {
@@ -37,8 +38,7 @@ export default function Badge(props: IBadgeProps) {
   return (
     <ChakraBadge
       {...colors}
-      paddingX="8px"
-      paddingY="2px"
+      paddingX="4px"
       borderRadius="2px"
       fontWeight="bold"
       minWidth="75px"

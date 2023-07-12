@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import { useLoadableAtomQuery } from '@/hooks/query/useLoadableAtomQuery';
 import { statsChainAtom } from '@/state/query/stats';
-import { ChainState } from '@/server/api';
+import { ChainState } from '@/server/api/type';
 
 const BOX_STYLES = {
   backgroundColor: 'white',

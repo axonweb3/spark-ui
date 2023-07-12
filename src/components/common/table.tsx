@@ -43,10 +43,11 @@ export interface ITableProps<Data extends Record<string, any>> {
     rowExpandable?(record: Data): boolean;
   };
   isLoading?: boolean;
+  backgroundColor?: string;
 }
 
 export default function Table<Data extends Record<string, any>>(props: ITableProps<Data>) {
-  const { data = [], isLoading } = props;
+  const { data = [], isLoading, backgroundColor } = props;
   const [sorting, setSorting] = useState<SortingState>([]);
   const columnHelper = useMemo(() => createColumnHelper<Data>(), []);
   const columns: ColumnDef<Data, any>[] = useMemo(() => {
@@ -82,7 +83,7 @@ export default function Table<Data extends Record<string, any>>(props: ITablePro
     <Box position="relative">
       <TableContainer borderWidth="1px" borderColor="gray.700" borderRadius="16px">
         <ChakraTable variant="simple">
-          <Thead backgroundColor="secondary" borderBottom="1px" borderColor="gray.100">
+          <Thead backgroundColor={backgroundColor ?? 'secondary'} borderBottom="1px" borderColor="gray.100">
             {table.getHeaderGroups().map((headerGroup) => (
               <Tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -96,6 +97,7 @@ export default function Table<Data extends Record<string, any>>(props: ITablePro
                       color="black"
                       fontFamily="montserrat"
                       fontSize="sm"
+                      fontWeight="extrabold"
                     >
                       {flexRender(header.column.columnDef.header, header.getContext())}
                     </Th>

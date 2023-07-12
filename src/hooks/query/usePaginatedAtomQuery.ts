@@ -1,4 +1,4 @@
-import { Paginated, StakeRecord } from '@/server/api';
+import { Paginated, StakeRecord } from '@/server/api/type';
 import { Atom, useAtomValue } from 'jotai';
 import { loadable } from 'jotai/utils';
 import { AtomFamily } from 'jotai/vanilla/utils/atomFamily';

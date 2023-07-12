@@ -15,6 +15,7 @@ import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
 import { withdrawableAmountAtom } from '@/state/query/amount';
 import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
 import { stakeWithdrawAtom } from '@/state/mutate/stake';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 const columns = [
   {
@@ -39,6 +40,7 @@ export default function WithdrawPanel() {
   const notify = useNotification();
   const showDialog = useDialog();
   const { address } = useConnect();
+  const { isValidator } = useStakeRole();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { amount: withdrawableAmount } = useAmountAtomQuery(address, withdrawableAmountAtom);
   const displayAmount = useMemo(() => (withdrawableAmount.toNumber() / 10 ** 8).toFixed(2), [withdrawableAmount]);
@@ -105,7 +107,12 @@ export default function WithdrawPanel() {
         </Stat>
       </Box>
       <Box marginBottom="40px">
-        <Table columns={columns} data={data} isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={data}
+          isLoading={isLoading}
+          backgroundColor={isValidator ? 'secondary' : 'primary'}
+        />
         <Box marginTop="30px">
           <Pagination
             total={500}

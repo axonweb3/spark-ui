@@ -5,6 +5,7 @@ import Badge from '../common/badge';
 import { useConnect } from '@/hooks/useConnect';
 import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { rewardHistoryAtom } from '@/state/query/reward';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 const columns = [
   {
@@ -29,11 +30,17 @@ const columns = [
 
 export function RewardsHistory() {
   const { address } = useConnect();
+  const { isValidator } = useStakeRole();
   const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(rewardHistoryAtom, address);
 
   return (
     <Box>
-      <Table columns={columns} data={data} isLoading={isLoading} />
+      <Table
+        columns={columns}
+        data={data}
+        isLoading={isLoading}
+        backgroundColor={isValidator ? 'secondary' : 'primary'}
+      />
       <Box marginTop="30px">
         <Pagination
           total={500}

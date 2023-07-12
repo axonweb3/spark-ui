@@ -33,6 +33,9 @@ export default function App({ Component, pageProps }: AppProps) {
                 :root {
                   --montserrat-font: ${montserrat.style.fontFamily};
                 }
+                body {
+                  color: ${theme.colors.black};
+                }
               `}
             />
             <Head>

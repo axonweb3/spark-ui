@@ -99,8 +99,13 @@ export default function StakePage() {
               >
                 <MenuItem
                   onClick={() => router.push('/stake/settings')}
+                  fontSize="16px"
+                  fontFamily="montserrat"
+                  fontWeight="500"
+                  paddingY="8px"
+                  paddingX="16px"
                   _focus={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'yellow.200',
                   }}
                 >
                   Commission Rate

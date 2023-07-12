@@ -15,6 +15,7 @@ import { withdrawableAmountAtom } from '@/state/query/amount';
 import { delegateWithdrawAtom } from '@/state/mutate/delegate';
 import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
 import { useNotification } from '@/hooks/ui/useNotification';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 const columns = [
   {
@@ -41,6 +42,7 @@ export default function WithdrawPanel() {
   const notify = useNotification();
   const showDialog = useDialog();
   const { address } = useConnect();
+  const { isValidator } = useStakeRole();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { amount: withdrawableAmount } = useAmountAtomQuery(address, withdrawableAmountAtom);
   const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(
@@ -109,7 +111,12 @@ export default function WithdrawPanel() {
         </Stat>
       </Box>
       <Box marginBottom="40px">
-        <Table columns={columns} data={data} isLoading={isLoading} />
+        <Table
+          columns={columns}
+          data={data}
+          isLoading={isLoading}
+          backgroundColor={isValidator ? 'secondary' : 'primary'}
+        />
         <Box marginTop="30px">
           <Pagination
             total={500}

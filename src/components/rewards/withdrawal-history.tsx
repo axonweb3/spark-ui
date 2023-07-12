@@ -6,6 +6,7 @@ import format from 'date-fns/format';
 import { useConnect } from '@/hooks/useConnect';
 import { rewardWithdrawalAtom } from '@/state/query/reward';
 import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
+import { useStakeRole } from '@/hooks/useStakeRole';
 
 const columns = [
   {
@@ -40,6 +41,7 @@ const columns = [
 
 export function WithdrawalHistory() {
   const { address } = useConnect();
+  const { isValidator } = useStakeRole();
   const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(
     rewardWithdrawalAtom,
     address,
@@ -47,7 +49,12 @@ export function WithdrawalHistory() {
 
   return (
     <Box>
-      <Table columns={columns} data={data} isLoading={isLoading} />
+      <Table
+        columns={columns}
+        data={data}
+        isLoading={isLoading}
+        backgroundColor={isValidator ? 'secondary' : 'primary'}
+      />
       <Box marginTop="30px">
         <Pagination
           total={500}

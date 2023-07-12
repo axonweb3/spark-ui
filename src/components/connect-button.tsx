@@ -4,15 +4,15 @@ import Button, { IButtonProps } from './common/button';
 export type IConnectButtonProps = IButtonProps;
 
 export function ConnectButton(props: IConnectButtonProps) {
-  const { isConnected, connect } = useConnect();
-  if (!isConnected) {
-    const { variant, size } = props;
-    return (
-      <Button variant={variant} size={size} onClick={() => connect()} disabled={false}>
-        Connect Wallet
-      </Button>
-    );
-  }
+  const { isConnected } = useConnect();
+  // if (!isConnected) {
+  //   const { variant, size } = props;
+  //   return (
+  //     <Button variant={variant} size={size} onClick={() => connect()} disabled={false}>
+  //       Connect Wallet
+  //     </Button>
+  //   );
+  // }
 
-  return <Button {...props} />;
+  return <Button {...props} disabled={!isConnected} />;
 }

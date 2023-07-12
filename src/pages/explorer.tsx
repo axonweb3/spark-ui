@@ -7,6 +7,7 @@ import Card from '@/components/common/card';
 import { TopStakeAddresses } from '@/components/explorer/top-stake-addresses';
 import { LatestTransactions } from '@/components/explorer/latest-transactions';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { SearchBar } from '@/components/explorer/search-bar';
 
 export default function ExplorerPage() {
   const { isDelegator } = useStakeRole();
@@ -14,16 +15,17 @@ export default function ExplorerPage() {
 
   return (
     <Layout>
-      <SimpleGrid width="100%" marginX="auto" columns={2} gap="30px">
+      <SearchBar />
+      <SimpleGrid width="100%" marginX="auto" columns={2} gap="30px" marginTop="32px">
         <OverviewChart />
         <AxonStatus />
       </SimpleGrid>
-      <Box marginTop="30px">
+      <Box marginTop="32px">
         <Card size="lg" backgroundColor={backgroundColor}>
           <TopStakeAddresses />
         </Card>
       </Box>
-      <Box marginTop="30px">
+      <Box marginTop="32px">
         <Card size="lg" backgroundColor={backgroundColor}>
           <LatestTransactions />
         </Card>

@@ -11,6 +11,7 @@ const Button = defineStyleConfig({
       fontSize: 'lg',
       fontFamily: 'alfarn-2',
       fontWeight: 'extrabold',
+      paddingX: '50px',
       px: 9,
     },
     md: {
@@ -18,6 +19,7 @@ const Button = defineStyleConfig({
       fontSize: 'md',
       fontFamily: 'montserrat',
       fontWeight: 'extrabold',
+      paddingX: '36px',
       px: 8,
     },
     sm: {
@@ -25,6 +27,7 @@ const Button = defineStyleConfig({
       fontSize: 'md',
       fontFamily: 'montserrat',
       fontWeight: 'bold',
+      paddingX: '24px',
       px: 5,
     },
   },
