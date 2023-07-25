@@ -1,33 +1,34 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
-import { OperateType, StakeEvent } from '../api/type';
+import { TransactionEvent } from '../api/type';
 
 export const stakeRouter = router({
   withdrawal: addressProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(address, pageNumber, pageSize, StakeEvent.Withdraw, OperateType.Stake);
+      const { page, limit } = input;
+      // FIXME
+      const data = await api.getStakeHistory(address, TransactionEvent.Withdraw, { page, limit });
       return data;
     }),
   history: addressProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(address, pageNumber, pageSize, undefined, OperateType.Stake);
+      const { page, limit } = input;
+      const data = await api.getStakeHistory(address, null, { page, limit });
       return data;
     }),
   add: addressProcedure

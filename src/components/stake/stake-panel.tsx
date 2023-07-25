@@ -7,10 +7,7 @@ import { useNotification } from '@/hooks/ui/useNotification';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '../connect-button';
-import { availableAmountAtom } from '@/state/query/amount';
-import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
-import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
-import { stakeMutateAtom } from '@/state/mutate/stake';
+import { useStakeAmountQuery } from '@/hooks/query/useStakeAmountQuery';
 
 export default function StakePanel() {
   const notify = useNotification();
@@ -18,8 +15,7 @@ export default function StakePanel() {
   const { isConnected, address } = useConnect();
   const disabled = useMemo(() => !isConnected, [isConnected]);
   const [amount, setAmount] = useState(BI.from(0));
-  const { amount: availableAmount, isLoading } = useAmountAtomQuery(address, availableAmountAtom);
-  const stakeMutation = useSendTransactionAtomMutate(stakeMutateAtom);
+  const { availableAmount, isLoading } = useStakeAmountQuery();
 
   React.useEffect(() => {
     if (!availableAmount.isZero()) {
@@ -33,7 +29,8 @@ export default function StakePanel() {
   const startStakeTransaction = useCallback(async () => {
     if (!address) return;
     try {
-      await stakeMutation.mutate([{ amount: amount.toNumber() }]);
+      // FIXME
+      // await stakeMutation.mutate([{ amount: amount.toNumber() }]);
       showDialog({
         title: 'Staking Request Submitted',
         description: 'Your request has been submitted. Check out staking history for details.',
@@ -45,7 +42,7 @@ export default function StakePanel() {
         message: (e as Error).message,
       });
     }
-  }, [address, amount, stakeMutation, notify, showDialog]);
+  }, [address, notify, showDialog]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
@@ -62,7 +59,7 @@ export default function StakePanel() {
         <ConnectButton
           size="lg"
           disabled={disabled || amount.isZero()}
-          isLoading={stakeMutation.isLoading}
+          isLoading={false}
           onClick={startStakeTransaction}
         >
           Submit

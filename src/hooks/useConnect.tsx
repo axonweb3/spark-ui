@@ -2,8 +2,6 @@ import { useAccount, useConnect as useWagmiConnect } from 'wagmi';
 import { InjectedConnector } from 'wagmi/connectors/injected';
 import { useDialog } from './ui/useDialog';
 import { useMount } from 'react-use';
-import { encodeToAddress } from '@ckb-lumos/helpers';
-import { predefined } from '@ckb-lumos/config-manager';
 import { addressAtom } from '@/state/address';
 import { useAtom } from 'jotai';
 import { RESET } from 'jotai/utils';
@@ -29,14 +27,8 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
     isDisconnected,
   } = useAccount({
     async onConnect({ address }) {
-      const omnilock = await import('@ckb-lumos/common-scripts').then((module) => module.omnilock);
-      const omniLockScript = omnilock.createOmnilockScript({
-        auth: { flag: 'ETHEREUM', content: address! },
-      });
-      const addr = encodeToAddress(omniLockScript, {
-        config: process.env.PRODUCTION_MODE ? predefined.LINA : predefined.AGGRON4,
-      });
-      setAddress(addr);
+      if (address === undefined) return;
+      setAddress(address);
     },
     onDisconnect() {
       setAddress(RESET);
@@ -54,7 +46,6 @@ export function useConnect(params: Parameters<typeof useWagmiConnect>[0] = {}) {
     isConnected,
     isLoading,
     isDisconnected,
-    address: address || undefined,
-    ethAddress,
+    address: ethAddress,
   };
 }

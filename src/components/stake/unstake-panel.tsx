@@ -7,32 +7,29 @@ import AmountField from '../amount-field';
 import EpochField from '../epoch-field';
 import { useNotification } from '@/hooks/ui/useNotification';
 import { useConnect } from '@/hooks/useConnect';
-import { stakedAmountAtom } from '@/state/query/amount';
-import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
-import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
-import { unstakeMutateAtom } from '@/state/mutate/stake';
+import { useStakeAmountQuery } from '@/hooks/query/useStakeAmountQuery';
 
 export default function UnstakePanel() {
   const notify = useNotification();
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
   const { isDisconnected, address } = useConnect();
-  const { amount: stakedAmount, isLoading } = useAmountAtomQuery(address, stakedAmountAtom);
-  const [amount, setAmount] = useState(stakedAmount);
-  const unstakeMutation = useSendTransactionAtomMutate(unstakeMutateAtom);
+  const { stakeAmount, isLoading } = useStakeAmountQuery();
+  const [amount, setAmount] = useState(stakeAmount);
 
   React.useEffect(() => {
-    if (!stakedAmount.isZero()) {
-      setAmount(stakedAmount);
+    if (!stakeAmount.isZero()) {
+      setAmount(stakeAmount);
     }
     if (isDisconnected) {
       setAmount(BI.from(0));
     }
-  }, [isDisconnected, stakedAmount, setAmount]);
+  }, [isDisconnected, stakeAmount, setAmount]);
 
   const startUnstakeTransaction = useCallback(async () => {
     if (!address) return;
     try {
-      await unstakeMutation.mutate([{ amount: amount.toNumber() }]);
+      // FIXME
+      // await unstakeMutation.mutate([{ amount: amount.toNumber() }]);
       setIsOpenDialog(true);
     } catch (e) {
       notify({
@@ -40,13 +37,13 @@ export default function UnstakePanel() {
         message: (e as Error).message,
       });
     }
-  }, [address, amount, unstakeMutation, notify]);
+  }, [address, notify]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
       <AmountField
         label="Unstake Amount"
-        total={stakedAmount}
+        total={stakeAmount}
         amount={amount}
         onChange={setAmount}
         disabled={isDisconnected}
@@ -57,7 +54,7 @@ export default function UnstakePanel() {
         <Button
           size="lg"
           disabled={isDisconnected || amount.isZero()}
-          isLoading={unstakeMutation.isLoading}
+          isLoading={false}
           onClick={startUnstakeTransaction}
         >
           Submit

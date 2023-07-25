@@ -1,32 +1,33 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
+import { TransactionEvent } from '../api/type';
 
 export const rewardRouter = router({
   withdrawal: addressProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getWithdrawalHistory(address, pageNumber, pageSize);
+      const { page, limit } = input;
+      const data = await api.getRewardHistory(address, TransactionEvent.Withdraw, { page, limit });
       return data;
     }),
   history: addressProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getRewardHistory(address, pageNumber, pageSize);
+      const { page, limit } = input;
+      const data = await api.getRewardHistory(address, null, { page, limit });
       return data;
     }),
   withdraw: addressProcedure.mutation(async ({ ctx }) => {

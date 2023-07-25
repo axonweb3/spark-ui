@@ -23,6 +23,6 @@ export type Context = trpc.inferAsyncReturnType<typeof createContextInner>;
 export async function createContext(opts: trpcNext.CreateNextContextOptions): Promise<Context> {
   // for API-response caching see https://trpc.io/docs/caching
 
-  const address = opts.req.cookies[SPARK_ADDRESS_KEY] ?? '';
+  const address = JSON.parse(opts.req.cookies[SPARK_ADDRESS_KEY] ?? '');
   return await createContextInner({ address });
 }

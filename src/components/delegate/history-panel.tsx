@@ -2,11 +2,9 @@ import { Box, Table as ChakraTable, Tbody, Td, Text, Th, Thead, Tr } from '@chak
 import Table from '../common/table';
 import Pagination from '../common/pagination';
 import Badge from '../common/badge';
-import { useCallback } from 'react';
-import { useConnect } from '@/hooks/useConnect';
+import { useCallback, useState } from 'react';
 import { renderAmount, renderDateString, renderTransactionHash } from '@/utils';
-import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
-import { delegateHistoryAtom } from '@/state/query/delegate';
+import { trpc } from '@/server';
 
 const columns = [
   {
@@ -37,11 +35,9 @@ const columns = [
 ];
 
 export default function HistoryPanel() {
-  const { address } = useConnect();
-  const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(
-    delegateHistoryAtom,
-    address,
-  );
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data: history, isLoading } = trpc.delegate.history.useQuery({ page, limit }, { keepPreviousData: true });
 
   const expandedRowRender = useCallback(
     (row: any) => (
@@ -83,7 +79,7 @@ export default function HistoryPanel() {
     <Box>
       <Table
         columns={columns}
-        data={data}
+        data={history?.data ?? []}
         expandable={{
           expandedRowRender,
           rowExpandable: (record: any) => record.transactions,
@@ -92,10 +88,10 @@ export default function HistoryPanel() {
       />
       <Box marginTop="30px">
         <Pagination
-          total={500}
-          current={pageNumber}
-          onChange={setPageNumber}
-          onPageSizeChange={setPageSize}
+          total={history?.total ?? 0}
+          current={page}
+          onChange={setPage}
+          onPageSizeChange={setLimit}
           showQuickJumper
         />
       </Box>

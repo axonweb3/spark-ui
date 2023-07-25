@@ -3,10 +3,9 @@ import Pagination from '../common/pagination';
 import Table from '../common/table';
 import Badge from '../common/badge';
 import format from 'date-fns/format';
-import { useConnect } from '@/hooks/useConnect';
-import { rewardWithdrawalAtom } from '@/state/query/reward';
-import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { useState } from 'react';
+import { trpc } from '@/server';
 
 const columns = [
   {
@@ -40,27 +39,25 @@ const columns = [
 ];
 
 export function WithdrawalHistory() {
-  const { address } = useConnect();
   const { isValidator } = useStakeRole();
-  const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(
-    rewardWithdrawalAtom,
-    address,
-  );
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data: withdrawal, isLoading } = trpc.reward.withdrawal.useQuery({ page, limit }, { keepPreviousData: true });
 
   return (
     <Box>
       <Table
         columns={columns}
-        data={data}
+        data={withdrawal?.data ?? []}
         isLoading={isLoading}
         backgroundColor={isValidator ? 'secondary' : 'primary'}
       />
       <Box marginTop="30px">
         <Pagination
-          total={500}
-          current={pageNumber}
-          onChange={setPageNumber}
-          onPageSizeChange={setPageSize}
+          total={withdrawal?.total ?? 0}
+          current={page}
+          onChange={setPage}
+          onPageSizeChange={setLimit}
           showQuickJumper
         />
       </Box>

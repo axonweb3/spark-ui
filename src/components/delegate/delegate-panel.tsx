@@ -1,4 +1,4 @@
-import React, { startTransition, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Divider, Flex, Text } from '@chakra-ui/react';
 import { BI } from '@ckb-lumos/bi';
 import Dialog from '../common/dialog';
@@ -9,28 +9,21 @@ import { useNotification } from '@/hooks/ui/useNotification';
 import { useDialog } from '@/hooks/ui/useDialog';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '../connect-button';
-import { useAtomValue } from 'jotai';
-import { loadable } from 'jotai/utils';
-import { rateAtom } from '@/state/query/rate';
-import { useAmountAtomQuery } from '@/hooks/query/useAmountAtomQuery';
-import { availableAmountAtom } from '@/state/query/amount';
-import { useSendTransactionAtomMutate } from '@/hooks/mutate/useSendTransactionAtomMutate';
-import { delegateMutateAtom } from '@/state/mutate/delegate';
+import { useStakeAmountQuery } from '@/hooks/query/useStakeAmountQuery';
+import useStakeRateQuery from '@/hooks/query/useStakeRateQuery';
 
 export default function DelegatePanel() {
   const notify = useNotification();
   const showDialog = useDialog();
-  const { isConnected, address } = useConnect();
-  const { amount: availableAmount, isLoading } = useAmountAtomQuery(address, availableAmountAtom);
+  const { isConnected } = useConnect();
+  const { availableAmount, isLoading } = useStakeAmountQuery();
   const [delegateTo, setDelegateTo] = useState('');
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
-  const rateQuery = useAtomValue(loadable(rateAtom(address)));
-  const stakeRate = useMemo(() => (rateQuery.state === 'hasData' ? rateQuery.data?.rate : 0), [rateQuery]);
+  const { stakeRate } = useStakeRateQuery();
   const [amount, setAmount] = useState(availableAmount);
-  const [message, setMessage] = useState('');
+  // FIXME: update message
+  const [message] = useState('');
   const disabled = useMemo(() => !isConnected || !delegateTo || amount.isZero(), [isConnected, delegateTo, amount]);
-
-  const delegateMutation = useSendTransactionAtomMutate(delegateMutateAtom);
 
   useEffect(() => {
     if (!availableAmount.isZero()) {
@@ -41,24 +34,9 @@ export default function DelegatePanel() {
     }
   }, [isConnected, availableAmount, setAmount]);
 
-  useEffect(() => {
-    startTransition(() => {
-      if (delegateTo && rateQuery.state === 'hasError') {
-        setMessage(rateQuery.error as string);
-      } else if (rateQuery.state === 'hasData') {
-        setMessage('');
-      }
-    });
-  }, [delegateTo, rateQuery]);
-
   const startDelegateTransaction = useCallback(async () => {
     try {
-      await delegateMutation.mutate([
-        {
-          delegateTo,
-          amount: amount.toNumber(),
-        },
-      ]);
+      // FIXME: delegateMutation
       setShowConfirmDialog(false);
       showDialog({
         title: 'Delegation Request Submitted',
@@ -71,7 +49,7 @@ export default function DelegatePanel() {
         message: (e as Error).message,
       });
     }
-  }, [delegateTo, amount, delegateMutation, showDialog, notify]);
+  }, [showDialog, notify]);
 
   return (
     <Box width="756px" marginTop={10} marginX="auto">
@@ -121,7 +99,7 @@ export default function DelegatePanel() {
             </Box>
           }
           cancelLabel="Redelegate"
-          confirming={delegateMutation.isLoading}
+          confirming={false}
           onConfirm={startDelegateTransaction}
         />
         <ConnectButton size="lg" disabled={disabled} onClick={() => setShowConfirmDialog(true)}>

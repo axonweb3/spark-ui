@@ -1,8 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import Table from '../common/table';
-import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
-import { statsTopStakeAddressesAtom } from '@/state/query/stats';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { trpc } from '@/server';
 
 const columns = [
   {
@@ -20,7 +19,7 @@ const columns = [
 ];
 
 export function TopStakeAddresses() {
-  const { data, isLoading } = usePaginatedAtomQuery(statsTopStakeAddressesAtom);
+  const { data, isLoading } = trpc.stats.topStakeAddress.useQuery({ limit: 10 });
   const { isValidator } = useStakeRole();
 
   return (
@@ -33,7 +32,7 @@ export function TopStakeAddresses() {
       <Box marginBottom="10px">
         <Table
           columns={columns}
-          data={data}
+          data={data ?? []}
           isLoading={isLoading}
           backgroundColor={isValidator ? 'secondary' : 'primary'}
         />

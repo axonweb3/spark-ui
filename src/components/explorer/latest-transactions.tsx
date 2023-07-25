@@ -1,10 +1,9 @@
 import { Box, Text } from '@chakra-ui/react';
 import Table from '../common/table';
 import Badge from '../common/badge';
-import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
-import { statsLatestStakeTransactionsAtom } from '@/state/query/stats';
 import { useStakeRole } from '@/hooks/useStakeRole';
 import format from 'date-fns/format';
+import { trpc } from '@/server';
 
 const columns = [
   {
@@ -35,7 +34,10 @@ const columns = [
 
 export function LatestTransactions() {
   const { isValidator } = useStakeRole();
-  const { data, isLoading } = usePaginatedAtomQuery(statsLatestStakeTransactionsAtom);
+  const { data: latestStakeTransactions, isLoading } = trpc.stats.latestStakeTransactions.useQuery({
+    page: 1,
+    limit: 10,
+  });
 
   return (
     <Box marginX="-13px">
@@ -47,7 +49,7 @@ export function LatestTransactions() {
       <Box marginBottom="10px">
         <Table
           columns={columns}
-          data={data}
+          data={latestStakeTransactions?.data ?? []}
           isLoading={isLoading}
           backgroundColor={isValidator ? 'secondary' : 'primary'}
         />

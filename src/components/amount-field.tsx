@@ -52,10 +52,8 @@ export default function AmountField(props: IAmountFieldProps) {
         onChange(BI.from(0));
         return;
       }
-      const [_, int, dec = '.0'] = val.match(/^(\d+)(\.\d+)?$/)!;
-      const amount = BI.from(int)
-        .mul(10 ** 8)
-        .add(BI.from(dec.slice(1)).mul(10 ** (9 - dec.length)));
+      const [_, int] = val.match(/^(\d+)(\.\d+)?$/)!;
+      const amount = BI.from(int);
       onChange(amount);
     },
     [onChange],
@@ -80,7 +78,7 @@ export default function AmountField(props: IAmountFieldProps) {
           <TextField
             type="number"
             size="lg"
-            value={(amount.toNumber() / 10 ** 8).toString()}
+            value={amount.toString()}
             onChange={handleAmountChange}
             disabled={disabled}
             rightAddon={

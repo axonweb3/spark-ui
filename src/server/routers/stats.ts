@@ -1,6 +1,7 @@
 import { publicProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
+import { OperationType } from '../api/type';
 
 export const statsRouter = router({
   chain: publicProcedure.query(async () => {
@@ -10,37 +11,36 @@ export const statsRouter = router({
   amountByEpoch: publicProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        start: z.number(),
+        end: z.number(),
       }),
     )
     .query(async ({ input }) => {
-      const { pageNumber, pageSize } = input;
-      const data = await api.getStakeAmountByEpoch(pageNumber, pageSize);
+      const { start, end } = input;
+      const data = await api.getStakeAmountByEpoch(start, end, OperationType.Stake);
       return data;
     }),
-  topStakeAddresses: publicProcedure
+  topStakeAddress: publicProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input }) => {
-      const { pageNumber, pageSize } = input;
-      const data = await api.getTopStakeAddresses(pageNumber, pageSize);
+      const { limit } = input;
+      const data = await api.getTopStakeAddress(limit);
       return data;
     }),
   latestStakeTransactions: publicProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input }) => {
-      const { pageNumber, pageSize } = input;
-      const data = await api.getLatestStakeTransactions(pageNumber, pageSize);
+      const { page, limit } = input;
+      const data = await api.getLatestStakeTransactions({ page, limit });
       return data;
     }),
 });

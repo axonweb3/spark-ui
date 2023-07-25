@@ -3,15 +3,17 @@ import * as Plot from '@observablehq/plot';
 import { Box, Flex, Text } from '@chakra-ui/react';
 import Card from '../common/card';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
-import { statsAmountByEpochAtom } from '@/state/query/stats';
+import { trpc } from '@/server';
 
 export function OverviewChart() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const { isDelegator } = useStakeRole();
   const backgroundColor = useMemo(() => (isDelegator ? 'secondary' : 'primary'), [isDelegator]);
-  const { data } = usePaginatedAtomQuery(statsAmountByEpochAtom);
-  console.log(data);
+  const { data: chain } = trpc.stats.chain.useQuery();
+  const { data } = trpc.stats.amountByEpoch.useQuery({
+    start: chain?.epoch ? chain.epoch - 10 : 0,
+    end: chain?.epoch ?? 0,
+  });
 
   useEffect(() => {
     if (data === undefined || containerRef.current === null) {

@@ -25,10 +25,8 @@ import { SPARK_ROLE_KEY } from '@/consts';
 import InputField from '@/components/input-filed';
 import { useConnect } from '@/hooks/useConnect';
 import { ConnectButton } from '@/components/connect-button';
-import { rateAtom } from '@/state/query/rate';
-import { useAtomValue } from 'jotai';
-import { loadable } from 'jotai/utils';
 import { useAlert } from '@/hooks/ui/useAlert';
+import useStakeRateQuery from '@/hooks/query/useStakeRateQuery';
 
 export function getServerSideProps(context: NextPageContext) {
   const cookies = cookie.parse(context.req?.headers.cookie ?? '');
@@ -57,21 +55,18 @@ export function getServerSideProps(context: NextPageContext) {
 
 export default function SettingsPage() {
   const router = useRouter();
-  const { address, isConnected, isDisconnected } = useConnect();
+  const { isConnected, isDisconnected } = useConnect();
   const [showAlert, setShowAlert] = useAlert('settings');
   const [dialogCheckbox, setDialogCheckbox] = React.useState(false);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-  const rateQuery = useAtomValue(loadable(rateAtom(address)));
-  const isLoading = useMemo(() => rateQuery.state === 'loading', [rateQuery]);
+  const { stakeRate, minimumAmount, isLoading } = useStakeRateQuery();
   const [rate, setRate] = React.useState(0);
   const [minAmount, setMinAmount] = React.useState(0);
 
   useEffect(() => {
-    if (rateQuery.state === 'hasData') {
-      setRate(rateQuery.data?.rate ?? 0);
-      setMinAmount(rateQuery.data?.minimumAmount ?? 0);
-    }
-  }, [rateQuery]);
+    setRate(stakeRate * 100);
+    setMinAmount(minimumAmount ?? 0);
+  }, [stakeRate, minimumAmount]);
 
   useEffect(() => {
     if (showAlert) {
@@ -132,7 +127,7 @@ export default function SettingsPage() {
                 borderColor="gray.700"
                 type="number"
                 onChange={(val) => {
-                  setRate(Math.min(parseInt(val || '0', 10), 100));
+                  setRate(Math.min(parseFloat(val || '0'), 100));
                 }}
                 rightAddon={isConnected && inputAddon}
                 disabled={isDisconnected}
@@ -160,7 +155,7 @@ export default function SettingsPage() {
                 borderColor="gray.700"
                 type="number"
                 onChange={(val) => {
-                  setRate(100 - Math.min(parseInt(val || '0', 10), 100));
+                  setRate(100 - Math.min(parseFloat(val || '0'), 100));
                 }}
                 rightAddon={isConnected && inputAddon}
                 disabled={isDisconnected}

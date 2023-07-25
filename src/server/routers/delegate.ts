@@ -1,46 +1,38 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
-import { OperateType, StakeEvent } from '../api/type';
+import { TransactionEvent } from '../api/type';
 
 export const delegateRouter = router({
-  delegated: addressProcedure
-    .input(
-      z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
-      }),
-    )
-    .query(async ({ input, ctx }) => {
-      const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getDelegatedRecords(address, pageNumber, pageSize);
-      return data;
-    }),
+  records: addressProcedure.query(async ({ ctx }) => {
+    const { address } = ctx;
+    const data = await api.getDelegateRecords(address);
+    return data.inner;
+  }),
   withdrawal: addressProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(address, pageNumber, pageSize, StakeEvent.Withdraw, OperateType.Delegate);
+      const { page, limit } = input;
+      const data = await api.getDelegateHistory(address, TransactionEvent.Withdraw, { page, limit });
       return data;
     }),
   history: addressProcedure
     .input(
       z.object({
-        pageNumber: z.number(),
-        pageSize: z.number(),
+        page: z.number(),
+        limit: z.number(),
       }),
     )
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
-      const { pageNumber, pageSize } = input;
-      const data = await api.getStakeHistory(address, pageNumber, pageSize, undefined, OperateType.Delegate);
+      const { page, limit } = input;
+      const data = await api.getDelegateHistory(address, null, { page, limit });
       return data;
     }),
   add: addressProcedure

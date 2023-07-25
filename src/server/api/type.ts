@@ -1,79 +1,44 @@
-export enum StakeEvent {
-  Add = 'add',
-  Redeem = 'redeem',
-  Withdraw = 'withdraw',
+export enum TransactionEvent {
+  Add = 0,
+  Redeem = 1,
+  Withdraw = 2,
 }
 
-export enum OperateType {
-  Stake = 'stake',
-  Delegate = 'delegate',
+export enum OperationType {
+  Stake = 0,
+  Delegate = 1,
+  Reward = 2,
 }
 
-export enum StakeStatus {
-  Success = 'success',
-  Pending = 'pending',
-  Failed = 'failed',
-}
+export type Pagination = {
+  page: number;
+  limit: number;
+};
 
-export type Paginated<T> = {
+export type PaginationResult<T> = {
   total: number;
   data: T[];
 };
 
 export interface StakeRate {
-  rate: number;
-  minimumAmount: number;
+  stake_rate: number;
+  delegate_rate: number;
+  minimum_amount: number;
 }
 
-export interface StakeAmount {
-  amount: number;
+export interface StakeState {
+  total_amount: number;
   stake_amount: number;
   delegate_amount: number;
   withdrawable_amount: number;
 }
 
-export interface RewardAmount {
+export interface RewardState {
   unlock_amount: number;
   locked_amount: number;
 }
 
-export interface StakeRecord {
-  id: string;
-  amount: string;
-  event: StakeEvent;
-  type: OperateType;
-  status: StakeStatus;
-  transcations: {
-    hash: string;
-    status: StakeStatus;
-    timestamp: Date;
-  }[];
-}
-
-export interface DelegateRecord {
-  address: string;
-  amount: string;
-}
-
-export interface RewardRecord {
-  epoch: number;
-  amount: number;
-  locked: boolean;
-  from: {
-    type: 'stake' | 'delegate';
-    address: string;
-    amount: number;
-  }[];
-}
-
-export interface WithdrawRecord {
-  timestamp: Date;
-  hash: string;
-  amount: number;
-  status: StakeStatus;
-}
-
-export interface EpochAmountRecord {
+export interface StakeAmount {
   epoch: number;
   amount: number;
 }
@@ -85,9 +50,27 @@ export interface ChainState {
   total_stake_amount: number;
 }
 
-export interface TransactionRecord {
-  timestamp: Date;
-  hash: string;
+export interface AddressAmount {
+  address: string;
   amount: number;
-  status: StakeStatus;
+}
+
+export interface TransactionHistory {
+  id: number;
+  address: string;
+  timestamp: number;
+  operation: number;
+  event: number;
+  tx_hash: string;
+  tx_block: number;
+  amount: number;
+  epoch: number;
+  status: number;
+}
+
+export interface DelegateDeltas {
+  inner: {
+    amount: number;
+    staker: string;
+  }[];
 }

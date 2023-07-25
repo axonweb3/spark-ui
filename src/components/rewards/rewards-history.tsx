@@ -2,10 +2,9 @@ import { Box } from '@chakra-ui/react';
 import Pagination from '../common/pagination';
 import Table from '../common/table';
 import Badge from '../common/badge';
-import { useConnect } from '@/hooks/useConnect';
-import { usePaginatedAtomQuery } from '@/hooks/query/usePaginatedAtomQuery';
-import { rewardHistoryAtom } from '@/state/query/reward';
 import { useStakeRole } from '@/hooks/useStakeRole';
+import { useState } from 'react';
+import { trpc } from '@/server';
 
 const columns = [
   {
@@ -29,24 +28,25 @@ const columns = [
 ];
 
 export function RewardsHistory() {
-  const { address } = useConnect();
   const { isValidator } = useStakeRole();
-  const { pageNumber, setPageNumber, setPageSize, isLoading, data } = usePaginatedAtomQuery(rewardHistoryAtom, address);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data: history, isLoading } = trpc.reward.history.useQuery({ page, limit }, { keepPreviousData: true });
 
   return (
     <Box>
       <Table
         columns={columns}
-        data={data}
+        data={history?.data ?? []}
         isLoading={isLoading}
         backgroundColor={isValidator ? 'secondary' : 'primary'}
       />
       <Box marginTop="30px">
         <Pagination
-          total={500}
-          current={pageNumber}
-          onChange={setPageNumber}
-          onPageSizeChange={setPageSize}
+          total={history?.total ?? 0}
+          current={page}
+          onChange={setPage}
+          onPageSizeChange={setLimit}
           showQuickJumper
         />
       </Box>

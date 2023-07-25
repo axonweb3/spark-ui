@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useDeferredValue, useMemo } from 'react';
 import Button from '@/components/common/button';
 import { Box, Flex, Spacer, Text, Tooltip } from '@chakra-ui/react';
 import { useConnect } from '@/hooks/useConnect';
@@ -9,6 +9,11 @@ export default function Header() {
   const { connect, isConnected, address } = useConnect();
   const { role } = useStakeRole();
   const { onCopy } = useAddressCopy();
+  const deferredAddress = useDeferredValue(address);
+  const displayAddress = useMemo(
+    () => deferredAddress?.slice(0, 6) + '...' + deferredAddress?.slice(-6),
+    [deferredAddress],
+  );
 
   return (
     <header>
@@ -24,7 +29,7 @@ export default function Header() {
             <Tooltip label="Copy to clipboard" hasArrow>
               <Box>
                 <Button width="50" variant="outlined" onClick={onCopy}>
-                  {address?.slice(0, 6) + '...' + address?.slice(-6)}
+                  {displayAddress}
                 </Button>
               </Box>
             </Tooltip>

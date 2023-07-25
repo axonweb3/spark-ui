@@ -2,9 +2,7 @@ import { Box, SimpleGrid, Stat, StatLabel, StatNumber, Text } from '@chakra-ui/r
 import Card from '../common/card';
 import { useMemo } from 'react';
 import { useStakeRole } from '@/hooks/useStakeRole';
-import { useLoadableAtomQuery } from '@/hooks/query/useLoadableAtomQuery';
-import { statsChainAtom } from '@/state/query/stats';
-import { ChainState } from '@/server/api/type';
+import { trpc } from '@/server';
 
 const BOX_STYLES = {
   backgroundColor: 'white',
@@ -18,8 +16,8 @@ const BOX_STYLES = {
 export function AxonStatus() {
   const { isDelegator } = useStakeRole();
   const backgroundColor = useMemo(() => (isDelegator ? 'secondary' : 'primary'), [isDelegator]);
-  const { value: chainState = {} } = useLoadableAtomQuery<ChainState>(statsChainAtom);
-  const { epoch = 0, period = 0, block_number = 0, total_stake_amount = 0 } = chainState as ChainState;
+  const { data } = trpc.stats.chain.useQuery();
+  const { epoch = 0, period = 0, block_number = 0, total_stake_amount = 0 } = data ?? {};
 
   return (
     <Box width="full">
