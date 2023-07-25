@@ -10,7 +10,7 @@ import {
   StakeAmount,
   StakeRate,
   StakeState,
-  TransactionEvent,
+  HistoryEvent,
   TransactionHistory,
 } from './type';
 
@@ -31,7 +31,7 @@ export async function getRewardState(address: string): Promise<RewardState> {
 
 export async function getStakeHistory(
   address: string,
-  event: TransactionEvent | null,
+  event: HistoryEvent | null,
   pagination: Pagination,
 ): Promise<PaginationResult<TransactionHistory>> {
   const data = await request('getStakeHistory', [address, event, pagination]);
@@ -40,7 +40,7 @@ export async function getStakeHistory(
 
 export async function getDelegateHistory(
   address: string,
-  event: TransactionEvent | null,
+  event: HistoryEvent | null,
   pagination: Pagination,
 ): Promise<PaginationResult<TransactionHistory>> {
   const data = await request('getDelegateHistory', [address, event, pagination]);
@@ -54,7 +54,7 @@ export async function getDelegateRecords(address: string): Promise<DelegateDelta
 
 export async function getRewardHistory(
   address: string,
-  event: TransactionEvent | null,
+  event: HistoryEvent | null,
   pagination: Pagination,
 ): Promise<PaginationResult<TransactionHistory>> {
   const data = await request('getRewardHistory', [address, event, pagination]);

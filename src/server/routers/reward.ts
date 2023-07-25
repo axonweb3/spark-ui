@@ -1,7 +1,7 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
-import { TransactionEvent } from '../api/type';
+import { HistoryEvent } from '../api/type';
 
 export const rewardRouter = router({
   withdrawal: addressProcedure
@@ -14,7 +14,7 @@ export const rewardRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { page, limit } = input;
-      const data = await api.getRewardHistory(address, TransactionEvent.Withdraw, { page, limit });
+      const data = await api.getRewardHistory(address, HistoryEvent.Withdraw, { page, limit });
       return data;
     }),
   history: addressProcedure

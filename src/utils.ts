@@ -10,7 +10,7 @@ export const renderTransactionHash = (hash: string): string => {
 };
 
 export const renderAmount = (amount: string): string => {
-  return `${(parseInt(amount, 10) / 10 ** 8).toFixed(2)} AT`;
+  return `${parseInt(amount, 10)} AT`;
 };
 
 export const renderDateString = (date: string): string => {

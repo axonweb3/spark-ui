@@ -1,4 +1,4 @@
-export enum TransactionEvent {
+export enum HistoryEvent {
   Add = 0,
   Redeem = 1,
   Withdraw = 2,

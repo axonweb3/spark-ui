@@ -5,24 +5,21 @@ import Badge from '../common/badge';
 import { useCallback, useState } from 'react';
 import { renderAmount, renderDateString, renderTransactionHash } from '@/utils';
 import { trpc } from '@/server';
+import { HistoryEvent } from '@/server/api/type';
 
 const columns = [
   {
     title: 'Event',
     dataIndex: 'event',
-    render: (event: string) => {
-      return <Text textTransform="capitalize">{event}</Text>;
+    render: (event: number) => {
+      return <Text textTransform="capitalize">{HistoryEvent[event]}</Text>;
     },
-  },
-  {
-    title: 'ID',
-    dataIndex: 'id',
   },
   {
     title: 'Amount',
     dataIndex: 'amount',
     render: (amount: string) => {
-      return `${(parseInt(amount, 10) / 10 ** 8).toFixed(2)} AT`;
+      return renderAmount(amount);
     },
   },
   {

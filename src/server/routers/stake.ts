@@ -1,7 +1,7 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
-import { TransactionEvent } from '../api/type';
+import { HistoryEvent } from '../api/type';
 
 export const stakeRouter = router({
   withdrawal: addressProcedure
@@ -15,7 +15,7 @@ export const stakeRouter = router({
       const { address } = ctx;
       const { page, limit } = input;
       // FIXME
-      const data = await api.getStakeHistory(address, TransactionEvent.Withdraw, { page, limit });
+      const data = await api.getStakeHistory(address, HistoryEvent.Withdraw, { page, limit });
       return data;
     }),
   history: addressProcedure

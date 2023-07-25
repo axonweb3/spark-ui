@@ -1,7 +1,7 @@
 import { addressProcedure, router } from '@/server/trpc';
 import * as api from '@/server/api';
 import { z } from 'zod';
-import { TransactionEvent } from '../api/type';
+import { HistoryEvent } from '../api/type';
 
 export const delegateRouter = router({
   records: addressProcedure.query(async ({ ctx }) => {
@@ -19,7 +19,7 @@ export const delegateRouter = router({
     .query(async ({ input, ctx }) => {
       const { address } = ctx;
       const { page, limit } = input;
-      const data = await api.getDelegateHistory(address, TransactionEvent.Withdraw, { page, limit });
+      const data = await api.getDelegateHistory(address, HistoryEvent.Withdraw, { page, limit });
       return data;
     }),
   history: addressProcedure
